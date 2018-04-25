@@ -7,6 +7,7 @@
 #$ -pe orte 1
 ##
 
+# requires bwa and samtools
 
 for f in *.fastq;
 do
