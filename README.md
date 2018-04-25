@@ -5,7 +5,10 @@
 Running list of dependencies:
 
 aTRAM
+
 samtools (most versions should work)
+
 BLAST+ (command line)
-bwa 
+
+bwa
 
