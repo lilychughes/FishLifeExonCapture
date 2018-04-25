@@ -1,11 +1,5 @@
 #!/bin/bash
-#$ -S /bin/bash
-#$ -N mitodb
-#$ -M lilychughes@gmail.com
-#$ -m es
-#$ -cwd
-#$ -pe orte 1
-##
+
 
 # requires bwa and samtools
 
