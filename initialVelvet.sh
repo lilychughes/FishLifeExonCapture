@@ -10,6 +10,6 @@ for f in *COI.fq;
 do
 velveth $f.initial 29 -short -fastq $f;
 velvetg $f.initial;
-python getLongest.py -f $f.initial/contigs.fasta -o $f.initial.longest.fasta;
+python getLongest.py -f $f.initial/contigs.fa -o $f.initial.longest.fasta;
 done
 
