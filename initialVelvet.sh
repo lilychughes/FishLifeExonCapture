@@ -7,6 +7,8 @@
 # this longest contig will be the input to aTRAM
 # getLongest.py needs to be in the path
 
+
+# assemble mapped reads into a starter contig using velvet, and get the longest contig
 for f in *COI.fq;
 do
 	if [  -e $f.initial.longest.fasta  ];
@@ -14,8 +16,15 @@ do
 	else
 		velveth $f.initial 29 -short -fastq $f;
 		velvetg $f.initial;
-		python2.7 getLongest.py -f $f.initial/contigs.fa -o $f.initial.longest.fasta;
-		rm -r $f.initial;
+		python2.7 getLongest.py -f $f.initial/contigs.fa -o $f.initial.longest.fasta;		
 	fi;
 done
 
+
+# remove other velvet output (not used in future steps) if fasta file exists
+for f in *.initial;
+do
+	if [  -e $f.longest.fasta  ];
+		then rm -r $f;
+	fi;
+done
