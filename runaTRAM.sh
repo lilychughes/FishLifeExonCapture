@@ -8,7 +8,7 @@ do
 	if [  -e ${f%.*.*.*.*.*.*}.${f%.*}.atram.log  ];
 		then echo aTRAM assembly already complete for $f;
 	else
-		atram.py -b ${f%.*.*.*.*.*.*.*} -q $f -a velvet -o exon -i 10;
+		atram.py -b ${f%.*.*.*.*.*.*} -q $f -a velvet -o exon -i 10;
 		python2.7 getLongest.py -f ${f%.*.*.*.*.*.*}_${f%.*}.filtered_contigs.fasta -o ${f%.*}.atram.fasta
 	fi;
 done		 	
