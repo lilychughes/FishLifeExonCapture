@@ -9,8 +9,18 @@ do
 		then echo aTRAM assembly already complete for $f;
 	else
 		atram.py -b ${f%.*.*.*.*.*.*} -q $f -a velvet -o exon -i 10;
-		python2.7 getLongest.py -f exon.${f%.*.*.*.*.*.*}_${f%.*}.filtered_contigs.fasta -o ${f%.*}.atram.fasta
 	fi;
 done		 	
+
+
+
+for f in *.initial.longest.fasta;
+do
+	if [  -e exon.${f%.*.*.*.*.*.*}_${f%.*}.filtered_contigs.fasta  ]
+		then python2.7 getLongest.py -f exon.${f%.*.*.*.*.*.*}_${f%.*}.filtered_contigs.fasta -o ${f%.*}.atram.fasta;
+	fi;
+done		
+
+
 	
 # may add a clean-up step to remove extra aTRAM files
