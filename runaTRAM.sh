@@ -5,11 +5,12 @@
 
 for f in *.initial.longest.fasta;
 do
-	if [  -e ${f%.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
+	if [  -e ${f%.*.*.*.*.*.*}.${f%.*}.atram.log  ];
 		then echo aTRAM assembly already complete for $f;
 	else
 		atram.py -b ${f%.*.*.*.*.*.*.*} -q $f -a velvet -o exon -i 10;
+		python2.7 getLongest.py -f ${f%.*.*.*.*.*.*}_${f%.*}.filtered_contigs.fasta -o ${f%.*}.atram.fasta
 	fi;
 done		 	
 	
-Bothidae_Bothus_lunatus_USNMT154.Bothidae_Bothus_lunatus_USNMT154.fastq.COI.fq.initial.longest.atram.log	
+# may add a clean-up step to remove extra aTRAM files
