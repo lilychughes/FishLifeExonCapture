@@ -8,8 +8,8 @@
 for f in *.fastq;
 do
 	if [  -e ${f%.*}.atram_preprocessor.log  ];
-	    echo Reads already preprocessed! See ${f%.*}.atram_preprocessor.log
+	    echo Reads already preprocessed! See ${f%.*}.atram_preprocessor.log;
 	else    
         atram_preprocessor.py -b ${f%.*} --mixed-ends $f;
-    fi    
+    fi;    
 done
