@@ -11,5 +11,6 @@ do
 velveth $f.initial 29 -short -fastq $f;
 velvetg $f.initial;
 python2.7 getLongest.py -f $f.initial/contigs.fa -o $f.initial.longest.fasta;
+rm -r $f.initial;
 done
 
