@@ -1,4 +1,4 @@
-!/bin/sh
+#!/bin/sh
 
 # blasting COI
 # uses COI BOLD sequences for Actinopterygii (downloaded April 27th, 2018)
