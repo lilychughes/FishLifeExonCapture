@@ -10,7 +10,7 @@ parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= Non
 parser.add_argument('-b', '--blast', dest = 'blast', type = str, default = None, required = True, help = 'Blast tabluar output')
 args, unknown = parser.parse_known_args()
 
-species = args.fasta.split("_")[2:3]
+species = args.fasta.split(".")[0]
 
 BlastInput = open(args.blast)
 
@@ -24,7 +24,7 @@ barcodeSP = table[1]
 
 percID = table[2]
 
-if species in barcodeSP:
+if barcodeSP in species:
 	print "Barcode match! "+species+" with "+str(percID)+"% identity match to BOLD COI database."
 else:
 	print "Mismatch! Species labeled "+species+" but closest COI match is "+barcodeSP+" with "+str(percID)+"% identity."
