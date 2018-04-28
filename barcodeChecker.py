@@ -6,11 +6,10 @@ import argparse
 import os
 
 parser = argparse.ArgumentParser(description="Requires python 2.7, but testing with other versions")
-parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= None , required= True, help = 'Fasta alignment')
 parser.add_argument('-b', '--blast', dest = 'blast', type = str, default = None, required = True, help = 'Blast tabluar output')
 args, unknown = parser.parse_known_args()
 
-species = args.fasta.split(".")[0]
+species = args.blast.split(".")[0]
 
 BlastInput = open(args.blast)
 
