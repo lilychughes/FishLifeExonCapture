@@ -20,7 +20,9 @@ BlastInput.close()
 
 table = BestHit.split("\t")
 
-barcodeSP = table[1]
+barcodeSeq = table[1]
+
+barcodeSP = barcodeSeq.split("|")[1]
 
 percID = table[2]
 
