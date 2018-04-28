@@ -27,7 +27,7 @@ barcodeSP = barcodeSeq.split("|")[1]
 percID = table[2]
 
 if barcodeSP in species:
-	print "Barcode match! "+species+" with "+str(percID)+"% identity match to BOLD COI database."
+	print "Barcode match! "+species+" matches "+barcodeSeq+" with "+str(percID)+"% identity match to BOLD COI database."
 else:
 	print "Mismatch! Species labeled "+species+" but closest COI match is "+barcodeSP+" with "+str(percID)+"% identity."
 		
