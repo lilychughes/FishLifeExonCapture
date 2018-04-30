@@ -3,7 +3,7 @@
 # blasting COI
 # uses COI BOLD sequences for Actinopterygii (downloaded April 27th, 2018)
 
-for f in *.fasta;
+for f in *exonerate.fasta;
 do
 	if [  -e ${f%.*}.txt  ];
 		then echo Blast search already completed!;
