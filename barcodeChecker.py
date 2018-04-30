@@ -41,13 +41,13 @@ badMatches = []
 
 for item in dict.keys():
 	barcodeSP = item.split("|")[1]
-	if barcodeSP in species and dict[item] >= 97.0:
+	if barcodeSP in species and float(dict[item]) >= 97.0:
 		bestMatch.append(item)
-	elif barcodeSP not in species and dict[item] >= 97.0:
+	elif float(dict[item]) >= 97.0:
 	    goodMatches.append(item)	
-	elif dict[item] >= 90.0 and dict[item] < 97.0:
+	elif float(dict[item]) >= 90.0 and float(dict[item]) < 97.0:
 		mediumMatches.append(item)
-	elif dict[item] < 90.0:
+	elif float(dict[item]) < 90.0:
 		badMatches.append(item)		
 
 if len(bestMatch) > 0:
