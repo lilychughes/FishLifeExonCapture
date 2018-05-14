@@ -21,23 +21,23 @@ args, unknown = parser.parse_known_args()
 records = SeqIO.to_dict(SeqIO.parse(args.fasta, "fasta"))
 
 
-dummySeq = 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN'
-dummySeqRecord = SeqRecord(dummySeq)
+dummySeq = 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN'
 
 doneSeqs = []
-
 combinedSeq = []
-for record in records:
-	if len(doneSeqs) - len(records) > 1:
-		combinedSeq.append(record.seq)
-		combinedSeq.append(dummySeqRecord.seq)
-		doneSeqs.append(seq)
+
+for record in records.keys():
+	if len(records) - len(doneSeqs) > 1:
+		combinedSeq.append((str(records[record].seq))+dummySeq)
+		doneSeqs.append(record)
 	else:
-		combinedSeq.append(record.seq)	
+		combinedSeq.append(str(records[record].seq))
+		doneSeqs.append(record)
 
-newSeq = ''.join(combinedSeq)
 
-newSeqRecord = SeqRecord(newSeq, id=args.fasta.combined.contig.fasta, description = '')
+newSeq = Seq(''.join(combinedSeq))
 
-SeqIO.write(newSeqRecord, args.fasta+"combined.contig.fasta", "fasta")
+newSeqRecord = SeqRecord(newSeq, id=args.fasta+".initial.combined.contig", description = '')
+
+SeqIO.write(newSeqRecord, args.output, "fasta")
 
