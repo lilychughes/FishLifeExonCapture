@@ -1,11 +1,10 @@
 #!/bin/sh
 
 # this only needs to be run once in the entire pipeline
-
-
+# uses trimmed reads
 # this assumes mixed end data. change if you're using single-end or two paired-end files. see aTRAM docs.
 
-for f in *.fastq;
+for f in *.trimmed.fq;
 do
 	if [  -e ${f%.*}.atram_preprocessor.log  ];
 	    then echo Reads already preprocessed! See ${f%.*}.atram_preprocessor.log;
