@@ -8,7 +8,7 @@
 bwa index all_Master.fasta
 
 
-for f in *.fastq;
+for f in *.trimmed.fq;
 do
 	if [  -e $f.mapped.bam  ];
 	then
