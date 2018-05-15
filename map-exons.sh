@@ -7,6 +7,7 @@
 
 bwa index all_Master.fasta
 
+rename .trimmed.fq .trimmed.fastq *.fq
 
 for f in *.trimmed.fastq;
 do
