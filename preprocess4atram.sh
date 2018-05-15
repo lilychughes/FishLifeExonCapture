@@ -4,7 +4,7 @@
 # uses trimmed reads
 # this assumes mixed end data. change if you're using single-end or two paired-end files. see aTRAM docs.
 
-for f in *.trimmed.fq;
+for f in *.trimmed.fastq;
 do
 	if [  -e ${f%.*}.atram_preprocessor.log  ];
 	    then echo Reads already preprocessed! See ${f%.*}.atram_preprocessor.log;
