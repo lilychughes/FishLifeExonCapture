@@ -1160,5 +1160,13 @@ do
 	fi;
 done
 
-
-
+# remove .fq files that are empty (no reads mapped)
+for f in *.fq;
+do
+	if [  ! -s $f  ];
+	then 
+		rm $f;
+	else	
+		echo $f not empty. Reads ready to assemble.;
+	fi;
+done		
