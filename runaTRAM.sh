@@ -5,7 +5,7 @@
 
 for f in *.initial.combined.fa;
 do
-	if [  -e ${f%.*.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
+	if [  -e ${f%.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
 	then 
 		echo $f aTRAM assembly already completed;
 	else
