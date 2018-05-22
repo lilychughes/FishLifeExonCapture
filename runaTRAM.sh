@@ -7,7 +7,7 @@ for f in *.initial.combined.fa;
 do
 	if [  -e ${f%.*.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
 	then 
-		echo aTRAM assembly already complete for $f;
+		echo $f aTRAM assembly already completed;
 	else
 		atram.py -b ${f%.*.*.*.*.*.*.*} -q $f -a velvet -o exon -i 10;
 	fi;
