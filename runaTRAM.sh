@@ -5,7 +5,7 @@
 
 for f in *.initial.refs.fasta;
 do
-	if [  -e $f.*.atram.log  ];
+	if [  -e ${f%.*.*.*.*.*}.*.atram.log  ];
 	then 
 		echo $f aTRAM assembly already completed;
 	else
@@ -15,4 +15,4 @@ done
 
 	
 # may add a clean-up step to remove extra aTRAM files
-Pleuronectidae_Glyptocephalus_cynoglossus_KU1474.trimmed.fastq.initial.refs.fasta
+#Pleuronectidae_Glyptocephalus_cynoglossus_KU1474.trimmed.fastq.initial.refs.fasta
