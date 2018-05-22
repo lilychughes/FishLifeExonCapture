@@ -9,7 +9,7 @@ do
 	then 
 		echo $f aTRAM assembly already completed;
 	else
-		atram.py -b ${f%.*.*.*.*.*.*.*} -q $f -a velvet -o exon -i 10;
+		atram.py -b ${f%.*.*.*.*.*.*.*} -q $f -a velvet -o exon -i 5;
 	fi;
 done		 	
 
