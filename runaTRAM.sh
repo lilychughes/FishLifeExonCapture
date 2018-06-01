@@ -3,16 +3,15 @@
 # assumes atram is in your path!
 # using velvet as the assembler for aTRAM
 
-for f in *.initial.refs.fasta;
+for f in *.initial.combined.fa;
 do
-	if [  -e ${f%.*.*.*.*.*}.*.atram.log  ];
+	if [  -e ${f%.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
 	then 
 		echo $f aTRAM assembly already completed;
 	else
-		atram.py -b ${f%.*.*.*.*.*} -Q $f -a velvet -o exon;
+		atram.py -b ${f%.*.*.*.*.*.*.*} -q $f -a velvet -o exon;
 	fi;
 done		 	
 
 	
 # may add a clean-up step to remove extra aTRAM files
-#Pleuronectidae_Glyptocephalus_cynoglossus_KU1474.trimmed.fastq.initial.refs.fasta
