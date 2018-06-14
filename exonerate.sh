@@ -12,4 +12,3 @@ do
 	fi;
 done;
 
-rm E*.fasta
