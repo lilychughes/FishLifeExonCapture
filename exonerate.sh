@@ -9,7 +9,7 @@ do
 		then 
 		echo Reading Frames found for $i;
 		else
-		exonerate --model coding2coding --geneticcode 2 -q $i -t $f --ryo ">%qi%qd\n%qas\n" --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 1 > ${i%.*}.exonerate.fasta;
+		exonerate --model coding2coding -t $i -q $f --ryo ">%qi%qd\n%qas\n" --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 1 > ${i%.*}.exonerate.fasta;
 		fi;
 	done;
 done;
