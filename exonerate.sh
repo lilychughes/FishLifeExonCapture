@@ -1,9 +1,11 @@
 #!/bin/sh
 
 
-for f in /storage/home/fishlab/FishLifeData/lily-scripts/FishLifeExonCapture/ReadingFrames/*.fasta;
+cp /storage/home/fishlab/FishLifeData/lily-scripts/FishLifeExonCapture/ReadingFrames/*.fasta .
+
+for f in E*.fasta;
 do
-	for i in *${f%.*}*filtered*fasta;
+	for i in exon*${f%.*}*filtered*fasta;
 	do
 		if [  -e ${i%.*}.exonerate.fasta  ];
 		then 
@@ -13,3 +15,5 @@ do
 		fi;
 	done;
 done;
+
+rm E*.fasta
