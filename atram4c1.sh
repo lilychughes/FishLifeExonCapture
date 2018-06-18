@@ -1,4 +1,14 @@
 #!/bin/sh
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=lilychughes@gwu.edu
+#SBATCH --job-name=atram
+#SBATCH -n 1
+#SBATCH -p debug
+#SBATCH --output=atram.out
+#SBATCH --error=atram.err
+#SBATCH -t 01:00:00
+
+
 
 # all the things aTRAM needs to run
 module load velvet
@@ -19,22 +29,15 @@ source $aTRAM
 # may add a clean-up step to remove extra aTRAM files
 
 
-mkdir completed_database_files
-
 for f in *.db;
 do
 	if [  -e ${f%.*.*}*atram.log  ];
 	then
 		echo aTRAM running for ${f%.*.*};
 	else
-		mv $f /scratch;
-		mv ${f%.*.*}*blast* /scratch;
-		for i in ${f%.*.*}*.fa;
+		for i in /lustre/groups/ortilab/FishLife/180327_K00242_0377_BHTGVMBBXX-RB-BF03-L2/${f%.*.*}*.fa;
 		do
-			atram.py -b /scratch/${f%.*.*} -q $i -a velvet -o exon;
-			mv /scratch/${f%.*.*.*}.trimmed.${i%.*}.atram.log .;
+			atram.py -b ${f%.*.*} -q $i -a velvet -o /lustre/groups/ortilab/FishLife/180327_K00242_0377_BHTGVMBBXX-RB-BF03-L2/exon;
 		done
-		mv /scratch/$f completed_database_files/;
-		mv /scratch/${f%.*.*}*blast* completed_database_files/;
 	fi;
 done		 
