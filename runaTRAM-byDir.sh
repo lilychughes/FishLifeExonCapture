@@ -15,14 +15,15 @@ then
 		echo $directory aTRAM assembly started > ../$directory.started.txt
 		for f in *.initial.combined.fa;
 			do
-			if [  ! -e ${f%.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
-				then 
-				atram.py -b ${f%.*.*.*.*.*.*.*} -q $f -a velvet -o exon;
-			fi;
+				if [  ! -e ${f%.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
+					then 
+					atram.py -b ${f%.*.*.*.*.*.*.*} -q $f -a velvet -o exon;
+				fi;
+			done;
 		cd ../;
 		echo aTRAM assembly completed $directory > $directory.completed.txt;
-		fi;	
-	fi;
+	fi;	
+fi;
 done	
 	 	
 
