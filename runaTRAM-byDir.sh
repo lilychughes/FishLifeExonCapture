@@ -7,7 +7,7 @@ for directory in *;
 do
 if [  -d $directory  ];
 then
-	if [ ! -e $directory.started.txt  ];
+	if [  -e $directory.started.txt  ];
 	then
 		echo $directory.started.txt found!;
 	else	
@@ -17,7 +17,7 @@ then
 			do
 				if [  ! -e ${f%.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
 					then 
-					atram.py -b ${f%.*.*.*.*.*.*.*} -q $f -a velvet -o exon;
+					atram.py -b ${f%.*.*.*.*.*.*} -q $f -a velvet -o exon;
 				fi;
 			done;
 		cd ../;
