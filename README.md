@@ -67,4 +67,23 @@ This script maps the raw reads with bwa against the reference sequences that all
 
 # Step 4: Build initial assemblies in Velvet
 
+The previous step should have generated a .fq file for each locus (providing that some reads mapped to the reference sequences). Now we can generate an initial assembly for each locus with Velvet:
 
+```
+../FishLifeExonCapture/initialVelvet.sh
+```
+
+# Step 5: Extract longest assembled contig
+
+Velvet often assembles incomplete contigs at this stage, but the longest one should contain some part of the exon we are trying to assemble. To pull out that contig, run:
+
+```
+for f in *initial;
+do
+python ../FishLifeExonCapture/getLongest.py -f $f/contigs.fa -o $f.combined.fa;
+done
+```
+
+# Step 6: Run aTRAM
+
+This script uses the default parameters for aTRAM, using Velvet again as the assembler. It uses five Blast iterations, which 
