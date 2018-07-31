@@ -59,4 +59,7 @@ When the script is finished, each .fastq file will have an associated .trimmed.f
 
 aTRAM2.0 currently only takes a single reference sequence as input. To avoid having to choose that sequence for each individual project, and to increase the over all number of loci assembled, we do a initial de novo assembly partitioned by locus for each taxon. The product of that de novo assembly is used as the reference sequence for aTRAM in the following steps. This might be redundant in some cases, but tends to produce longer, more accurate assemblies, without having to choose a reference sequence for every taxon.
 
-This script maps the raw reads with bwa against the reference sequences that all exon baits were designed on, as well as coding mitochondrial genes. These sequences are included in the all_Master.fasta file.
+This script maps the raw reads with bwa against the reference sequences that all exon baits were designed on, as well as coding mitochondrial genes. These sequences are included in the all_Master.fasta file. It then makes individual fastq files for each locus.
+
+```
+../FishLifeExonCapture/ma
