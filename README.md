@@ -1,4 +1,4 @@
-# FishLifeExonCapture
+## FishLifeExonCapture
 
 # Tutorial for assembling exon capture data across the diversity of fishes
 
@@ -22,7 +22,7 @@ TranslatorX
 
 # Step 1: Organize your fastq files into separate directories for each species
 
-Starting with a list of demultiplexed fastq files from the sequencer, we need to make separate directories to process our samples through the pipeline. These files are commonly gzip compressed (so you might see .fastq.gz). If you need to expand the files you can run the following:
+You should establish a main working directory for all of your samples. Starting with a list of demultiplexed fastq files from the sequencer, we need to make separate directories to process our samples through the pipeline. These files are commonly gzip compressed (so you might see .fastq.gz). If you need to expand the files you can run the following:
 
 ```
 for f in *gz;
@@ -31,3 +31,22 @@ gunzip $f;
 done
 ```
 
+Now make directories for each of the fastq files, and move them to those directories:
+
+```
+for f in *fastq;
+do
+mkdir ${f%.*};
+mv $f ${f%.*}/;
+done
+```
+
+# Step 2: Run Trimmomatic to quality trim the sequences
+
+Run the trimmomatic-loop.sh script in the main working directory. 
+
+
+
+Note: This script will look for a file called 'adapters.fa' in the main working directory, to trim out adapter contamination. Different sets of adapters are used for different library preparations, so you should check which are appropriate. Trimmomatic has all of these sequences packaged with it, so you can just move this to the 'adapters.fa' file. The adapters are proprietary Illumina sequences, so I have not included them here.
+
+When the script is finished 
