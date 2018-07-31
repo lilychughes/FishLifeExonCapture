@@ -62,4 +62,7 @@ aTRAM2.0 currently only takes a single reference sequence as input. To avoid hav
 This script maps the raw reads with bwa against the reference sequences that all exon baits were designed on, as well as coding mitochondrial genes. These sequences are included in the all_Master.fasta file. It then makes individual fastq files for each locus.
 
 ```
-../FishLifeExonCapture/ma
+../FishLifeExonCapture/mapping.sh
+
+```
+
