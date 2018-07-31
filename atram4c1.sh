@@ -3,10 +3,10 @@
 #SBATCH --mail-user=lilychughes@gwu.edu
 #SBATCH --job-name=atram
 #SBATCH -n 1
-#SBATCH -p debug
+#SBATCH -p defq
 #SBATCH --output=atram.out
 #SBATCH --error=atram.err
-#SBATCH -t 01:00:00
+#SBATCH -t 14-00:00:00
 
 
 
@@ -29,15 +29,38 @@ source $aTRAM
 # may add a clean-up step to remove extra aTRAM files
 
 
-for f in *.db;
+#for f in *.db;
+#do
+#	if [  -e ${f%.*.*}*atram.log  ];
+#	then
+#		echo aTRAM running for ${f%.*.*};
+#	else
+#		for i in /lustre/groups/ortilab/FishLife/180327_K00242_0377_BHTGVMBBXX-RB-BF03-L2/${f%.*.*}*.fa;
+#		do
+#			atram.py -b ${f%.*.*} -q $i -a velvet -o /lustre/groups/ortilab/FishLife/180327_K00242_0377_BHTGVMBBXX-RB-BF03-L2/exon;
+#		done
+#	fi;
+# done		 
+
+for directory in *;
 do
-	if [  -e ${f%.*.*}*atram.log  ];
+if [  -d $directory  ];
+then
+	if [  -e $directory.started.txt  ];
 	then
-		echo aTRAM running for ${f%.*.*};
-	else
-		for i in /lustre/groups/ortilab/FishLife/180327_K00242_0377_BHTGVMBBXX-RB-BF03-L2/${f%.*.*}*.fa;
-		do
-			atram.py -b ${f%.*.*} -q $i -a velvet -o /lustre/groups/ortilab/FishLife/180327_K00242_0377_BHTGVMBBXX-RB-BF03-L2/exon;
-		done
-	fi;
-done		 
+		echo $directory.started.txt found!;
+	else	
+		cd $directory;
+		echo $directory aTRAM assembly started > ../$directory.started.txt
+		for f in *.initial.combined.fa;
+			do
+				if [  ! -e ${f%.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
+					then 
+					atram.py -b ${f%.*.*.*.*.*.*} -q $f -a velvet -o exon;
+				fi;
+			done;
+		cd ../;
+		echo aTRAM assembly completed $directory > $directory.completed.txt;
+	fi;	
+fi;
+done	
