@@ -12,6 +12,8 @@ BLAST+ (command line)
 
 bwa
 
+Velvet
+
 Biopython
 
 Exonerate
@@ -45,8 +47,16 @@ done
 
 Run the trimmomatic-loop.sh script in the main working directory. 
 
-
+```
+../FishLifeExonCapture/trimmomatic-loop.sh
+```
 
 Note: This script will look for a file called 'adapters.fa' in the main working directory, to trim out adapter contamination. Different sets of adapters are used for different library preparations, so you should check which are appropriate. Trimmomatic has all of these sequences packaged with it, so you can just move this to the 'adapters.fa' file. The adapters are proprietary Illumina sequences, so I have not included them here.
 
-When the script is finished 
+When the script is finished, each .fastq file will have an associated .trimmed.fastq file.
+
+# Step 3: Map raw reads back to representative bait sequences
+
+aTRAM2.0 currently only takes a single reference sequence as input. To avoid having to choose that sequence for each individual project, and to increase the over all number of loci assembled, we do a initial de novo assembly partitioned by locus for each taxon. The product of that de novo assembly is used as the reference sequence for aTRAM in the following steps. This might be redundant in some cases, but tends to produce longer, more accurate assemblies, without having to choose a reference sequence for every taxon.
+
+This script maps the raw reads with bwa against the reference sequences that all exon baits were designed on, as well as coding mitochondrial genes. These sequences are included in the all_Master.fasta file.
