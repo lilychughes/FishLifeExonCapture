@@ -1,16 +1,14 @@
 # FishLifeExonCapture
 
-# Testing scripts to assemble Exon Capture Data
+# Tutorial for assembling exon capture data across the diversity of fishes
 
-Running list of dependencies:
-
+Software required:
 aTRAM
-
 samtools (most versions should work)
-
 BLAST+ (command line)
-
 bwa
-
 Biopython
+Exonerate 
+Mafft
+TranslatorX
 
