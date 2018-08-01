@@ -62,8 +62,10 @@ aTRAM gets better assemblies than other software, but for its first iteration, i
 This script maps the raw reads with bwa against the reference sequences that all exon baits were designed on, as well as coding mitochondrial genes. These sequences are included in the all_Master.fasta file. It then makes individual fastq files for each locus.
 
 ```
-../FishLifeExonCapture/mapping.sh
+../FishLifeExonCapture/map-exons.sh
 ```
+
+Another version of the script is available to work with older versions (<2) of samtools. 
 
 # Step 4: Build initial assemblies in Velvet
 
@@ -86,4 +88,12 @@ done
 
 # Step 6: Run aTRAM
 
-This script uses the default parameters for aTRAM, using Velvet again as the assembler. It uses five Blast iterations, which 
+This script uses the default parameters for aTRAM, using Velvet again as the assembler. It uses five Blast iterations, which seems to be sufficient for most loci. If you're trying to assemble something longer, like a full mitogenome, you'll want to run aTRAM directly and change this.
+
+```
+../FishLifeExonCapture/runaTRAM.sh
+```
+
+# Step 7: Find reading frames and filter exons
+
+Run the thing.
