@@ -32,7 +32,7 @@ do
 			exonerate --model coding2genome -t $f.cdhit -q ../../ReadingFrames/$directory.fasta --ryo ">%ti\t%qab-%qae\n%tas" --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 2 > $f.exonerate.fasta;
 			sed -i 's/-- completed exonerate analysis//g' $f.exonerate.fasta;
 			taxon=${f%_*_*_*_*.*.*.*.*.*.*.*}
-			python ../../filterExons.py -f ${f%.*}.exonerate.fasta -o $f.fa -t $taxon -l 100 -c 1.75;
+			python ../../filterExons.py -f $f.exonerate.fasta -o $f.exonerate_filtered.fa -t $taxon -l 100 -c 1.75;
 			done;
 		cat *.fa > $directory.filtered.fasta;
 		cd ../
