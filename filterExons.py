@@ -30,8 +30,9 @@ records.sort(key=lambda r: -len(r))
 oriented = []
 
 for record in records:
-	start = record.description.split("-")[0]
-	end = record.description.split("-")[1]
+	coordinates = record.description.split("\t")[1]
+	start = coordinates.split("-")[0]
+	end = coordinates.split("-")[1]
 	if end > start:
 		oriented.append(record)	
 
@@ -61,6 +62,7 @@ if len(longest) > 0:
 		seqCoverage = float(record.id.split("_")[6])
 		if seqCoverage >= args.coverage:
 			covered.append(record)
+
 
 # write the output 
 # if no sequences passed filters, print message to screen
