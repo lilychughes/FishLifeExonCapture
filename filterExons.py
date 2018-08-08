@@ -58,7 +58,7 @@ covered = []
 
 if len(longest) > 0:
 	for record in longest:
-		seqCoverage = float(record.id.split("-")[6])
+		seqCoverage = float(record.id.split("_")[6])
 		if seqCoverage >= args.coverage:
 			covered.append(record)
 
