@@ -31,8 +31,8 @@ oriented = []
 
 for record in records:
 	coordinates = record.description.split("\t")[1]
-	start = coordinates.split("-")[0]
-	end = coordinates.split("-")[1]
+	start = int(coordinates.split("-")[0])
+	end = int(coordinates.split("-")[1])
 	if end > start:
 		oriented.append(record)	
 
