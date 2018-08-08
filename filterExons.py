@@ -64,9 +64,9 @@ if len(longest) > 0:
 
 # write the output 
 # if no sequences passed filters, print message to screen
-if len(covered) < 1:
+if len(covered) == 0:
 	print("No sequences passed filters in "+args.fasta) 			
 # print the longest remaining sequence
-elif len(covered) > 1:
+elif len(covered) >= 1:
 	filteredSeq = SeqRecord(covered[0].seq, id=args.taxon, description='')
 	SeqIO.write(filteredSeq, args.output, "fasta")
