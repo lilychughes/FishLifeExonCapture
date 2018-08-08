@@ -13,32 +13,30 @@ module load mafft
 module load cd-hit
 
 
+# loop of cd-hit (clustering at 99% identity), exonerate, and a filter for length,strand orientation, and coverage
+# puts all passing sequences into locus.filtered.fasta
+# locus.filtered.fasta can then be aligned by preferred method.
+
 for directory in *;
 do
 	if [  -d $directory  ];
 	then
-		if  [  -e $directory.filtering.started.txt  ];
+		if  [  ! -e $directory.filtering.started.txt  ];
 		then
-		echo Filtering of $directory already started
-		else
 		echo Filtering of $directory started > $directory.filtering.started.txt;
 		cd $directory
 			rename .trimmed_ _ *
 			for f in *filtered_contigs.fasta;
 			do
 			cd-hit-est -i $f -o $f.cdhit -c 0.99;
-			exonerate --model coding2coding -q $f.cdhit -t ../../ReadingFrames/$directory.fasta --ryo ">%qi%qd\n%qas\n" --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 2 > $f.exonerate.fasta;
+			exonerate --model coding2genome -t $f.cdhit -q ../../ReadingFrames/$directory.fasta --ryo ">%ti\t%qab-%qae\n%tas" --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 2 > $f.exonerate.fasta;
 			sed -i 's/-- completed exonerate analysis//g' $f.exonerate.fasta;
-			python ../../StopCodonFilter.py -f $f.exonerate.fasta -o ${f%.*}.exonerate_filtered.fasta;
 			taxon=${f%_*_*_*_*.*.*.*.*.*.*.*}
-			python ../../filterExons.py -f ${f%.*}.exonerate_filtered.fasta -o $f.fa -t $taxon  -e $directory -l 100 -c 1.75;
+			python ../../filterExons.py -f ${f%.*}.exonerate.fasta -o $f.fa -t $taxon -l 100 -c 1.75;
 			done;
 		cat *.fa > $directory.filtered.fasta;
-		sed -i 's/|E.*$//g' $directory.filtered.fasta;
-		perl ../../tx.pl -i $directory.filtered.fasta -p F -o $directory.tx;
 		cd ../
 		echo Filtering of $directory completed > $directory.filtering.completed.txt;
 		fi;
 	fi;	 	
-done			
-
+done
