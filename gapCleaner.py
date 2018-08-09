@@ -9,6 +9,7 @@ from Bio import AlignIO
 parser = argparse.ArgumentParser(description="Requires python 2.7 and Biopython. Removes columns with single taxon insertions.")
 parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= None , required= True, help = 'Fasta alignment to prune')
 parser.add_argument('-o', '--output', dest = 'output', type = str, default = None, required = True, help = 'Name of output file')
+args, unknown = parser.parse_known_args()
 
 # read in the alignment in fasta format
 alignment = AlignIO.read(args.fasta,"fasta")
