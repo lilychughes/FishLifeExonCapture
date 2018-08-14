@@ -5,6 +5,8 @@ from sys import argv
 import argparse
 import os
 from Bio import AlignIO
+from Bio import Seq
+from Bio.SeqRecord import SeqRecord
 
 parser = argparse.ArgumentParser(description="Requires python 2.7 and Biopython. Removes columns with single taxon insertions.")
 parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= None , required= True, help = 'Fasta alignment to prune')
@@ -17,12 +19,12 @@ alignment = AlignIO.read(args.fasta,"fasta")
 # get the number of columns in the alignment
 length = alignment.get_alignment_length()
 
-# find the columns that are not composed of mostly gaps (where two or fewer taxa have sequence data or 'NNNN' sequences)
+# find the columns that are not composed of mostly gaps (where three or fewer taxa have sequence data or 'NNNN' sequences)
 goodColumns = []
 
 for x in range(0,length):
 	column = alignment[:,x]
-	if column.count("-") < (len(alignment)-2):
+	if column.count("-") < (len(alignment)-3):
 		slice = alignment[:,x:x+1]
 		goodColumns.append(slice)
 
@@ -33,9 +35,18 @@ newAlignment = alignment[:,0:0]
 for column in goodColumns:
 	newAlignment = newAlignment+column
 
+# change to uppercase
+
+upperAlignment = []
+
+for sequence in newAlignment:
+	seqUP = sequence.seq.upper()
+	recUP = SeqRecord(seqUP, id=sequence.id, description='')
+	upperAlignment.append(recUP)
 
 # write the cleaned alignment to a new file
 
 out = open(args.output, "w")
-out.write(newAlignment.format("fasta"))
+for item in upperAlignment:
+	out.write(item.format("fasta"))
 out.close()
