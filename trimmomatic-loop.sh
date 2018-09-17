@@ -3,12 +3,18 @@
 # adapter file needs to be in the same directory for now. Users should change 'adapters.fa' to the appropriate file.
 # currently points to where trimmomatic is installed on Makaria; this would need to be changed for other systems.
 
-for f in *.fastq;
+for directory *;
 do
-	if [  -e ${f%.*}.trimmed.fq  ];
-		then echo Reads already trimmed.;
-	else
-		java -jar /storage/apps/trimmomatic/0.36/trimmomatic-0.36.jar SE -threads 4 -phred33 -trimlog $f.trimlog $f ${f%.*}.trimmed.fq ILLUMINACLIP:adapters.fa:2:30:10 LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:31;
-
+if [  -d $directory  ];
+then
+	if [  ! -e $directory.trimming.txt  ];
+	then
+	echo Trimming started > $directory.trimming.txt;
+	cd $directory/;
+	java -jar /c1/apps/trimmomatic/Trimmomatic-0.33/trimmomatic-0.33.jar SE -threads 4 -phred33 -trimlog $f.trimlog $f ${f%.*}.trimmed.fq ILLUMINACLIP:../adapters.fa:2:30:10 LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:31;
+	cd ../;
+	echo Trimming completed > $directory.trimming.txt;
 	fi;
-done		
+fi;
+done	
+
