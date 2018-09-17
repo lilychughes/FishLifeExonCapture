@@ -3,7 +3,7 @@
 # adapter file needs to be in the same directory for now. Users should change 'adapters.fa' to the appropriate file.
 # currently points to where trimmomatic is installed on Makaria; this would need to be changed for other systems.
 
-for directory *;
+for directory in *;
 do
 if [  -d $directory  ];
 then
