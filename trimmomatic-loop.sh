@@ -11,6 +11,7 @@ then
 	then
 	echo Trimming started > $directory.trimming.txt;
 	cd $directory/;
+	### If you are running this on a different system, change the path to the trimmomatic jar file and adapters fasta file below
 	java -jar /c1/apps/trimmomatic/Trimmomatic-0.33/trimmomatic-0.33.jar SE -threads 4 -phred33 -trimlog $f.trimlog $f ${f%.*}.trimmed.fq ILLUMINACLIP:../adapters.fa:2:30:10 LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:31;
 	cd ../;
 	echo Trimming completed > $directory.trimming.txt;
