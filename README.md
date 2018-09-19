@@ -107,9 +107,16 @@ done
 
 # Step 7: Run aTRAM
 
-This script uses the default parameters for aTRAM, using Velvet again as the assembler. It uses five Blast iterations, which seems to be sufficient for most loci. If you're trying to assemble something longer, like a full mitogenome, you'll want to run aTRAM directly and change this.
+This script uses the default parameters for aTRAM, using Velvet again as the assembler. It uses ten iterations, which seems to be sufficient for most loci. If you're trying to assemble something longer, like a full mitogenome, you'll want to run aTRAM directly and change this.
+
+Colonial one has a special python environment that was set up for aTRAM. To run it under this environment, do:
 
 ```
+module load velvet
+module load sqlite
+module load aTRAM/2.0
+source $aTRAM
+
 ../FishLifeExonCapture/runaTRAM.sh
 ```
 
