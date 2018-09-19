@@ -54,7 +54,15 @@ When the script is finished, each .fastq file will have an associated .trimmed.f
 
 # Step 3: Pre-process trimmed reads for aTRAM
 
+# A note on lustre file systems: Some university servers use lustre scratch file systems. Colonial One at GWU uses this type of file system, and they generally prefer that you run jobs in the /lustre/groups/ workspace. However, lustre systems cannot use SQL-based databases. This is an ongoing issue for data analysis with aTRAM, that I am actively working on. Right now, I usually run jobs from this point in the non-lustre groups space, but the system administrators don't like it.
 
+aTRAM uses SQLite databases and BLAST databases of the raw reads to run, and it can set these up with a script that comes with aTRAM, aTRAM-preprocessor.py. 
+
+You can run this for all of your files using this script:
+
+```
+../FishLifeExonCapture/preprocess4atram.sh
+```
 
 # Step 4: Map raw reads back to representative bait sequences
 
