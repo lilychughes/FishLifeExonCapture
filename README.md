@@ -42,9 +42,10 @@ done
 
 # Step 2: Run Trimmomatic to quality trim the sequences
 
-Run the trimmomatic-loop.sh script in the main working directory. 
+Run the trimmomatic-loop.sh script in the main working directory. This calls the trimmomatic.jar file in the location where it is stored on Colonial One. If you are running this on another system, you may want to make a copy of this file and change the path.
 
 ```
+module load trimmomatic
 ../FishLifeExonCapture/trimmomatic-loop.sh
 ```
 
@@ -58,9 +59,10 @@ When the script is finished, each .fastq file will have an associated .trimmed.f
 
 aTRAM uses SQLite databases and BLAST databases of the raw reads to run, and it can set these up with a script that comes with aTRAM, aTRAM-preprocessor.py. 
 
-You can run this for all of your files using this script:
+You can run this for all of your files like so:
 
 ```
+module load aTRAM
 ../FishLifeExonCapture/preprocess4atram.sh
 ```
 
@@ -71,6 +73,8 @@ aTRAM gets better assemblies than other software, but for its first iteration, i
 This script maps the raw reads with bwa against the reference sequences that all exon baits were designed on, as well as coding mitochondrial genes. These sequences are included in the all_Master.fasta file. It then makes individual fastq files for each locus.
 
 ```
+module load samtools
+module load bwa
 ../FishLifeExonCapture/map-exons.sh
 ```
 
