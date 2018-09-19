@@ -4,9 +4,9 @@
 
 Software required:
 
-aTRAM
+aTRAM (requires Python 3)
 
-samtools (most versions should work)
+samtools (most versions should work, but newer versions >2 preferred)
 
 BLAST+ (command line)
 
@@ -50,9 +50,13 @@ Run the trimmomatic-loop.sh script in the main working directory.
 
 Note: This script will look for a file called 'adapters.fa' in the main working directory, to trim out adapter contamination. Different sets of adapters are used for different library preparations, so you should check which are appropriate. Trimmomatic has all of these sequences packaged with it, so you can just move this to the 'adapters.fa' file. The adapters are proprietary Illumina sequences, so I have not included them here.
 
-When the script is finished, each .fastq file will have an associated .trimmed.fastq file.
+When the script is finished, each .fastq file will have an associated .trimmed.fastq file, and the originial untrimmed file is compressed.
 
-# Step 3: Map raw reads back to representative bait sequences
+# Step 3: Pre-process trimmed reads for aTRAM
+
+
+
+# Step 4: Map raw reads back to representative bait sequences
 
 aTRAM gets better assemblies than other software, but for its first iteration, it is dependent on a reference sequence. We have many possible reference sequence, and if the reference sequence doesn't recruit reads during the first iteration, nothing assembles.To get around having to choose the right reference, we're generating a starting contig with the reads that mapped to the reference sequences in all_Master.fasta, which contains all the sequences the baits were designed on. This might be redundant in some cases, but tends to produce longer, more accurate assemblies, without having to choose a reference sequence for every taxon.
 
@@ -62,17 +66,23 @@ This script maps the raw reads with bwa against the reference sequences that all
 ../FishLifeExonCapture/map-exons.sh
 ```
 
-Another version of the script is available to work with older versions (<2) of samtools. 
+Another version of the script is available to work with older versions (<2) of samtools.
 
-# Step 4: Build initial assemblies in Velvet
+For the older set of Otophysi markers (see Arcila et al 2017), use:
 
-The previous step should have generated a .fq file for each locus (providing that some reads mapped to the reference sequences). Now we can generate an initial assembly for each locus with Velvet:
+```
+../FishLifeExonCapture/map-exons-Otophysi.sh
+```
+
+# Step 5: Build initial assemblies in Velvet
+
+The previous step should have generated a .fq file for each locus (providing that some reads mapped to the reference sequences ). Now we can generate an initial assembly for each locus with Velvet:
 
 ```
 ../FishLifeExonCapture/initialVelvet.sh
 ```
 
-# Step 5: Extract longest assembled contig
+# Step 6: Extract longest assembled contig
 
 Velvet often assembles incomplete contigs at this stage, but the longest one should contain some part of the exon we are trying to assemble. To pull out that contig, run:
 
@@ -83,7 +93,7 @@ python ../FishLifeExonCapture/getLongest.py -f $f/contigs.fa -o $f.combined.fa;
 done
 ```
 
-# Step 6: Run aTRAM
+# Step 7: Run aTRAM
 
 This script uses the default parameters for aTRAM, using Velvet again as the assembler. It uses five Blast iterations, which seems to be sufficient for most loci. If you're trying to assemble something longer, like a full mitogenome, you'll want to run aTRAM directly and change this.
 
@@ -91,6 +101,6 @@ This script uses the default parameters for aTRAM, using Velvet again as the ass
 ../FishLifeExonCapture/runaTRAM.sh
 ```
 
-# Step 7: Find reading frames and filter exons
+# Step 8: Find reading frames and filter exons
 
 Run the thing.
