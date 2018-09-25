@@ -13,7 +13,7 @@ from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
 import numpy
 
-parser = argparse.ArgumentParser(description='Requires python 2.7 and Biopython. Flags nucleotide sequences based on distance')
+parser = argparse.ArgumentParser(description='Requires python 2.7 and Biopython. Flags nucleotide sequences based on distance, more than 2 standard deviations from the mean.')
 parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= None , required= True, help = 'Fasta alignment to prune')
 args, unknown = parser.parse_known_args()
 
@@ -34,7 +34,7 @@ for record in alignment:
 NewAlignment = MultipleSeqAlignment(NewSeqs)	
 
 # set the method of distance calculation 
-calculator = DistanceCalculator('trans')
+calculator = DistanceCalculator('blastn')
 # get pairwise distances for all sequences in the alignment
 dm = calculator.get_distance(NewAlignment)
 
@@ -57,6 +57,6 @@ dictionary = dict(zip(names,meanDist))
 
 # print sequence names that have more than two standard deviations difference in their mean distance
 for item in dictionary.keys():
-	if float(dictionary[item]) >= (numpy.mean(meanArray)+((numpy.std(meanArray)*2))):
+	if float(dictionary[item]) > (numpy.mean(meanArray)+((numpy.std(meanArray)*2.25))):
 		print(item)
 		
