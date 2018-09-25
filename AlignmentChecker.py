@@ -57,6 +57,6 @@ dictionary = dict(zip(names,meanDist))
 
 # print sequence names that have more than two standard deviations difference in their mean distance
 for item in dictionary.keys():
-	if float(dictionary[item]) > (numpy.mean(meanArray)+((numpy.std(meanArray)*2.25))):
+	if float(dictionary[item]) > (numpy.mean(meanArray)+((numpy.std(meanArray)*2.3))):
 		print(item)
 		
