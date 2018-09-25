@@ -122,4 +122,26 @@ source $aTRAM
 
 # Step 8: Find reading frames and filter exons
 
-Run the thing.
+aTRAM tends to write all of the contigs it found in each of its iterations, regardless of whether they are identical or not. To reduce the number of contigs in the aTRAM output file, I run CD-HIT, a software that clusters sequences based on some identity threshold, and writes the longest sequences to a file. It is also quite fast. 
+
+I set the cluster identity to 0.98 below, but you can change it where it says -c.
+
+If I'm in my working directory with all of my species directories, I can run:
+
+```
+module load cd-hit
+
+for directory in *;
+do
+if [  -d $directory  ];
+then
+cd $directory;
+for f in *.filtered_contigs.fasta;
+do
+cd-hit-est -i $f -o ${f%.*}.cdhit -c 0.98;
+done;
+cd ../;
+fi;
+done
+```
+
