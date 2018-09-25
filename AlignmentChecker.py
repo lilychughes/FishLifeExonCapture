@@ -21,12 +21,12 @@ args, unknown = parser.parse_known_args()
 # read in the fasta-formatted alignment
 alignment = AlignIO.read(args.fasta, "fasta")
 
-# replace Ns with gaps (distance calculator doesn't like Ns)
+# Remove Ns (distance calculator can't deal with them well)
 
 NewSeqs = []
 
 for record in alignment:
-	original = str(record.seq).replace("N","-")
+	original = str(record.seq.upper()).replace("N","-")
 	new = Seq(original)
 	NewRecord = SeqRecord(new, id = record.id, description = '')
 	NewSeqs.append(NewRecord)
