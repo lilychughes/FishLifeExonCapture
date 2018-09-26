@@ -17,7 +17,7 @@ parser.add_argument('-o', '--output', dest = 'output', type = str, default = Non
 parser.add_argument('-t', '--taxon', dest = 'taxon', type = str, default = None, required = True, help = 'Name of taxon')
 parser.add_argument('-l', '--length', dest = 'length', type = int, default = 100, required = True, help = 'Minimum sequence length to write to file')
 parser.add_argument('-c', '--coverage', dest = 'coverage', type = float, default = 5.0, required = True, help = 'Minimum coverage required to write a sequence to a file')
-parser.add_argument('-m', '--mito', dest = 'mito', type = boolean, default = False, required = False , help = 'If set to true, uses vertebrate mitochondiral genetic code')
+parser.add_argument('-m', '--mito', dest = 'mito', type = str, default = 'False', required = False , help = 'If set to true, uses vertebrate mitochondiral genetic code')
 
 args, unknown = parser.parse_known_args()
 
