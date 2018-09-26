@@ -17,7 +17,7 @@ parser.add_argument('-o', '--output', dest = 'output', type = str, default = Non
 parser.add_argument('-t', '--taxon', dest = 'taxon', type = str, default = None, required = True, help = 'Name of taxon')
 parser.add_argument('-l', '--length', dest = 'length', type = int, default = 100, required = True, help = 'Minimum sequence length to write to file')
 parser.add_argument('-c', '--coverage', dest = 'coverage', type = float, default = 5.0, required = True, help = 'Minimum coverage required to write a sequence to a file')
-parser.add_argument('-m', '--mito', dest = 'mito', type = str, default = 'False', required = False , help = 'If set to true, uses vertebrate mitochondiral genetic code')
+parser.add_argument('-m', '--mito', dest = 'mito', type = str, default = 'False', required = False , help = 'If set to True, uses vertebrate mitochondiral genetic code')
 
 args, unknown = parser.parse_known_args()
 
@@ -42,13 +42,15 @@ for record in records:
 
 noStops = []
 
-if args.mito == False:
+if args.mito == 'False':
 	for record in oriented:
-		if len(record.seq) % 3 == 0 and "*" not in record.seq.translate():
+		stops = record.seq.translate().count("*")
+		if len(record.seq) % 3 == 0 and stops < 2:
 			noStops.append(record)
-elif args.mito == True:
+elif args.mito == 'True':
 	for record in oriented:
-		if len(record.seq) % 3 == 0 and "*" not in record.seq.translate(table="Vertebrate Mitochondrial"):
+		stops = record.seq.translate(table="Vertebrate Mitochondrial").count("*")
+		if len(record.seq) % 3 == 0 and stops < 2:
 			noStops.append(record)
 				
 
