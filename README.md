@@ -20,7 +20,10 @@ Exonerate
 
 Mafft
 
-TranslatorX
+TranslatorX (standalone, or preferred translation-aware aligner)
+
+CD-Hit
+
 
 # Step 1: Organize your fastq files into separate directories for each species
 
