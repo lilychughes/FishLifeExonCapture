@@ -15,7 +15,7 @@ import numpy
 
 parser = argparse.ArgumentParser(description='Requires python 2.7 and Biopython. Flags nucleotide sequences based on distance, based on a user-specified threshold.')
 parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= None , required= True, help = 'Fasta alignment to prune')
-parser.add_argument('-d', '--distance', dest = 'distance', type = float , default = 0.6 , required = False, help = 'Distance threshold. Sequences with average distances above this threshold will be flagged')
+parser.add_argument('-d', '--distance', dest = 'distance', type = float , default = 0.6 , required = False, help = 'Distance threshold. Sequences with average distances above this threshold will be flagged. Default = 0.5')
 args, unknown = parser.parse_known_args()
 
 
