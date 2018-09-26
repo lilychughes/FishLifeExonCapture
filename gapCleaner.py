@@ -12,7 +12,7 @@ from Bio.Align import MultipleSeqAlignment
 parser = argparse.ArgumentParser(description="Requires python 2.7 and Biopython. Removes columns with single taxon insertions by default. If -c is specified, this will also remove sequences with more than this percentage of gaps")
 parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= None , required= True, help = 'Fasta alignment to prune')
 parser.add_argument('-o', '--output', dest = 'output', type = str, default = None, required = True, help = 'Name of output file')
-parser.add_argument('-c', '--coverage', dest = 'coverage', type = float, default = 0.90, required = False, help = 'Maximum gap percentage allowed')
+parser.add_argument('-c', '--coverage', dest = 'coverage', type = float, default = 0.50, required = False, help = 'Maximum proportion of gaps allowed. Default = 0.50')
 args, unknown = parser.parse_known_args()
 
 # read in the alignment in fasta format
