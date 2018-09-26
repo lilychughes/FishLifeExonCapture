@@ -9,6 +9,7 @@ import Bio
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
+from Bio.Alphabet import IUPAC
 
 parser = argparse.ArgumentParser(description="Requires python 2.7 and Biopython. Filters the longest, highest coverage exon from the exonerate output, and renames the sequence simply as >Taxon")
 parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= None , required= True, help = 'Fasta alignment to prune')
@@ -16,6 +17,7 @@ parser.add_argument('-o', '--output', dest = 'output', type = str, default = Non
 parser.add_argument('-t', '--taxon', dest = 'taxon', type = str, default = None, required = True, help = 'Name of taxon')
 parser.add_argument('-l', '--length', dest = 'length', type = int, default = 100, required = True, help = 'Minimum sequence length to write to file')
 parser.add_argument('-c', '--coverage', dest = 'coverage', type = float, default = 5.0, required = True, help = 'Minimum coverage required to write a sequence to a file')
+parser.add_argument('-m', '--mito', dest = 'mito', type = boolean, default = False, required = False , help = 'If set to true, uses vertebrate mitochondiral genetic code')
 
 args, unknown = parser.parse_known_args()
 
@@ -40,9 +42,15 @@ for record in records:
 
 noStops = []
 
-for record in oriented:
-	if len(record.seq) % 3 == 0 and "*" not in record.seq.translate():
-		noStops.append(record)
+if args.mito == False:
+	for record in oriented:
+		if len(record.seq) % 3 == 0 and "*" not in record.seq.translate():
+			noStops.append(record)
+elif args.mito == True:
+	for record in oriented:
+		if len(record.seq) % 3 == 0 and "*" not in record.seq.translate(table="Vertebrate Mitochondrial"):
+			noStops.append(record)
+				
 
 
 # filter for length
