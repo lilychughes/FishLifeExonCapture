@@ -27,7 +27,8 @@ goodTaxa = []
 for record in alignment:
 	seq = record.seq
 	gaps = seq.count("-")
-	if gaps < (length*args.coverage):
+	Ns = seq.count("N")
+	if gaps < (length*args.coverage) and Ns < 4:
 		goodTaxa.append(record)
 
 TaxAlignment =  MultipleSeqAlignment(goodTaxa)

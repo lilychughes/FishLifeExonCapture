@@ -13,8 +13,9 @@ from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
 import numpy
 
-parser = argparse.ArgumentParser(description='Requires python 2.7 and Biopython. Flags nucleotide sequences based on distance, more than 2 standard deviations from the mean.')
+parser = argparse.ArgumentParser(description='Requires python 2.7 and Biopython. Flags nucleotide sequences based on distance, based on a user-specified threshold.')
 parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= None , required= True, help = 'Fasta alignment to prune')
+parser.add_argument('-d', '--distance', dest = 'distance', type = float , default = 0.6 , required = False, help = 'Distance threshold. Sequences with average distances above this threshold will be flagged')
 args, unknown = parser.parse_known_args()
 
 
@@ -57,6 +58,6 @@ dictionary = dict(zip(names,meanDist))
 
 # print sequence names that have more than two standard deviations difference in their mean distance
 for item in dictionary.keys():
-	if float(dictionary[item]) > (numpy.mean(meanArray)+((numpy.std(meanArray)*2.3))):
+	if float(dictionary[item]) > args.distance:
 		print(item)
 		
