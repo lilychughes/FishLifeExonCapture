@@ -15,9 +15,9 @@ parser = argparse.ArgumentParser(description="Requires python 2.7 and Biopython.
 parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= None , required= True, help = 'Fasta alignment to prune')
 parser.add_argument('-o', '--output', dest = 'output', type = str, default = None, required = True, help = 'Name of output file')
 parser.add_argument('-t', '--taxon', dest = 'taxon', type = str, default = None, required = True, help = 'Name of taxon')
-parser.add_argument('-l', '--length', dest = 'length', type = int, default = 100, required = True, help = 'Minimum sequence length to write to file')
-parser.add_argument('-c', '--coverage', dest = 'coverage', type = float, default = 5.0, required = True, help = 'Minimum coverage required to write a sequence to a file')
-parser.add_argument('-m', '--mito', dest = 'mito', type = str, default = 'False', required = False , help = 'If set to True, uses vertebrate mitochondiral genetic code')
+parser.add_argument('-l', '--length', dest = 'length', type = int, default = 100, required = True, help = 'Minimum sequence length to write to file. Default = 100 bp')
+parser.add_argument('-c', '--coverage', dest = 'coverage', type = float, default = 1.0, required = True, help = 'Minimum coverage required to write a sequence to a file. Default = 1.0')
+parser.add_argument('-m', '--mito', dest = 'mito', type = str, default = 'False', required = False , help = 'If set to True, uses vertebrate mitochondiral genetic code. Default = False')
 
 args, unknown = parser.parse_known_args()
 
