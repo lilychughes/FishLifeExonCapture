@@ -6,8 +6,11 @@
 
 bwa index ALL_Master_Otophysi.fasta
 
-rename .trimmed.fq .trimmed.fastq *.fq
-
+for directory in *;
+do
+if  [ -d $directory  ];
+then
+cd $directory;
 for f in *.trimmed.fastq;
 do
 	if [  -e $f.mapped.bam  ];
@@ -1070,6 +1073,9 @@ do
 		samtools view -b $f.mapped.sorted.bam "G1051|Danio_rerio" "G1051|SIL_Heptapteridae_Rhamdella_leptosoma_P1_A12_RG23" "G1051|CHA_Serrasalmidae_Pygocentrus_nattereri_P1_E03_RG87" "G1051|SIL_Pimelodidae_Pimelodus_albofasciatus_P1_B09_RG63" "G1051|SIL_Aspredinidae_Ernstichthys_sp_P1_E10_RG61" "G1051|SIL_Siluridae_Wallago_attu_P02_G01_RG84" "G1051|SIL_Loricariidae_Chaetostoma_breve_P1_B10_RG55" "G1051|SIL_Trichomycteridae_Vandellia_jamesi_P1_F10_RG26" "G1051|SIL_Doradidae_Rynchodoras_woodsi_P1_D12_RG09" "G1051|SIL_Cetopsidae_Cetopsis_plumbea_P1_E11_RG13" "G1051|CHA_Hemiodontidae_Bivibranchia_fowleri_P1_G03_RG22" "G1051|SIL_Ictaluridae_Noturus_leptacanthus_P02_B08_RG57" "G1051|SIL_Mochokidae_Synodontis_batesii_P02_E08_RG04" "G1051|CHA_Crenuchidae_Characidium_zebra_P1_C01_RG65" "G1051|SIL_Clariidae_Channallabes_apus_P02_D10_RG08" "G1051|SIL_Sisoridae_Gagata_cenia_P02_G03_RG22" "G1051|SIL_Callichthyidae_Callichthys_callichthys_P02_G05_RG69" - | samtools bam2fq - > $f.G1051.fq;
 			
 	fi;
+done;
+cd ../;
+fi;
 done
 
 # remove .fq files that are empty (no reads mapped)
