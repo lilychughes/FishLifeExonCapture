@@ -1,16 +1,8 @@
 #!/bin/sh
-#SBATCH --mail-type=ALL
-#SBATCH --mail-user=lilychughes@gwu.edu
-#SBATCH --job-name=atram
-#SBATCH -n 1
-#SBATCH -p defq
-#SBATCH --output=atram.out
-#SBATCH --error=atram.err
-#SBATCH -t 14-00:00:00
 
 
 
-# all the things aTRAM needs to run
+# all the things aTRAM needs to run in c1 environment
 module load velvet
 module load sqlite
 module load parallel
