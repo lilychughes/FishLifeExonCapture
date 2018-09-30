@@ -9,7 +9,7 @@ if [  -d $directory  ];
 then
 	if [  ! -e $directory.aTRAM.txt  ];
 	then
-		echo $directory aTRAM assembly started > ../$directory.aTRAM.txt
+		echo $directory aTRAM assembly started > $directory.aTRAM.txt
 		cd $directory;
 		atram_preprocessor.py -b $directory --mixed-ends $directory.trimmed.fastq;
 		for f in *.initial.combined.fa;
