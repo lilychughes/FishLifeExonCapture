@@ -20,7 +20,7 @@ do
 				then
 				velveth $f.initial 29 -short -fastq $f;
 				velvetg $f.initial;
-				python ../FishLifeExonCapture/getLongest.py -f $f.initial/contigs.fa -o $f.initial.combined.fa;
+				python ../../FishLifeExonCapture/getLongest.py -f $f.initial/contigs.fa -o $f.initial.combined.fa;
 				else
 				rm $f;
 				fi;
