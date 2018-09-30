@@ -9,8 +9,9 @@ if [  -d $directory  ];
 then
 	if [  ! -e $directory.aTRAM.txt  ];
 	then
-		cd $directory;
 		echo $directory aTRAM assembly started > ../$directory.aTRAM.txt
+		cd $directory;
+		atram_preprocessor.py -b $directory --mixed-ends $directory.trimmed.fastq;
 		for f in *.initial.combined.fa;
 			do
 				if [  ! -e ${f%.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
