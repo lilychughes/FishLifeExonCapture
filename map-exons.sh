@@ -13,13 +13,12 @@ for directory in *;
 do
 if  [ -d $directory  ];
 then
+echo mapping started $directory > $directory.readmapping.txt;
 cd $directory;
 for f in *.trimmed.fastq;
 do
-	if [  -e $f.mapped.bam  ];
+	if [  ! -e $f.mapped.bam  ];
 	then
-		echo Reads already mapped $f;
-	else
 		bwa mem ../FishLifeExonCapture/all_Master.fasta $f | samtools view -F 4 -bS -o $f.mapped.bam -;
 		samtools sort $f.mapped.bam > $f.mapped.sorted.bam;
 	    samtools index $f.mapped.sorted.bam;
@@ -1163,5 +1162,6 @@ do
 	fi;
 done;
 cd ../;
+echo mapping completed $directory >> $directory.readmapping.txt;
 fi;
 done
