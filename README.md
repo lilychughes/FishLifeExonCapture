@@ -108,26 +108,24 @@ If you're not working in a /lustre/ system, and don't need the special python en
 
 # Step 6: Find reading frames and filter exons
 
-aTRAM tends to write all of the contigs it found in each of its iterations, regardless of whether they are identical or not. To reduce the number of contigs in the aTRAM output file, I run CD-HIT, a software that clusters sequences based on some identity threshold, and writes the longest sequences to a file. It is also quite fast. 
+To efficiently filter the reading frames for the exons, we need to collapse highly similar contigs produced by aTRAM, and then get the reading frame from exonerate. This will produce a exonerate_filtered.fa file for each exon that passes the filters. 
 
-I set the cluster identity to 0.98 below, but you can change it where it says -c.
-
-If I'm in my working directory with all of my species directories, I can run:
+In this current version, the reading frames are percomorph-specific. More reading frame sets will be added, and this script will be modified to reflect that. 
 
 ```
 module load cd-hit
+module load exonerate
 
-for directory in *;
-do
-if [  -d $directory  ];
-then
-cd $directory;
-for f in *.filtered_contigs.fasta;
-do
-cd-hit-est -i $f -o ${f%.*}.cdhit -c 0.98;
-done;
-cd ../;
-fi;
-done
+../FishLifeExonCapture/ExonFiltering.sh
 ```
 
+Because mitochondrial DNA has a different genetic code, it needs to be filtered separately with this script:
+
+```
+module load cd-hit
+module load exonerate
+
+../FishLifeExonCapture/MitoExonFiltering.sh
+```
+
+# Step 7: First Alignment
