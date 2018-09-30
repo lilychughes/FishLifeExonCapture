@@ -31,7 +31,7 @@ if [  -d $directory  ];
 then
 	if [  ! -e $directory.aTRAM.txt  ];
 	then
-		echo $directory aTRAM assembly started > ../$directory.aTRAM.txt
+		echo $directory aTRAM assembly started > $directory.aTRAM.txt
 		cd $directory;
 		cp $directory.trimmed.fastq /scratch/
 		cp *fa /scratch/
