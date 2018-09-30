@@ -5,17 +5,22 @@
 # make a bwa index file for fasta file (all_Master.fasta)
 # currently does not include mitochondrial- working on it.
 
-bwa index all_Master.fasta
+bwa index ../FishLifeExonCapture/all_Master.fasta
 
 rename .trimmed.fq .trimmed.fastq *.fq
 
+for directory in *;
+do
+if  [ -d $directory  ];
+then
+cd $directory;
 for f in *.trimmed.fastq;
 do
 	if [  -e $f.mapped.bam  ];
 	then
 		echo Reads already mapped $f;
 	else
-		bwa mem all_Master.fasta $f | samtools view -F 4 -bS -o $f.mapped.bam -;
+		bwa mem ../FishLifeExonCapture/all_Master.fasta $f | samtools view -F 4 -bS -o $f.mapped.bam -;
 		samtools sort $f.mapped.bam > $f.mapped.sorted.bam;
 	    samtools index $f.mapped.sorted.bam;
 		samtools view -b $f.mapped.sorted.bam "Plecoglossus_altivelis|E0001" "Chromis_chromis|E0001" "Anguilla_rostrata|E0001" "Symphodus_melops|E0001" "Pampus_argenteus|E0001" "Parasudis_fraserbrunneri|E0001" "Protosalanx_hyalocranius|E0001" "Pseudopleuronectes_yokohamae|E0001" "Dicentrarchus_labrax|E0001" "Seriola_lalandi|E0001" "Osteoglossum_bicirrhosum|E0001" "Periophthalmus_magnuspinnatus|E0001" "Benthosema_glaciale|E0001" "Amphilophus_citrinellus|E0001" "Thunnus_albacares|E0001" "Myripristis_jacobus|E0001" "Monocentris_japonica|E0001" "Brotula_barbata|E0001" "Anguilla_anguilla|E0001" "Helostoma_temminckii|E0001" "Tetraodon_nigroviridis|E0001" "Parablennius_parvicornis|E0001" "Holocentrus_rufus|E0001" "Syngnathus_scovelli|E0001" "Hippoglossus_hippoglossus|E0001" "Clupea_harengus|E0001" "Galaxiella_nigrostriata|E0001" "Chaenocephalus_aceratus|E0001" "Gnathonemus_petersii|E0001" "Anguilla_japonica|E0001" "Pseudomugil_paskai|E0001" "Lates_calcarifer|E0001" "Kaupichthys_hyporoides|E0001" "Aplocheilus_lineatus|E0001" "Hippocampus_erectus|E0001" "Cyttopsis_roseus|E0001"  - | samtools bam2fq - > $f.E0001.fq;
@@ -1155,17 +1160,8 @@ do
 		samtools view -b $f.mapped.sorted.bam "MG515171.1_cds_AVT43733.1_11|ND5" "NC_022488.1_cds_YP_008593506.1_11|ND5" "MG515171.1_cds_AVT43733.1_11|ND5" "NC_037140.1_cds_YP_009466988.1_11|ND5" "NC_022510.1_cds_YP_008593792.1_11|ND5" "NC_004378.1_cds_NP_739708.1_11|ND5" "MG587040.1_cds_AWD84312.1_11|ND5" "NC_035305.1_cds_YP_009400176.1_11|ND5" "NC_034341.1_cds_YP_009355530.1_11|ND5" "NC_036348.1_cds_YP_009443288.1_11|ND5" "JX625133.1_cds_AFU54755.1_11|ND5" "NC_035874.1_cds_YP_009427967.1_11|ND5" "EF523611.1_cds_ABQ11865.1_11|ND5" "KP874184.1_cds_AKO90245.1_11|ND5" "NC_035885.1_cds_YP_009428545.1_11|ND5" "KX950697.1_cds_AQT00857.1_11|ND5" "NC_037220.1_gene_32|ND5" "NC_036299.1_cds_YP_009442082.1_11|ND5" "KR349919.1_cds_AKI32597.1_11|ND5" "KY798142.1_cds_AUR39192.1_11|ND5" "KJ184527.1_cds_AHN95977.1_11|ND5" "MH037008.1_cds_AVN90163.1_11|ND5" "MG386479.1_cds_AWD78022.1_11|ND5"   - | samtools bam2fq - > $f.ND5.fq;
 		samtools view -b $f.mapped.sorted.bam "MG515171.1_cds_AVT43734.1_12|ND6" "NC_022488.1_cds_YP_008593507.1_12|ND6" "MG515171.1_cds_AVT43734.1_12|ND6" "NC_037140.1_cds_YP_009466989.1_12|ND6" "NC_022510.1_cds_YP_008593793.1_12|ND6" "NC_004378.1_cds_NP_739709.1_12|ND6" "MG587040.1_cds_AWD84313.1_12|ND6" "NC_035305.1_cds_YP_009400177.1_12|ND6" "NC_034341.1_cds_YP_009355531.1_12|ND6" "NC_036348.1_cds_YP_009443289.1_12|ND6" "JX625133.1_cds_AFU54756.1_12|ND6" "NC_035874.1_cds_YP_009427968.1_12|ND6" "EF523611.1_cds_ABQ11857.1_12|ND6" "KP874184.1_cds_AKO90244.1_12|ND6" "NC_035885.1_cds_YP_009428546.1_12|ND6" "KX950697.1_cds_AQT00858.1_12|ND6" "NC_037220.1_gene_33|ND6" "NC_036299.1_cds_YP_009442083.1_12|ND6" "KR349919.1_cds_AKI32598.1_12|ND6" "KY798142.1_cds_AUR39193.1_12|ND6" "KJ184527.1_cds_AHN95978.1_12|ND6" "MH037008.1_cds_AVN90164.1_12|ND6" "MG386479.1_cds_AWD78023.1_12|ND6"   - | samtools bam2fq - > $f.ND6.fq;
 		samtools view -b $f.mapped.sorted.bam "MG515171.1_cds_AVT43735.1_13|CYTB" "NC_022488.1_cds_YP_008593508.1_13|CYTB" "MG515171.1_cds_AVT43735.1_13|CYTB" "NC_037140.1_cds_YP_009466990.1_13|CYTB" "NC_022510.1_cds_YP_008593794.1_13|CYTB" "NC_004378.1_cds_NP_739710.1_13|CYTB" "MG587040.1_cds_AWD84314.1_13|CYTB" "NC_035305.1_cds_YP_009400178.1_13|CYTB" "NC_034341.1_cds_YP_009355532.1_13|CYTB" "NC_036348.1_cds_YP_009443290.1_13|CYTB" "JX625133.1_cds_AFU54757.1_13|CYTB" "NC_035874.1_cds_YP_009427969.1_13|CYTB" "KP874184.1_cds_AKO90251.1_13|CYTB" "NC_035885.1_cds_YP_009428547.2_13|CYTB" "KX950697.1_cds_AQT00859.1_13|CYTB" "NC_037220.1_gene_35|CYTB" "NC_036299.1_cds_YP_009442084.1_13|CYTB" "KR349919.1_cds_AKI32599.1_13|CYTB" "KY798142.1_cds_AUR39194.1_13|CYTB" "KJ184527.1_cds_AHN95979.1_13|CYTB" "MH037008.1_cds_AVN90165.1_13|CYTB" "MG386479.1_cds_AWD78024.1_13|CYTB"   - | samtools bam2fq - > $f.CYTB.fq;
-	
 	fi;
+done;
+cd ../;
+fi;
 done
-
-# remove .fq files that are empty (no reads mapped)
-for f in *.fq;
-do
-	if [  ! -s $f  ];
-	then 
-		rm $f;
-	else	
-		echo $f not empty. Reads ready to assemble.;
-	fi;
-done		

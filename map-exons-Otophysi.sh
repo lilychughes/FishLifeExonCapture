@@ -4,7 +4,7 @@
 
 # make a bwa index file for fasta file (ALL_Master_Otophysi.fasta)
 
-bwa index ALL_Master_Otophysi.fasta
+bwa index ../FishLifeExonCapture/ALL_Master_Otophysi.fasta
 
 for directory in *;
 do
@@ -17,7 +17,7 @@ do
 	then
 		echo Reads already mapped $f;
 	else
-		bwa mem ../ALL_Master_Otophysi.fasta $f | samtools view -F 4 -bS -o $f.mapped.bam -;
+		bwa mem ../FishLifeExonCapture/ALL_Master_Otophysi.fasta $f | samtools view -F 4 -bS -o $f.mapped.bam -;
 		samtools sort $f.mapped.bam > $f.mapped.sorted.bam;
 	    samtools index $f.mapped.sorted.bam;
 		samtools view -b $f.mapped.sorted.bam "G0001|Danio_rerio" "G0001|SIL_Heptapteridae_Cetopsorhamdia_insidiosa_P1_C10_RG47" "G0001|SIL_Loricariidae_Ancistrus_leucostictus_P1_G08_RG68" "G0001|SIL_Pimelodidae_Pimelodus_albofasciatus_P1_B09_RG63" "G0001|CHA_Hemiodontidae_Hemiodus_thayeri_P1_B06_RG06" "G0001|SIL_Trichomycteridae_Trichomycteridae_sp_P1_G10_RG37" "G0001|SIL_Doradidae_Scorpiodoras_sp_P02_A06_RG74" "G0001|CHA_Serrasalmidae_Acnodon_oligacantus_P02_A08_RG16" "G0001|CHA_Crenuchidae_Characidium_purpuratum_P1_E07_RG44" "G0001|SIL_Cetopsidae_Denticetopsis_macilenta_P02_B09_RG63" "G0001|SIL_Aspredinidae_Ernstichthys_sp_P1_E10_RG61" "G0001|SIL_Siluridae_Phalacronotus_bleekeri_P02_A04_RG07" "G0001|SIL_Mochokidae_Synodontis_batesii_P02_E08_RG04" "G0001|SIL_Callichthyidae_Callichthys_callichthys_P02_G05_RG69" "G0001|SIL_Ictaluridae_Ameiurus_nebulosus_P02_F07_RG33" "G0001|SIL_Clariidae_Channallabes_apus_P02_D10_RG08" "G0001|SIL_Sisoridae_Gogangra_viridescens_P02_D04_RG91" - | samtools bam2fq - > $f.G0001.fq;
@@ -1077,14 +1077,3 @@ done;
 cd ../;
 fi;
 done
-
-# remove .fq files that are empty (no reads mapped)
-for f in *.fq;
-do
-	if [  ! -s $f  ];
-	then 
-		rm $f;
-	else	
-		echo $f not empty. Reads ready to assemble.;
-	fi;
-done		
