@@ -21,8 +21,8 @@ source $aTRAM
 # may add a clean-up step to remove extra aTRAM files
 
 ##########################
-### CHANGE THIS TO YOUR BASE DIRECTORY ON COLONIAL ONE IN LUSTRE - THE DIRECTORY THAT CONTAINS ALL SAMPLE DIRECTORIES
-BASEDIR = /lustre/groups/cbi/lilychughes/Serrasalmidae
+### MUST BE RUN IN SAMPLES DIRECTORY TO WORK
+BASEDIR=$( pwd )
 ###
 
 for directory in *;
