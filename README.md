@@ -91,24 +91,15 @@ For the older set of Otophysi markers (see Arcila et al 2017), use:
 
 # Step 5: Build initial assemblies in Velvet
 
-The previous step should have generated a .fq file for each locus (providing that some reads mapped to the reference sequences ). Now we can generate an initial assembly for each locus with Velvet:
+The previous step should have generated a .fq file for each locus (providing that some reads mapped to the reference sequences ). Now we can generate an initial assembly for each locus with Velvet. This script runs the assemblies for .fq files that contain reads and removes empty files. It then pulls out the longest assembled contig to feed to aTRAM.
 
 ```
 ../FishLifeExonCapture/initialVelvet.sh
 ```
 
-# Step 6: Extract longest assembled contig
 
-Velvet often assembles incomplete contigs at this stage, but the longest one should contain some part of the exon we are trying to assemble. To pull out that contig, run:
 
-```
-for f in *initial;
-do
-python ../FishLifeExonCapture/getLongest.py -f $f/contigs.fa -o $f.combined.fa;
-done
-```
-
-# Step 7: Run aTRAM
+# Step 6: Run aTRAM
 
 This script uses the default parameters for aTRAM, using Velvet again as the assembler. It uses ten iterations, which seems to be sufficient for most loci. If you're trying to assemble something longer, like a full mitogenome, you'll want to run aTRAM directly and change this.
 
@@ -123,7 +114,7 @@ source $aTRAM
 ../FishLifeExonCapture/runaTRAM.sh
 ```
 
-# Step 8: Find reading frames and filter exons
+# Step 7: Find reading frames and filter exons
 
 aTRAM tends to write all of the contigs it found in each of its iterations, regardless of whether they are identical or not. To reduce the number of contigs in the aTRAM output file, I run CD-HIT, a software that clusters sequences based on some identity threshold, and writes the longest sequences to a file. It is also quite fast. 
 
