@@ -76,6 +76,8 @@ Another version of the script is available to work with older versions (<2) of s
 For the older set of Otophysi markers (see Arcila et al 2017), use:
 
 ```
+module load samtools
+module load bwa
 ../FishLifeExonCapture/map-exons-Otophysi.sh
 ```
 
@@ -84,6 +86,7 @@ For the older set of Otophysi markers (see Arcila et al 2017), use:
 The previous step should have generated a .fq file for each locus (providing that some reads mapped to the reference sequences ). Now we can generate an initial assembly for each locus with Velvet. This script runs the assemblies for .fq files that contain reads and removes empty files. It then pulls out the longest assembled contig to feed to aTRAM.
 
 ```
+module load velvet
 ../FishLifeExonCapture/initialVelvet.sh
 ```
 
