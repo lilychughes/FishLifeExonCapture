@@ -49,6 +49,7 @@ then
 		done;
 		mv *log $BASEDIR/$directory/;
 		cd 	$BASEDIR/$directory/;
+		rm /scratch/*
 		cd ../;
 		echo aTRAM assembly completed $directory >> $directory.aTRAM.txt;
 	fi;	
