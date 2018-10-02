@@ -29,8 +29,7 @@ do
 			
 			for f in *exonerate.fasta;
 			do
-			taxon=${f%_*_*_*_*.*.*.*.*.*.*.*}
-			python ../../filterExons.py -f $f.exonerate.fasta -o $f.exonerate_filtered.fa -t $taxon -l 100 -c 1.5;
+			python ../../filterExons.py -f $f.exonerate.fasta -o $f.exonerate_filtered.fa -t $directory -l 100 -c 1.5;
 			done;
 			
 		cd ../;
