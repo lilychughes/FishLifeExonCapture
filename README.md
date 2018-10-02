@@ -132,3 +132,62 @@ module load exonerate
 ```
 
 # Step 7: First Alignment
+
+First we need to gather all the separate exon files into a single file that we can use for alignment. The following script will make a new directory called Alignments/, and .unaligned.fasta files for each exon. It's just a bash script, so it doesn't require extra software.
+
+```
+../FishLifeExonCapture/preAlignment.sh
+```
+
+Now we need to align all of the files in the new Alignments/ directory. I didn't make a special script for this, since people have many different alignment preferences. I typically use a standalone version of translatorX and mafft for this task. My script might look something like this:
+
+```
+cd Alignments/
+for f in *.fasta;
+do
+perl tx.pl -i $f -o $f.tx -p F;
+done
+```
+
+# Step 8: Alignment Filtering
+
+Even with care, things we don't want in our alignments get through. There are three python scripts built to filter out some of the noisy sequences and scaffolding Ns that sometimes get into the alignments. Both require Biopython. Use '-h' to see the arguments and default settings of each script.
+
+The first is called AlignmentChecker.py. This script builds a distance matrix of your alignment and outputs taxon names with average distances that are above a user-specified threshold. I am working on alternative versions of this script to deal with proteins, and possibly speed up the run time. The threshold you specify may vary depending on the level of diversity in your matrix. In an alignment of mostly one family, I would set this somewhat lower than I would for an alignment that included many orders. 
+
+If I wanted this script to write a file with the names of the taxa that it flags, I might do this:
+
+```
+for f in *tx_nt_ali.fasta;
+do
+python ../../FishLifeExonCapture/AlignmentChecker.py -f $f -d 0.5 > $f.badTaxa.txt;
+done
+```
+
+If it's flagging a lot of taxa, or a lot of different alignments, you'll need to investigate further. It might be that you have a mislabeled taxon that is quite divergent from the rest of your sequences.
+
+If I want to prune the flagged taxa from the alignment, I use the dropTaxa.py script. It just takes a text file of names to remove from a fasta file (one name per line), the fasta file to prune, and the name of an output file.
+
+```
+for f in *tx_nt_ali.fasta;
+do
+python ../../FishLifeExonCapture/dropTaxa.py -f $f -o $f.dropped.fasta -t $f.badTaxa.txt;
+done
+```
+
+Finally, removing these taxa often leaves gaps in the alignment, or large gaps are created from scaffolding Ns, or just single-taxon insertions. The gapCleaner.py script removes these columns from the alignment. It will also remove sequences that cover less than 50% of the alignment. If you want to change this threshold, you can change the fraction with the '-c' flag.
+
+
+```
+for f in *dropped.fasta;
+do
+python ../../FishLifeExonCapture/gapCleaner.py -f $f -o $f.cleaned.fasta -c 0.5;
+done
+```
+
+I always look at the exons that are numbered higher than E1730 by eye. These exons have known paralogs, but were included in the dataset to connect with older PCR-based datasets. They are usually fine, but you can never be to careful.
+
+My python scripts always use fasta-formatted files because they are easier for me to work with. If you need other formats for phylogenetic analysis, the AlignmentConverter.py script is quite flexible. Just note that to specify a relaxed phylip format, you'll need to type phylip-relaxed (otherwise, it's strict phylip).
+
+
+
