@@ -5,7 +5,6 @@
 # all the things aTRAM needs to run in c1 environment
 module load velvet
 module load sqlite
-module load parallel
 module load aTRAM/2.0
 
 # special python3 environment set up for aTRAM
@@ -24,6 +23,10 @@ source $aTRAM
 ### MUST BE RUN IN SAMPLES DIRECTORY TO WORK
 BASEDIR=$( pwd )
 ###
+
+### requested by C1 staff
+lfs setstripe $BASEDIR -c 1
+
 
 for directory in *;
 do
