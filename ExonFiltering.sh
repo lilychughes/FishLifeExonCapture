@@ -20,6 +20,7 @@ do
 			cd-hit-est -i $f -o $f.cdhit -c 0.98;
 			done;
 			
+			# Filter nuclear exons with exonerate
 			while read -r exon;
 			do
 			filterfile = $( echo *$exon*.cdhit );
@@ -29,8 +30,22 @@ do
 			
 			for f in *exonerate.fasta;
 			do
-			python ../../filterExons.py -f $f.exonerate.fasta -o $f.exonerate_filtered.fa -t $directory -l 100 -c 1.5;
+			python ../../filterExons.py -f $f -o $f.exonerate_filtered.fa -t $directory -l 100 -c 1.5;
 			done;
+
+			# Filter mitochondrial exons with exonerate
+			while read -r exon;
+			do
+			filterfile = $( echo *$exon*.cdhit );
+			exonerate --model coding2genome -t $filterfile -q ../../ReadingFrames/$exon.fasta --ryo ">%ti\t%qab-%qae\n%tas" --geneticcode 2 --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 2 > $filterfile.exonerateMito.fasta;
+			sed -i 's/-- completed exonerate analysis//g' $filterfile.exonerateMito.fasta;
+			done < ../../FishLifeExonCapture/MitochondrialExonList.txt
+
+			for f in *exonerateMito.fasta;
+			do
+			python ../../filterExons.py -f $f -o $f.exonerate_filtered.fa -t $directory -l 100 -c 1.5 -m True;
+			done;
+
 			
 		cd ../;
 		echo Filtering exons completed $directory > $directory.exonfiltering.txt;	
