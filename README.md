@@ -122,15 +122,6 @@ module load exonerate
 ../FishLifeExonCapture/ExonFiltering.sh
 ```
 
-Because mitochondrial DNA has a different genetic code, it needs to be filtered separately with this script:
-
-```
-module load cd-hit
-module load exonerate
-
-../FishLifeExonCapture/MitoExonFiltering.sh
-```
-
 # Step 7: First Alignment
 
 First we need to gather all the separate exon files into a single file that we can use for alignment. The following script will make a new directory called Alignments/, and .unaligned.fasta files for each exon. It's just a bash script, so it doesn't require extra software.
