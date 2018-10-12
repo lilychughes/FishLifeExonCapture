@@ -122,6 +122,15 @@ module load exonerate
 ../FishLifeExonCapture/ExonFiltering.sh
 ```
 
+There is a second version to deal with the Otophysi set of markers available. The names of these loci start with 'G' instead of 'E'. It works the same way, it just calls a different set of markers and reading frames.
+
+```
+module load cd-hit
+module load exonerate
+
+../FishLifeExonCapture/filterOtophysiExons.sh
+```
+
 # Step 7: First Alignment
 
 First we need to gather all the separate exon files into a single file that we can use for alignment. The following script will make a new directory called Alignments/, and .unaligned.fasta files for each exon. It's just a bash script, so it doesn't require extra software.
