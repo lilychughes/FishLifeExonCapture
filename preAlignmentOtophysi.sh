@@ -11,8 +11,8 @@ do
 	do
 		if [  -d $directory  ];
 		then
-		cat $directory/*$exon*fa >> Alignments/$exon.unaligned.fasta;
-		cat $directory/*Mito*fa >> Alignments/G0001.unaligned.fasta
+		cat $directory/exon*$exon*filtered.fa >> Alignments/$exon.unaligned.fasta;
+		cat $directory/exon*Mito*filtered.fa >> Alignments/G0001.unaligned.fasta
 		fi;	
 	done;
 done < ../FishLifeExonCapture/OtophysiExons.txt
