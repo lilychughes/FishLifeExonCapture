@@ -24,23 +24,23 @@ do
 			while read -r exon;
 			do
 			filterfile = $( echo *$exon*.cdhit );
-			exonerate --model coding2genome -t $filterfile -q ../../ReadingFrames/$exon.fasta --ryo ">%ti\t%qab-%qae\n%tas" --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 2 > $filterfile.exonerate.fasta;
+			exonerate --model coding2genome -t $filterfile -q ../../ReadingFramesOtophysi/$exon.fasta --ryo ">%ti\t%qab-%qae\n%tas" --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 2 > $filterfile.exonerate.fasta;
 			sed -i 's/-- completed exonerate analysis//g' $filterfile.exonerate.fasta;
 			done < ../../FishLifeExonCapture/OtophysiExons.txt
 			
 			for f in *exonerate.fasta;
 			do
-			python ../../filterExons.py -f $f -o $f.exonerate_filtered.fa -t $directory -l 100 -c 1.5;
+			python ../../FishLifeExonCapture/filterExons.py -f $f -o $f.exonerate_filtered.fa -t $directory -l 100 -c 1.5;
 			done;
 
 			# Filter mitochondrial exons with exonerate
 			filterfile = $( echo *G0001*.cdhit );
-			exonerate --model coding2genome -t $filterfile -q ../../ReadingFrames/G0001.fasta --ryo ">%ti\t%qab-%qae\n%tas" --geneticcode 2 --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 2 > $filterfile.exonerateMito.fasta;
+			exonerate --model coding2genome -t $filterfile -q ../../ReadingFramesOtophysi/G0001.fasta --ryo ">%ti\t%qab-%qae\n%tas" --geneticcode 2 --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 2 > $filterfile.exonerateMito.fasta;
 			sed -i 's/-- completed exonerate analysis//g' $filterfile.exonerateMito.fasta;
 
 			for f in *exonerateMito.fasta;
 			do
-			python ../../filterExons.py -f $f -o $f.exonerate_filtered.fa -t $directory -l 100 -c 1.5 -m True;
+			python ../../FishLifeExonCapture/filterExons.py -f $f -o $f.exonerate_filtered.fa -t $directory -l 100 -c 1.5 -m True;
 			done;
 
 			
