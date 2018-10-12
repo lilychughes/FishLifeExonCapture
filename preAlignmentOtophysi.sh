@@ -13,7 +13,7 @@ do
 		then
 		cat $directory/*$exon*fa >> Alignments/$exon.unaligned.fasta;
 		fi;
-	cat $directory/*Mito*fa Alignments/G0001.unaligned.fasta
+	cat $directory/*Mito*fa >> Alignments/G0001.unaligned.fasta
 	done;
 done < ../FishLifeExonCapture/OtophysiExons.txt
 
