@@ -11,7 +11,8 @@ then
 	then
 		echo $directory aTRAM assembly started > $directory.aTRAM.txt
 		cd $directory;
-		gunzip *rem*.fastq.gz;
+		gunzip *.rem1.fastq.gz;
+		gunzip *.rem2.fastq.gz;
 		atram_preprocessor.py -b ${directory%/} --mixed-ends *.fastq;
 		for f in *.initial.combined.fa;
 			do
