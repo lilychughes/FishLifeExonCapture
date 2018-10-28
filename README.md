@@ -26,19 +26,17 @@ TranslatorX (standalone, or preferred translation-aware aligner)
 
 CD-Hit
 
+FastUniq
+
 
 # Step 1: Organize your fastq files into separate directories for each species
 
-You should establish a main working directory for all of your samples. Starting with a list of demultiplexed fastq files from the sequencer, we need to make separate directories to process our samples through the pipeline. These files are commonly gzip compressed (so you might see .fastq.gz or .fq.gz). If you need to expand the files you can run the following:
+You should establish a main working directory for all of your samples. Starting with a list of demultiplexed fastq files from the sequencer, we need to make separate directories to process our samples through the pipeline. These files are commonly gzip compressed (so you might see .fastq.gz or .fq.gz). 
+
+Make directories for each of the fastq files, and move them to those directories:
 
 ```
-gunzip *gz
-```
-
-Now make directories for each of the fastq files, and move them to those directories:
-
-```
-for f in *fastq;
+for f in *_R1.fastq.gz;
 do
 mkdir ${f%.*};
 mv $f ${f%.*}/;
@@ -47,16 +45,20 @@ done
 
 # Step 2: Run Trimmomatic to quality trim the sequences
 
-Run the trimmomatic-loop.sh script in the main working directory. This calls the trimmomatic.jar file in the location where it is stored on Colonial One. If you are running this on another system, you may want to make a copy of this file and change the path.
+Run the trimmomatic-loop-PE.sh script in the main working directory. This calls the trimmomatic.jar file in the location where it is stored on Colonial One. 
+
+***If you are running this on another system, you may want to make a copy of this file and change the path.***
 
 ```
 module load trimmomatic
-../FishLifeExonCapture/trimmomatic-loop.sh
+../FishLifeExonCapture/trimmomatic-loop-PE.sh
 ```
 
 Note: This script will look for a file called 'adapters.fa' in the main working directory, to trim out adapter contamination. Different sets of adapters are used for different library preparations, so you should check which are appropriate. Trimmomatic has all of these sequences packaged with it, so you can just move this to the 'adapters.fa' file. The adapters are proprietary Illumina sequences, so I have not included them here.
 
-When the script is finished, each .fastq file will have an associated .trimmed.fastq file, and the originial untrimmed file is compressed.
+There is a version for single-end files, trimmomatic-loop-SE.sh
+
+When the script is finished, each .fastq.gz file will have an associated .trimmed.fastq.gz file, and two 'rem' files. These are the leftover reads that no longer have mate-pairs.
 
 
 # Step 3: Map raw reads back to representative bait sequences
