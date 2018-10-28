@@ -11,7 +11,8 @@ then
 	then
 		echo $directory aTRAM assembly started > $directory.aTRAM.txt
 		cd $directory;
-		atram_preprocessor.py -b $directory --mixed-ends $directory.trimmed.fastq;
+		gunzip *rem*.fastq.gz;
+		atram_preprocessor.py -b ${directory%/} --mixed-ends *.fastq;
 		for f in *.initial.combined.fa;
 			do
 				if [  ! -e ${f%.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
@@ -19,6 +20,7 @@ then
 					atram.py -b ${f%.*.*.*.*.*.*} -q $f -a velvet -o exon -i 10;
 				fi;
 			done;
+		gzip *fastq;	
 		cd ../;
 		echo aTRAM assembly completed $directory >> $directory.aTRAM.txt;
 	fi;	
