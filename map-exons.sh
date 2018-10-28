@@ -7,19 +7,17 @@
 
 bwa index ../FishLifeExonCapture/all_Master.fasta
 
-rename .trimmed.fq .trimmed.fastq *.fq
-
 for directory in *;
 do
 if  [ -d $directory  ];
 then
 echo mapping started $directory > $directory.readmapping.txt;
 cd $directory;
-for f in *.trimmed.fastq;
+for f in *_R1.trimmed_dedup.fastq;
 do
 	if [  ! -e $f.mapped.bam  ];
 	then
-		bwa mem ../FishLifeExonCapture/all_Master.fasta $f | samtools view -F 4 -bS -o $f.mapped.bam -;
+		bwa mem ../../FishLifeExonCapture/all_Master.fasta $f ${f%_*.*.*}_R2.fastq | samtools view -F 4 -bS -o $f.mapped.bam -;
 		samtools sort $f.mapped.bam > $f.mapped.sorted.bam;
 	    samtools index $f.mapped.sorted.bam;
 		samtools view -b $f.mapped.sorted.bam "Plecoglossus_altivelis|E0001" "Chromis_chromis|E0001" "Anguilla_rostrata|E0001" "Symphodus_melops|E0001" "Pampus_argenteus|E0001" "Parasudis_fraserbrunneri|E0001" "Protosalanx_hyalocranius|E0001" "Pseudopleuronectes_yokohamae|E0001" "Dicentrarchus_labrax|E0001" "Seriola_lalandi|E0001" "Osteoglossum_bicirrhosum|E0001" "Periophthalmus_magnuspinnatus|E0001" "Benthosema_glaciale|E0001" "Amphilophus_citrinellus|E0001" "Thunnus_albacares|E0001" "Myripristis_jacobus|E0001" "Monocentris_japonica|E0001" "Brotula_barbata|E0001" "Anguilla_anguilla|E0001" "Helostoma_temminckii|E0001" "Tetraodon_nigroviridis|E0001" "Parablennius_parvicornis|E0001" "Holocentrus_rufus|E0001" "Syngnathus_scovelli|E0001" "Hippoglossus_hippoglossus|E0001" "Clupea_harengus|E0001" "Galaxiella_nigrostriata|E0001" "Chaenocephalus_aceratus|E0001" "Gnathonemus_petersii|E0001" "Anguilla_japonica|E0001" "Pseudomugil_paskai|E0001" "Lates_calcarifer|E0001" "Kaupichthys_hyporoides|E0001" "Aplocheilus_lineatus|E0001" "Hippocampus_erectus|E0001" "Cyttopsis_roseus|E0001"  - | samtools bam2fq - > $f.E0001.fq;
