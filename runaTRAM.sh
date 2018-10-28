@@ -17,7 +17,7 @@ then
 			do
 				if [  ! -e ${f%.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
 					then 
-					atram.py -b ${f%.*.*.*.*.*.*} -q $f -a velvet -o exon -i 10;
+					atram.py -b ${directory%/} -q $f -a velvet -o exon -i 10;
 				fi;
 			done;
 		gzip *fastq;	
