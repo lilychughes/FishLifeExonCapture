@@ -7,10 +7,10 @@ for directory in *;
 do
 if  [ -d $directory  ];
 then
-echo mapping started $directory > $directory.readmapping.txt;
+#echo mapping started $directory > $directory.readmapping.txt;
 	if [  ! -e $directory/$directory.mapped.bam  ];
 	then
-		bwa mem ../FishLifeExonCapture/all_Master.fasta $directory/$directory_R1.trimmed.fastq $directory/$directory_R2.trimmed.fastq | samtools view -bS -o $directory/$directory.mapped.bam -;
+		bwa mem ../FishLifeExonCapture/all_Master.fasta $directory/${directory%/}_R1.trimmed.fastq $directory/${directory%/}_R2.trimmed.fastq | samtools view -bS -o $directory/$directory.mapped.bam -;
 		samtools sort $directory/$directory.mapped.bam > $directory/$directory.mapped.sorted.bam;
 		samtools rmdup -S $directory/$directory.mapped.sorted.bam $directory/$directory.mapped.sorted.rmdup.bam;
 	    samtools index $directory/$directory.mapped.sorted.rmdup.bam;
