@@ -30,7 +30,7 @@ do
 			
 			for f in *exonerate.fasta;
 			do
-			python ../../FishLifeExonCapture/filterExons.py -f $f -o $f.exonerate_filtered.fa -t $directory -l 100 -c 1.5;
+			python2.7 ../../FishLifeExonCapture/filterExons.py -f $f -o $f.exonerate_filtered.fa -t $directory -l 100 -c 1.5;
 			done;
 
 			# Filter mitochondrial exons with exonerate
@@ -40,7 +40,7 @@ do
 
 			for f in *exonerateMito.fasta;
 			do
-			python ../../FishLifeExonCapture/filterExons.py -f $f -o $f.exonerate_filtered.fa -t $directory -l 100 -c 1.5 -m True;
+			python2.7 ../../FishLifeExonCapture/filterExons.py -f $f -o $f.exonerate_filtered.fa -t $directory -l 100 -c 1.5 -m True;
 			done;
 
 			
