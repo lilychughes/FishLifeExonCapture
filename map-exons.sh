@@ -10,8 +10,8 @@ then
 	if [  ! -e ${directory%/}.readmapping.txt  ];
 	then
 	echo mapping started $directory > ${directory%/}.readmapping.txt;
-		gunzip $directory/${$directory%/}_R1.trimmed.fastq.gz;
-		gunzip $directory/${$directory%/}_R2.trimmed.fastq.gz;
+		gunzip $directory/${directory%/}_R1.trimmed.fastq.gz;
+		gunzip $directory/${directory%/}_R2.trimmed.fastq.gz;
 		bwa mem ../FishLifeExonCapture/all_Master.fasta $directory/${directory%/}_R1.trimmed.fastq $directory/${directory%/}_R2.trimmed.fastq | samtools view -bS -o $directory/${directory%/}.mapped.bam -;
 		samtools sort $directory/${directory%/}.mapped.bam > $directory/${directory%/}.mapped.sorted.bam;
 		samtools rmdup -S $directory/${directory%/}.mapped.sorted.bam $directory/${directory%/}.mapped.sorted.rmdup.bam;
