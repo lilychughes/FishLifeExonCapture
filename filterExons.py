@@ -64,12 +64,14 @@ if len(noStops) > 0:
 			longest.append(record)
 
 # filter for coverage (assumes Velvet-style header)
+# Velvet outputs kmer coverage, but is converted to sequence coverage based on the velvet manual here
 
 covered = []
 
 if len(longest) > 0:
 	for record in longest:
-		seqCoverage = float(record.id.split("_")[6])
+		kmerCoverage = float(record.id.split("_")[6])
+		seqCoverage = (kmerCoverage*100)/(100-31+1)
 		if seqCoverage >= args.coverage:
 			covered.append(record)
 
