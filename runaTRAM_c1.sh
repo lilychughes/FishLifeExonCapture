@@ -6,6 +6,7 @@
 module load velvet
 module load sqlite
 module load aTRAM/2.0
+module load blast+
 
 # special python3 environment set up for aTRAM
 source $aTRAM
@@ -38,7 +39,7 @@ then
 		cd $directory;
 		cp $directory.rmdup.fastq /scratch/;
 		cp *rem1.fastq.gz /scratch/;
-		cp *rem2.fastq.gz /scratch/;
+		#cp *rem2.fastq.gz /scratch/;
 		cp *fa /scratch/;
 		cd /scratch/;
 		gunzip *gz;
@@ -49,7 +50,7 @@ then
 			if [  ! -e ${f%.*.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
 			then 
 			# if you want to change atram.py options, change here:
-			atram.py -b ${f%.*.*.*.*.*.*.*} -q $f -a velvet -o exon -i 10;
+			atram.py -b $directory -q $f -a velvet -o exon -i 10;
 			mv *fasta $BASEDIR/$directory/;
 			fi;
 		done;
