@@ -38,7 +38,7 @@ then
 		echo $directory aTRAM assembly started > $directory.aTRAM.txt
 		cd $directory;
 		cp $directory.rmdup.fastq /scratch/;
-		cp *rem1.fastq.gz /scratch/;
+		#cp *rem1.fastq.gz /scratch/;
 		#cp *rem2.fastq.gz /scratch/;
 		cp *fa /scratch/;
 		cd /scratch/;
