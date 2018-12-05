@@ -36,11 +36,14 @@ then
 	then
 		echo $directory aTRAM assembly started > $directory.aTRAM.txt
 		cd $directory;
-		cp $directory.trimmed.fastq /scratch/
-		cp *fa /scratch/
-		cd /scratch/
+		cp $directory.rmdup.fastq /scratch/;
+		cp *rem1.fastq.gz /scratch/;
+		cp *rem2.fastq.gz /scratch/;
+		cp *fa /scratch/;
+		cd /scratch/;
+		gunzip *gz;
 		# if you want to change atram_preprocessor.py options, change here:
-		atram_preprocessor.py -b $directory --mixed-ends $directory.trimmed.fastq;
+		atram_preprocessor.py -b $directory --mixed-ends *fastq;
 		for f in *.initial.combined.fa;
 		do
 			if [  ! -e ${f%.*.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
