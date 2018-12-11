@@ -21,47 +21,39 @@ alignment = AlignIO.read(args.fasta,"fasta")
 # get the number of columns in the alignment
 length = alignment.get_alignment_length()
 
-# drop taxa with more than the allowed percentage of gaps
-goodTaxa = []
-
-for record in alignment:
-	seq = record.seq
-	gaps = seq.count("-")
-	Ns = seq.count("N")
-	if gaps < (length*args.coverage) and Ns < 4:
-		goodTaxa.append(record)
-
-TaxAlignment =  MultipleSeqAlignment(goodTaxa)
-
+# get the number of taxa in the alignment
+numTaxa = len(alignment)
 
 # find the columns that are not composed of mostly gaps (where three or fewer taxa have sequence data or 'NNNN' sequences)
 goodColumns = []
 
 for x in range(0,length):
-	column = TaxAlignment[:,x]
-	if column.count("-") < (len(TaxAlignment)-3):
-		slice = TaxAlignment[:,x:x+1]
+	column = alignment[:,x]
+	if column.count("-") < (numTaxa-3):
+		slice = alignment[:,x:x+1]
 		goodColumns.append(slice)
+
 
 # make an empty alignment to populate
 		
-newAlignment = TaxAlignment[:,0:0]
-
+goodColumnsAlignment = alignment[:,0:0]
 for column in goodColumns:
-	newAlignment = newAlignment+column
+	goodColumnsAlignment = goodColumnsAlignment+column
 
-# change to uppercase
+newlength = goodColumnsAlignment.get_alignment_length()
 
-upperAlignment = []
+# drop taxa with more than the allowed percentage of NNNs
+goodTaxa = []
 
-for sequence in newAlignment:
-	seqUP = sequence.seq.upper()
-	recUP = SeqRecord(seqUP, id=sequence.id, description='')
-	upperAlignment.append(recUP)
+for record in goodColumnsAlignment:
+	seq = record.seq
+	gaps = seq.count("-")
+	Ns = seq.count("N")
+	if gaps < (newlength*args.coverage) and Ns < 4:
+		goodTaxa.append(record)
+
+TaxAlignment =  MultipleSeqAlignment(goodTaxa)
 
 # write the cleaned alignment to a new file
 
-out = open(args.output, "w")
-for item in upperAlignment:
-	out.write(item.format("fasta"))
-out.close()
+AlignIO.write(TaxAlignment, args.output, "fasta")
