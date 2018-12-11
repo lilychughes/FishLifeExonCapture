@@ -6,8 +6,10 @@ import argparse
 import os
 from Bio import AlignIO
 from Bio import Seq
+from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio.Align import MultipleSeqAlignment
+from Bio.Alphabet import IUPAC
 
 parser = argparse.ArgumentParser(description="Requires python 2.7 and Biopython. Removes columns with single taxon insertions by default. If -c is specified, this will also remove sequences with more than this percentage of gaps")
 parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= None , required= True, help = 'Fasta alignment to prune')
@@ -49,8 +51,13 @@ for record in goodColumnsAlignment:
 	seq = record.seq
 	gaps = seq.count("-")
 	Ns = seq.count("N")
+	transeq = str(record.seq).replace("-","N")
+	transeqrec = Seq(transeq)
+	translated = transeqrec.translate()
+	stops = translated.count("*")
 	if gaps < (newlength*args.coverage) and Ns < 4:
-		goodTaxa.append(record)
+		if stops < 2:
+			goodTaxa.append(record)
 
 TaxAlignment =  MultipleSeqAlignment(goodTaxa)
 
