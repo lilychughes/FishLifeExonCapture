@@ -48,7 +48,7 @@ Run the trimmomatic-loop-PE.sh script in the main working directory. This calls 
 ***If you are running this on another system, you may want to make a copy of this file and change the path.***
 
 ```
-module load trimmomatic
+#module load trimmomatic
 ../FishLifeExonCapture/trimmomatic-loop-PE.sh
 ```
 
@@ -66,8 +66,8 @@ aTRAM gets better assemblies than other software, but for its first iteration, i
 This script maps the raw reads with bwa against the reference sequences that all exon baits were designed on, as well as coding mitochondrial genes. These sequences are included in the all_Master.fasta file. It then makes individual fastq files for each locus, with PCR duplicates removed.
 
 ```
-module load samtools
-module load bwa
+#module load samtools/1.8
+#module load bwa
 ../FishLifeExonCapture/map-exons.sh
 ```
 
@@ -76,8 +76,8 @@ Another version of the script is available to work with older versions (<2) of s
 For the older set of Otophysi markers (see Arcila et al 2017), use:
 
 ```
-module load samtools
-module load bwa
+#module load samtools/1.8
+#module load bwa
 ../FishLifeExonCapture/map-exons-Otophysi.sh
 ```
 
@@ -86,7 +86,7 @@ module load bwa
 The previous step should have generated a .fq file for each locus (providing that some reads mapped to the reference sequences ). Now we can generate an initial assembly for each locus with Velvet. This script runs the assemblies for .fq files that contain reads and removes empty files. It then pulls out the longest assembled contig to feed to aTRAM.
 
 ```
-module load velvet
+#module load velvet
 ../FishLifeExonCapture/initialVelvet.sh
 ```
 
@@ -117,7 +117,7 @@ In this current version, the reading frames are percomorph-specific. More readin
 
 ```
 module load cd-hit
-module load exonerate
+#module load exonerate
 
 ../FishLifeExonCapture/ExonFiltering.sh
 ```
@@ -126,7 +126,7 @@ There is a second version to deal with the Otophysi set of markers available. Th
 
 ```
 module load cd-hit
-module load exonerate
+#module load exonerate
 
 ../FishLifeExonCapture/filterOtophysiExons.sh
 ```
