@@ -36,8 +36,8 @@ Make directories for each of the fastq files, and move them to those directories
 ```
 for f in *_R1.fastq.gz;
 do
-mkdir ${f%_.*.*};
-mv ${f%_*.*.*}*gz ${f%_.*.*}/;
+mkdir ${f%_*.*.*};
+mv ${f%_*.*.*}*gz ${f%_*.*.*}/;
 done
 ```
 
