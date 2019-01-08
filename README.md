@@ -66,8 +66,7 @@ aTRAM gets better assemblies than other software, but for its first iteration, i
 This script maps the raw reads with bwa against the reference sequences that all exon baits were designed on, as well as coding mitochondrial genes. These sequences are included in the all_Master.fasta file. It then makes individual fastq files for each locus, with PCR duplicates removed.
 
 ```
-#module load samtools/1.8
-#module load bwa
+module load samtools/1.8
 ../FishLifeExonCapture/map-exons.sh
 ```
 
@@ -77,7 +76,6 @@ For the older set of Otophysi markers (see Arcila et al 2017), use:
 
 ```
 #module load samtools/1.8
-#module load bwa
 ../FishLifeExonCapture/map-exons-Otophysi.sh
 ```
 
@@ -117,7 +115,6 @@ In this current version, the reading frames are percomorph-specific. More readin
 
 ```
 module load cd-hit
-#module load exonerate
 
 ../FishLifeExonCapture/ExonFiltering.sh
 ```
@@ -175,13 +172,13 @@ python ../../FishLifeExonCapture/dropTaxa.py -f $f -o $f.dropped.fasta -t $f.bad
 done
 ```
 
-Finally, removing these taxa often leaves gaps in the alignment, or large gaps are created from scaffolding Ns, or just single-taxon insertions. The gapCleaner.py script removes these columns from the alignment. It will also remove sequences that cover less than 50% of the alignment. If you want to change this threshold, you can change the fraction with the '-c' flag.
+Finally, removing these taxa often leaves gaps in the alignment, or large gaps are created from scaffolding Ns, or just single-taxon insertions. The AlignmentCleaner.py script removes these columns from the alignment. It will also remove sequences that cover less than 50% of the alignment. If you want to change this threshold, you can change the fraction with the '-c' flag. It will also throw out any remaining sequences with two or more stop codons. A single stop codon will be changed to 'NNN'.
 
 
 ```
 for f in *dropped.fasta;
 do
-python ../../FishLifeExonCapture/gapCleaner.py -f $f -o $f.cleaned.fasta -c 0.5;
+python ../../FishLifeExonCapture/AlignmentCleaner.py -f $f -o $f.cleaned.fasta -c 0.5;
 done
 ```
 
