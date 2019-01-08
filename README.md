@@ -187,4 +187,12 @@ I always look at the exons that are numbered higher than E1730 by eye. These exo
 My python scripts always use fasta-formatted files because they are easier for me to work with. If you need other formats for phylogenetic analysis, the AlignmentConverter.py script is quite flexible. Just note that to specify a relaxed phylip format, you'll need to type phylip-relaxed (otherwise, it's strict phylip).
 
 
+# Step 9 (optional): Clean Up
+
+All of this data processing leaves a lot of intermediate files for each sample. I tend to keep them for debugging purposes, but at some point they no longer are necessary. You can run a script to remove these intermediate files, but still keep the output of trimmomatic, aTRAM, and the exon filtering.
+
+```
+../FishLifeExonCapture/CleanUp.sh
+```
+
 
