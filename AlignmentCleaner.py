@@ -11,10 +11,10 @@ from Bio.SeqRecord import SeqRecord
 from Bio.Align import MultipleSeqAlignment
 from Bio.Alphabet import IUPAC
 
-parser = argparse.ArgumentParser(description="Requires python 2.7 and Biopython. Removes columns with single taxon insertions by default. If -c is specified, this will also remove sequences with more than this percentage of gaps")
-parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= None , required= True, help = 'Fasta alignment to prune')
-parser.add_argument('-o', '--output', dest = 'output', type = str, default = None, required = True, help = 'Name of output file')
-parser.add_argument('-c', '--coverage', dest = 'coverage', type = float, default = 0.50, required = False, help = 'Maximum proportion of gaps allowed. Default = 0.50')
+parser = argparse.ArgumentParser(description="Requires python 2.7 and Biopython. This script cleans alignments for single-taxon insertions, gappy sequences, more than one stop codon, and converts a single stop codon to 'NNN'. Remove of gappy sequences is controlled with the -c parameter.")
+parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= None , required= True, help = 'Fasta alignment to clean.')
+parser.add_argument('-o', '--output', dest = 'output', type = str, default = None, required = True, help = 'Name of output file.')
+parser.add_argument('-c', '--coverage', dest = 'coverage', type = float, default = 0.50, required = False, help = 'Maximum proportion of gaps allowed in a sequence. Default = 0.50')
 args, unknown = parser.parse_known_args()
 
 # read in the alignment in fasta format
@@ -44,8 +44,22 @@ for column in goodColumns:
 
 newlength = goodColumnsAlignment.get_alignment_length()
 
-# drop taxa with more than the allowed percentage of NNNs
+# drop taxa with more than the allowed percentage of NNNs, and more than 1 stop codon
 goodTaxa = []
+
+def RemoveStops(sequence):
+    """ Replaces stop codons (standard genetic code) with 'NNN' in a nucleotide seq object and returns a new seq object"""
+    TAG = 'TAG'
+    TGA = 'TGA'
+    TAA = 'TAA'
+    clean_seq = Seq('')
+    codons = [sequence[x:x+3] for x in range(0, len(sequence), 3)]
+    for codon in codons:
+        if TAG in codon or TGA in codon or TAA in codon:
+            clean_seq = clean_seq+Seq("NNN")
+        else:
+            clean_seq = clean_seq+codon
+    return clean_seq
 
 for record in goodColumnsAlignment:
 	seq = record.seq
@@ -56,8 +70,14 @@ for record in goodColumnsAlignment:
 	translated = transeqrec.translate()
 	stops = translated.count("*")
 	if gaps < (newlength*args.coverage) and Ns < 4:
-		if stops < 2:
+		if stops < 1:
 			goodTaxa.append(record)
+		elif stops == 1:
+			replace_stops = RemoveStops(seq)
+			new_record = SeqRecord(replace_stops, id=record.id, description='')
+			goodTaxa.append(new_record)
+		elif stops > 1:
+			pass	
 
 TaxAlignment =  MultipleSeqAlignment(goodTaxa)
 
