@@ -172,13 +172,14 @@ python ../../FishLifeExonCapture/dropTaxa.py -f $f -o $f.dropped.fasta -t $f.bad
 done
 ```
 
-Finally, removing these taxa often leaves gaps in the alignment, or large gaps are created from scaffolding Ns, or just single-taxon insertions. The AlignmentCleaner.py script removes these columns from the alignment. It will also remove sequences that cover less than 50% of the alignment. If you want to change this threshold, you can change the fraction with the '-c' flag. It will also throw out any remaining sequences with two or more stop codons. A single stop codon will be changed to 'NNN'.
+Finally, removing these taxa often leaves gaps in the alignment, or large gaps are created from scaffolding Ns, or just single-taxon insertions. The AlignmentCleaner.py script removes these columns from the alignment. It will also remove sequences that cover less than 50% of the alignment. If you want to change this threshold, you can change the fraction with the '-c' flag. It will also throw out any remaining sequences with two or more stop codons. A single stop codon will be changed to 'NNN'. Since this script looks for stop codons, you will need to specify whether it is mitochondrial or not with the -m flag.
 
 
 ```
-for f in *dropped.fasta;
+# Nuclear Exons
+for f in E*dropped.fasta;
 do
-python ../../FishLifeExonCapture/AlignmentCleaner.py -f $f -o $f.cleaned.fasta -c 0.5;
+python ../../FishLifeExonCapture/AlignmentCleaner.py -f $f -o $f.cleaned.fasta -c 0.5 -m False;
 done
 ```
 
