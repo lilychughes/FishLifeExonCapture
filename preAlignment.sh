@@ -16,3 +16,14 @@ do
 	done;
 done < ../FishLifeExonCapture/ExonList.txt
 
+# cat individual mitochondrial exons into files for alignment
+while read -r exon;
+do
+	for directory in *;
+	do
+		if [  -d $directory  ];
+		then
+		cat $directory/exon*$exon*filtered.fa >> Alignments/$exon.unaligned.fasta;
+		fi;
+	done;
+done < ../FishLifeExonCapture/MitochondrialExonList.txt
