@@ -11,7 +11,7 @@ do
 	do
 		if [  -d $directory  ];
 		then
-		cat $directory/exon*$exon*filtered.fa >> Alignments/$exon.unaligned.fasta;
+		cat $directory/exon*.$exon.*filtered.fa >> Alignments/$exon.unaligned.fasta;
 		fi;
 	done;
 done < ../FishLifeExonCapture/ExonList.txt
@@ -23,7 +23,7 @@ do
 	do
 		if [  -d $directory  ];
 		then
-		cat $directory/exon*$exon*filtered.fa >> Alignments/$exon.unaligned.fasta;
+		cat $directory/exon*.$exon.*filtered.fa >> Alignments/$exon.unaligned.fasta;
 		fi;
 	done;
 done < ../FishLifeExonCapture/MitochondrialExonList.txt
