@@ -15,37 +15,55 @@ parser = argparse.ArgumentParser(description="Requires python 2.7 and Biopython.
 parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= None , required= True, help = 'Fasta alignment to clean.')
 parser.add_argument('-o', '--output', dest = 'output', type = str, default = None, required = True, help = 'Name of output file.')
 parser.add_argument('-c', '--coverage', dest = 'coverage', type = float, default = 0.50, required = True, help = 'Maximum proportion of gaps allowed in a sequence. Default = 0.50')
-parser.add_argument('-m', '--mitochondrial', dest = 'mitochondrial', type = str, default = 'False', required = True, help = 'If set to True, replaces single stop codons with NNN using Vertebrate Mitochondrial genetic code instead of the standard genetic code. Default = False')
+parser.add_argument('-m', '--mitochondrial', dest = 'mitochondrial', type = str, default = 'False', required = False, help = 'If set to True, replaces single stop codons with NNN using Vertebrate Mitochondrial genetic code instead of the standard genetic code. Default = False')
+parser.add_argument('-w', '--window', dest = 'window', type = int, default = 15, required = False, help = 'Sliding widow size in basepairs for trimming gappy regions. Increase to leave more gaps, decrease to trim more gaps. Must be a multiple of 3. Setting to 0 turns off trimming behavior. Default = 15')
 args, unknown = parser.parse_known_args()
 
 # read in the alignment in fasta format
-alignment = AlignIO.read(args.fasta,"fasta")
+rawAlignment = AlignIO.read(args.fasta,"fasta")
 
-# get the number of columns in the alignment
-length = alignment.get_alignment_length()
-
-# get the number of taxa in the alignment
-numTaxa = len(alignment)
-
-# find the columns that are not composed of mostly gaps (where three or fewer taxa have sequence data or 'NNNN' sequences)
+# find the columns that are not composed of mostly gaps (where two or fewer taxa have sequence data or 'NNNN' sequences)
 goodColumns = []
 
-for x in range(0,length):
-    column = alignment[:,x]
-    if column.count("-") < (numTaxa-3):
-        slice = alignment[:,x:x+1]
+for x in range(0,rawAlignment.get_alignment_length()):
+    column = rawAlignment[:,x]
+    if column.count("-") < (len(rawAlignment)-2):
+        slice = rawAlignment[:,x:x+1]
         goodColumns.append(slice)
-
-
 # make an empty alignment to populate
 
-goodColumnsAlignment = alignment[:,0:0]
+goodColumnsAlignment = rawAlignment[:,0:0]
 for column in goodColumns:
     goodColumnsAlignment = goodColumnsAlignment+column
 
-newlength = goodColumnsAlignment.get_alignment_length()
+# Remove gappy edges using a sliding window of 15 basepairs, removing codons where the average is more than 60% gaps
 
-# drop taxa with more than the allowed percentage of NNNs, and more than 1 stop codon, and replace single stop codons with 'NNN'
+def TrimEdges(alignment):
+    """Finds moving average gaps in sliding windows of five codons (15bp) and trims gappy edges of alignments with more than 60% gaps"""
+    codons = [alignment[:,x:x+3] for x in range(0, alignment.get_alignment_length(), 3)]
+    percentages = []
+    goodCodons = []
+    if args.window == 0:
+        goodCodons = codons
+    else:
+        for codon in codons:
+            gapPerc = float(codon[:,0].count("-")+codon[:,1].count("-")+codon[:,2].count("-"))/(len(codon)*3)
+            percentages.append(gapPerc)
+        for x in range(0,len(percentages)):
+            window_size = args.window/3
+            window = percentages[x:x+window_size]
+            window_average = sum(window)/window_size
+            if window_average < 0.5:
+                goodCodons.append(codons[x])
+    cleanedAlignment =  alignment[:,0:0]
+    for codon in goodCodons:
+    	cleanedAlignment = cleanedAlignment+codon       
+    return(cleanedAlignment)    
+
+trimmedAlignment = TrimEdges(goodColumnsAlignment)
+
+
+# drop taxa with more than 1 stop codon, and replace single stop codons with 'NNN'
 goodTaxa = []
 
 def RemoveStops(sequence):
@@ -93,12 +111,11 @@ def StopCounter(sequence):
     return(count)
 
 
-for record in goodColumnsAlignment:
+for record in trimmedAlignment:
     seq = record.seq
     gaps = seq.count("-")
-    Ns = seq.count("N")
     stops = StopCounter(seq)
-    if gaps < (newlength*args.coverage) and Ns < 4:
+    if gaps < (trimmedAlignment.get_alignment_length()*args.coverage):
         if stops < 1:
             goodTaxa.append(record)
         elif stops == 1:
