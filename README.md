@@ -162,49 +162,40 @@ There are several alignment filtering scripts included in this repository. All r
 
 ***AlignmentCleaner.py***
 
-This is a multi-purpose script that cleans: 
+This is a multi-purpose script that cleans:
+
 -Single-taxon insertions (often, though certainly not always, these are caused by assembly errors)
--Gappy edges
--Short sequences
 
+-Gappy edges above a user-specified gap threshold
 
+-Short sequences that fall below a user-specified threshold
 
-
-
-Even with care, things we don't want in our alignments get through. There are three python scripts built to filter out some of the noisy sequences and scaffolding Ns that sometimes get into the alignments. Both require Biopython. Use '-h' to see the arguments and default settings of each script.
-
-The first is called AlignmentChecker.py. This script builds a distance matrix of your alignment and outputs taxon names with average distances that are above a user-specified threshold. I am working on alternative versions of this script to deal with proteins, and possibly speed up the run time. The threshold you specify may vary depending on the level of diversity in your matrix. In an alignment of mostly one family, I would set this somewhat lower than I would for an alignment that included many orders. 
-
-If I wanted this script to write a file with the names of the taxa that it flags, I might do this:
+If you want to clean out edges composed of more than 60% gaps, single-taxon insertions, and sequences that cover less than 50% of the alignment for all MACSE2 alignments, you could run:
 
 ```
-for f in *tx_nt_ali.fasta;
+# Nuclear Exons aligned with MACSE2
+for f in E*NT_aligned.fasta;
 do
-python ../../FishLifeExonCapture/AlignmentChecker.py -f $f -d 0.5 > $f.badTaxa.txt;
+python ../../FishLifeExonCapture/AlignmentCleaner.py -f $f -o $f.cleaned.fasta -c 0.5 -t 0.6;
 done
 ```
 
-If it's flagging a lot of taxa, or a lot of different alignments, you'll need to investigate further. It might be that you have a mislabeled taxon that is quite divergent from the rest of your sequences.
 
-If I want to prune the flagged taxa from the alignment, I use the dropTaxa.py script. It just takes a text file of names to remove from a fasta file (one name per line), the fasta file to prune, and the name of an output file.
+Other Utilities:
 
-```
-for f in *tx_nt_ali.fasta;
-do
-python ../../FishLifeExonCapture/dropTaxa.py -f $f -o $f.dropped.fasta -t $f.badTaxa.txt;
-done
-```
-
-Finally, removing these taxa often leaves gaps in the alignment, or large gaps are created from scaffolding Ns, or just single-taxon insertions. The AlignmentCleaner.py script removes these columns from the alignment. It will also remove sequences that cover less than 50% of the alignment. If you want to change this threshold, you can change the fraction with the '-c' flag. It will also throw out any remaining sequences with two or more stop codons. A single stop codon will be changed to 'NNN'. Since this script looks for stop codons, you will need to specify whether it is mitochondrial or not with the -m flag.
-
+If I want to drop the  taxa from an alignment for any reason, I use the dropTaxa.py script. It just takes a text file of names to remove from a fasta file (one name per line), the fasta file to prune, and the name of an output file. 
 
 ```
-# Nuclear Exons
-for f in E*dropped.fasta;
-do
-python ../../FishLifeExonCapture/AlignmentCleaner.py -f $f -o $f.cleaned.fasta -c 0.5 -m False;
-done
+python ../../FishLifeExonCapture/dropTaxa.py -f E0001.NT_aligned.fasta -o E0001.NT_aligned.dropped.fasta -t badTaxaList.txt;
 ```
+
+You can run the AlignmentCleaner.py script on the output of dropTaxa.py, to remove any gaps left in the alignment.
+
+
+If you want to flag divergent sequences, you can use the AlignmentChecker.py script. This script flags taxa that fall above a certain user-specified distance threshold, and prints taxon names that fall above this threshold. Your mileage may vary depending on how divergent the taxa are in your alignment.
+
+
+Other notes:
 
 I always look at the exons that are numbered higher than E1730 by eye. These exons have known paralogs, but were included in the dataset to connect with older PCR-based datasets. They are usually fine, but you can never be to careful.
 
