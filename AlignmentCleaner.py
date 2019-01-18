@@ -16,7 +16,6 @@ parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= Non
 parser.add_argument('-o', '--output', dest = 'output', type = str, default = None, required = True, help = 'Name of output file.')
 parser.add_argument('-c', '--coverage', dest = 'coverage', type = float, default = 0.50, required = True, help = 'Maximum proportion of gaps allowed in a sequence. Default = 0.50')
 parser.add_argument('-m', '--mitochondrial', dest = 'mitochondrial', type = str, default = 'False', required = False, help = 'If set to True, replaces single stop codons with NNN using Vertebrate Mitochondrial genetic code instead of the standard genetic code. Default = False')
-parser.add_argument('-w', '--window', dest = 'window', type = int, default = 15, required = False, help = 'Sliding widow size in basepairs for trimming gappy regions. Increase to leave more gaps, decrease to trim more gaps. Must be a multiple of 3. Setting to 0 turns off trimming behavior. Default = 15')
 args, unknown = parser.parse_known_args()
 
 # read in the alignment in fasta format
@@ -39,26 +38,21 @@ for column in goodColumns:
 # Remove gappy edges using a sliding window of 15 basepairs, removing codons where the average is more than 60% gaps
 
 def TrimEdges(alignment):
-    """Finds moving average gaps in sliding windows of five codons (15bp) and trims gappy edges of alignments with more than 60% gaps"""
+    """Trims gappy edges of alignments with more than 60% gaps given an alignment object"""
     codons = [alignment[:,x:x+3] for x in range(0, alignment.get_alignment_length(), 3)]
     percentages = []
-    goodCodons = []
-    if args.window == 0:
-        goodCodons = codons
-    else:
-        for codon in codons:
-            gapPerc = float(codon[:,0].count("-")+codon[:,1].count("-")+codon[:,2].count("-"))/(len(codon)*3)
-            percentages.append(gapPerc)
-        for x in range(0,len(percentages)):
-            window_size = args.window/3
-            window = percentages[x:x+window_size]
-            window_average = sum(window)/window_size
-            if window_average < 0.5:
-                goodCodons.append(codons[x])
+    goodCodonsIndices = []
+    for codon in codons:
+        gapPerc = float(codon[:,0].count("-")+codon[:,1].count("-")+codon[:,2].count("-"))/(len(codon)*3)
+        percentages.append(gapPerc)
+    for perc in percentages:
+        if perc < 0.6:
+           goodCodonsIndices.append(percentages.index(perc))
+    goodCodons = codons[goodCodonsIndices[0]:goodCodonsIndices[len(goodCodonsIndices)-1]]
     cleanedAlignment =  alignment[:,0:0]
     for codon in goodCodons:
-    	cleanedAlignment = cleanedAlignment+codon       
-    return(cleanedAlignment)    
+        cleanedAlignment = cleanedAlignment+codon
+    return(cleanedAlignment)
 
 trimmedAlignment = TrimEdges(goodColumnsAlignment)
 
