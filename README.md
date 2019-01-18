@@ -43,7 +43,7 @@ done
 
 # Step 2: Run Trimmomatic to quality trim the sequences
 
-Run the trimmomatic-loop-PE.sh script in the main working directory. This calls the trimmomatic.jar file in the location where it is stored on Colonial One. 
+Run the trimmomatic-loop-PE.sh script in the main working directory. This calls the trimmomatic.jar file in the location where it is stored on Makaira. 
 
 ***If you are running this on another system, you may want to make a copy of this file and change the path.***
 
@@ -128,7 +128,7 @@ module load cd-hit
 ../FishLifeExonCapture/filterOtophysiExons.sh
 ```
 
-# Step 7: First Alignment
+# Step 7: Reading-Frame Aware Alignment
 
 First we need to gather all the separate exon files into a single file that we can use for alignment. The following script will make a new directory called Alignments/, and .unaligned.fasta files for each exon. It's just a bash script, so it doesn't require extra software.
 
@@ -136,8 +136,18 @@ First we need to gather all the separate exon files into a single file that we c
 ../FishLifeExonCapture/preAlignment.sh
 ```
 
-Now we need to align all of the files in the new Alignments/ directory. I didn't make a special script for this, since people have many different alignment preferences. I typically use a standalone version of translatorX and mafft for this task. My script might look something like this:
+Now we need to align all of the files in the new Alignments/ directory. Move into the Alignments directory. You will now run scripts out of this directory.
 
+We will use MACSE2 to align our exons, but there are also instructions for using TranslatorX. Just be aware that TranslatorX cannot tolerate any insertions or deletions that cause frame shifts, but MACSE can. 
+
+To run MACSE2:
+
+```
+cd Alignments/
+../../FishLifeExonCapture/run_macse.sh
+```
+
+To run a stand-alone version of TranslatorX and Mafft (which I have named tx.pl, but you may have named something different):
 ```
 cd Alignments/
 for f in *.fasta;
@@ -146,7 +156,20 @@ perl tx.pl -i $f -o $f.tx -p F;
 done
 ```
 
-# Step 8: Alignment Filtering
+# Step 8: Alignment Filtering (Optional)
+
+There are several alignment filtering scripts included in this repository. All require biopython.
+
+***AlignmentCleaner.py***
+
+This is a multi-purpose script that cleans: 
+-Single-taxon insertions (often, though certainly not always, these are caused by assembly errors)
+-Gappy edges
+-Short sequences
+
+
+
+
 
 Even with care, things we don't want in our alignments get through. There are three python scripts built to filter out some of the noisy sequences and scaffolding Ns that sometimes get into the alignments. Both require Biopython. Use '-h' to see the arguments and default settings of each script.
 
@@ -188,7 +211,7 @@ I always look at the exons that are numbered higher than E1730 by eye. These exo
 My python scripts always use fasta-formatted files because they are easier for me to work with. If you need other formats for phylogenetic analysis, the AlignmentConverter.py script is quite flexible. Just note that to specify a relaxed phylip format, you'll need to type phylip-relaxed (otherwise, it's strict phylip).
 
 
-# Step 9 (optional): Clean Up
+# Step 9: Clean Up (Optional)
 
 All of this data processing leaves a lot of intermediate files for each sample. I tend to keep them for debugging purposes, but at some point they no longer are necessary. You can run a script to remove these intermediate files, but still keep the output of trimmomatic, aTRAM, and the exon filtering.
 
