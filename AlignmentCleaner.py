@@ -11,11 +11,12 @@ from Bio.SeqRecord import SeqRecord
 from Bio.Align import MultipleSeqAlignment
 from Bio.Alphabet import IUPAC
 
-parser = argparse.ArgumentParser(description="Requires python 2.7 and Biopython. This script cleans alignments for single-taxon insertions, gappy sequences, more than one stop codon, and converts a single stop codon to 'NNN'. Remove of gappy sequences is controlled with the -c parameter.")
+parser = argparse.ArgumentParser(description="Requires python 2.7 and Biopython. This script cleans alignments for single-taxon insertions, short sequences, gappy edges, sequences with more than one stop codon, and converts a single stop codon to 'NNN'. Removal of gappy sequences is controlled with the -c parameter.")
 parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= None , required= True, help = 'Fasta alignment to clean.')
 parser.add_argument('-o', '--output', dest = 'output', type = str, default = None, required = True, help = 'Name of output file.')
 parser.add_argument('-c', '--coverage', dest = 'coverage', type = float, default = 0.50, required = True, help = 'Maximum proportion of gaps allowed in a sequence. Default = 0.50')
 parser.add_argument('-m', '--mitochondrial', dest = 'mitochondrial', type = str, default = 'False', required = False, help = 'If set to True, replaces single stop codons with NNN using Vertebrate Mitochondrial genetic code instead of the standard genetic code. Default = False')
+parser.add_argument('-t', '--trim', dest = 'trim', type = float, default = 0.6, required = True, help = 'The maximum proportion of gaps to allow at the edges of the alignment. Edges with more than this proportion of gaps will be trimmed. Setting this value to 1 disables trimming. Default = 0.6')
 args, unknown = parser.parse_known_args()
 
 # read in the alignment in fasta format
@@ -38,7 +39,7 @@ for column in goodColumns:
 # Remove gappy edges using a sliding window of 15 basepairs, removing codons where the average is more than 60% gaps
 
 def TrimEdges(alignment):
-    """Trims gappy edges of alignments with more than 60% gaps given an alignment object"""
+    """Trims gappy edges of alignments with more than the default 60% gaps given an alignment object"""
     codons = [alignment[:,x:x+3] for x in range(0, alignment.get_alignment_length(), 3)]
     percentages = []
     goodCodonsIndices = []
@@ -46,7 +47,7 @@ def TrimEdges(alignment):
         gapPerc = float(codon[:,0].count("-")+codon[:,1].count("-")+codon[:,2].count("-"))/(len(codon)*3)
         percentages.append(gapPerc)
     for perc in percentages:
-        if perc < 0.6:
+        if perc <= args.trim:
            goodCodonsIndices.append(percentages.index(perc))
     goodCodons = codons[goodCodonsIndices[0]:goodCodonsIndices[len(goodCodonsIndices)-1]]
     cleanedAlignment =  alignment[:,0:0]
