@@ -46,9 +46,9 @@ def TrimEdges(alignment):
     for codon in codons:
         gapPerc = float(codon[:,0].count("-")+codon[:,1].count("-")+codon[:,2].count("-"))/(len(codon)*3)
         percentages.append(gapPerc)
-    for perc in percentages:
-        if perc <= args.trim:
-           goodCodonsIndices.append(percentages.index(perc))
+    for i in range(0,len(percentages)-1):
+        if percentages[i] < args.trim:
+           goodCodonsIndices.append(i)
     goodCodons = codons[goodCodonsIndices[0]:goodCodonsIndices[len(goodCodonsIndices)-1]]
     cleanedAlignment =  alignment[:,0:0]
     for codon in goodCodons:
