@@ -20,9 +20,7 @@ Biopython
 
 Exonerate
 
-Mafft
-
-TranslatorX (standalone, or preferred translation-aware aligner)
+Macse
 
 CD-Hit
 
