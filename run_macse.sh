@@ -28,4 +28,4 @@ done
 
 # replace '!' insertion character with 'N', since it seems to interfere with other software
 
-sed -i 's/!/N/g' *trimmed*
+sed -i 's/!/N/g' *NT_aligned*
