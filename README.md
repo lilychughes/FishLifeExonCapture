@@ -45,8 +45,8 @@ Run the trimmomatic-loop-PE.sh script in the main working directory. This calls 
 
 ***If you are running this on another system, you may want to make a copy of this file and change the path.***
 
+***You will need the path to the trimmomatic jar file*** 
 ```
-#module load trimmomatic
 ../FishLifeExonCapture/trimmomatic-loop-PE.sh
 ```
 
@@ -63,8 +63,8 @@ aTRAM gets better assemblies than other software, but for its first iteration, i
 
 This script maps the raw reads with bwa against the reference sequences that all exon baits were designed on, as well as coding mitochondrial genes. These sequences are included in the all_Master.fasta file. It then makes individual fastq files for each locus, with PCR duplicates removed.
 
+***You will need bwa,samtools 1.7 or higher in your path. You will also need biopython and python2.7.***
 ```
-module load samtools/1.8
 ../FishLifeExonCapture/map-exons.sh
 ```
 
@@ -72,8 +72,8 @@ Another version of the script is available to work with older versions (<2) of s
 
 For the older set of Otophysi markers (see Arcila et al 2017), use:
 
+***You will need bwa,samtools 1.7 or higher in your path. You will also need biopython and python2.7.***
 ```
-#module load samtools/1.8
 ../FishLifeExonCapture/map-exons-Otophysi.sh
 ```
 
@@ -81,8 +81,9 @@ For the older set of Otophysi markers (see Arcila et al 2017), use:
 
 The previous step should have generated a .fq file for each locus (providing that some reads mapped to the reference sequences ). Now we can generate an initial assembly for each locus with Velvet. This script runs the assemblies for .fq files that contain reads and removes empty files. It then pulls out the longest assembled contig to feed to aTRAM.
 
+
+***You will need velvet in your path. You will also need biopython and python2.7.***
 ```
-#module load velvet
 ../FishLifeExonCapture/initialVelvet.sh
 ```
 
@@ -100,6 +101,7 @@ Colonial One (C1) has a special python environment that was set up for running a
 
 If you're not working in a /lustre/ system, and don't need the special python environment for C1, you can run:
 
+***Requires blast in your path.***
 ```
 ../FishLifeExonCapture/runaTRAM.sh
 ```
@@ -111,18 +113,18 @@ To efficiently filter the reading frames for the exons, we need to collapse high
 
 In this current version, the reading frames are percomorph-specific. More reading frame sets will be added, and this script will be modified to reflect that. 
 
-```
-module load cd-hit
 
+***You will need cd-hit and exonerate in your path. You will also need biopython and python2.7.***
+```
 ../FishLifeExonCapture/ExonFiltering.sh
 ```
 
 There is a second version to deal with the Otophysi set of markers available. The names of these loci start with 'G' instead of 'E'. It works the same way, it just calls a different set of markers and reading frames.
 
-```
-module load cd-hit
-#module load exonerate
 
+
+***You will need cd-hit and exonerate in your path. You will also need biopython and python2.7.***
+```
 ../FishLifeExonCapture/filterOtophysiExons.sh
 ```
 
@@ -140,6 +142,8 @@ We will use MACSE2 to align our exons, but there are also instructions for using
 
 To run MACSE2:
 
+***You may need to replace the full path to the MACSE jar file in this script.***
+
 ```
 cd Alignments/
 ../../FishLifeExonCapture/run_macse.sh
@@ -156,7 +160,9 @@ done
 
 # Step 8: Alignment Filtering (Optional)
 
-There are several alignment filtering scripts included in this repository. All require biopython.
+There are several alignment filtering scripts included in this repository. 
+
+***All require biopython and are written for python2.7.***
 
 ***AlignmentCleaner.py***
 
