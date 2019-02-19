@@ -136,6 +136,12 @@ First we need to gather all the separate exon files into a single file that we c
 ../FishLifeExonCapture/preAlignment.sh
 ```
 
+An alternative version exists for the older set of Otophysan markers:
+
+```
+../FishLifeExonCapture/preAlignment_Otophysi.sh
+```
+
 Now we need to align all of the files in the new Alignments/ directory. Move into the Alignments directory. You will now run scripts out of this directory.
 
 We will use MACSE2 to align our exons, but there are also instructions for using TranslatorX. Just be aware that TranslatorX cannot tolerate any insertions or deletions that cause frame shifts, but MACSE can. 
@@ -149,6 +155,15 @@ cd Alignments/
 ../../FishLifeExonCapture/run_macse.sh
 ```
 
+As with the last step, there is an alternative script for the otophysan markers:
+
+```
+cd Alignments/
+../../FishLifeExonCapture/run_macse_Otophysi.sh
+```
+
+
+Alternatively, if you would prefer to run TranslatorX, some options are below:
 To run a stand-alone version of TranslatorX and Mafft (which I have named tx.pl, but you may have named something different):
 ```
 cd Alignments/
