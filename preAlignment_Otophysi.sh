@@ -16,3 +16,13 @@ do
 	done;
 done < ../FishLifeExonCapture/OtophysiExons.txt
 
+
+
+# cat COI (G0001)
+for directory in *;
+do
+if [  -d $directory  ];
+then
+cat $directory/exon*G0001*filtered.fa >> Alignments/G0001.unaligned.fasta;
+fi;
+done
