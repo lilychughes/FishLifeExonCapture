@@ -16,7 +16,6 @@ parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= Non
 parser.add_argument('-o', '--output', dest = 'output', type = str, default = None, required = True, help = 'Name of output file')
 parser.add_argument('-t', '--taxon', dest = 'taxon', type = str, default = None, required = True, help = 'Name of taxon')
 parser.add_argument('-l', '--length', dest = 'length', type = int, default = 100, required = True, help = 'Minimum sequence length to write to file. Default = 100 bp')
-parser.add_argument('-c', '--coverage', dest = 'coverage', type = float, default = 1.0, required = True, help = 'Minimum coverage required to write a sequence to a file. Default = 1.0')
 parser.add_argument('-m', '--mito', dest = 'mito', type = str, default = 'False', required = False , help = 'If set to True, uses vertebrate mitochondiral genetic code. Default = False')
 
 args, unknown = parser.parse_known_args()
@@ -38,49 +37,15 @@ for record in records:
 	if end > start:
 		oriented.append(record)	
 
-# filter for stop codons 
-
-noStops = []
-
-if args.mito == 'False':
-	for record in oriented:
-		stops = record.seq.translate().count("*")
-		if len(record.seq) % 3 == 0 and stops < 2:
-			noStops.append(record)
-elif args.mito == 'True':
-	for record in oriented:
-		stops = record.seq.translate(table="Vertebrate Mitochondrial").count("*")
-		if len(record.seq) % 3 == 0 and stops < 2:
-			noStops.append(record)
-				
-
-
 # filter for length
 longest = []
 
-if len(noStops) > 0:
-	for record in noStops:
+if len(oriented) > 0:
+	for record in oriented:
 		if len(record.seq) >= args.length:
 			longest.append(record)
 
-# filter for coverage (assumes Velvet-style header)
-# Velvet outputs kmer coverage, but is converted to sequence coverage based on the velvet manual here
+longest.sort(key=lambda r: -len(r))
 
-covered = []
-
-if len(longest) > 0:
-	for record in longest:
-		kmerCoverage = float(record.id.split("_")[6])
-		seqCoverage = (kmerCoverage*100)/(100-31+1)
-		if seqCoverage >= args.coverage:
-			covered.append(record)
-
-
-# write the output 
-# if no sequences passed filters, print message to screen
-if len(covered) == 0:
-	print("No sequences passed filters in "+args.fasta) 			
-# print the longest remaining sequence
-elif len(covered) >= 1:
-	filteredSeq = SeqRecord(covered[0].seq, id=args.taxon, description='')
-	SeqIO.write(filteredSeq, args.output, "fasta")
+filteredSeq = SeqRecord(longest[0].seq, id=args.taxon, description='')
+SeqIO.write(filteredSeq, args.output, "fasta")
