@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # assumes atram is in your path!
-# using velvet as the assembler for aTRAM; velvet must also be in the path
+# using velvet as the assembler for aTRAM; trinity must also be in the path
 
 for directory in *;
 do
@@ -16,7 +16,7 @@ then
 			do
 				if [  ! -e ${f%.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
 					then 
-					atram.py -b ${directory%/} -q $f -a velvet -o exon -i 10;
+					atram.py -b ${directory%/} -q $f -a trinity -o trinity -i 5 --cpus 6;
 				fi;
 			done;
 		gzip *fastq;	

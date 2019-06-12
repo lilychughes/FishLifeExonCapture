@@ -3,7 +3,7 @@
 
 
 # all the things aTRAM needs to run in c1 environment
-module load velvet
+module load trinity
 module load sqlite
 module load aTRAM/2.0
 module load blast+
@@ -50,7 +50,7 @@ then
 			if [  ! -e ${f%.*.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
 			then 
 			# if you want to change atram.py options, change here:
-			atram.py -b $directory -q $f -a velvet -o exon -i 10;
+			atram.py -b $directory -q $f -a trinity -o trinity -i 5;
 			mv *fasta $BASEDIR/$directory/;
 			fi;
 		done;
