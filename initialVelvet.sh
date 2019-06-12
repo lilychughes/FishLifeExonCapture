@@ -10,9 +10,9 @@ for directory in *;
 do
 	if  [  -d $directory  ];
 	then
-		if  [  ! -e $directory.initialVelvet.txt  ];
+		if  [  ! -e $directory.step3.initialVelvet.txt  ];
 		then
-		echo Starting initial assemblies > $directory.initialVelvet.txt;
+		echo Starting initial assemblies > $directory.step3.initialVelvet.txt;
 		cd $directory/;
 			for f in *.fq;
 			do
@@ -26,7 +26,7 @@ do
 				fi;
 			done;
 		cd ../;
-		echo Completed initial assemblies >> $directory.initialVelvet.txt;	
+		echo Completed initial assemblies >> $directory.step3.initialVelvet.txt;	
 		fi;		
 	fi;
 done

@@ -33,9 +33,9 @@ for directory in *;
 do
 if [  -d $directory  ];
 then
-	if [  ! -e $directory.aTRAM.txt  ];
+	if [  ! -e $directory.step4.aTRAM.txt  ];
 	then
-		echo $directory aTRAM assembly started > $directory.aTRAM.txt
+		echo $directory aTRAM assembly started > $directory.step4.aTRAM.txt
 		cd $directory;
 		cp $directory.rmdup.fastq /scratch/;
 		#cp *rem1.fastq.gz /scratch/;
@@ -47,7 +47,7 @@ then
 		atram_preprocessor.py -b $directory --mixed-ends *fastq;
 		for f in *.initial.combined.fa;
 		do
-			if [  ! -e ${f%.*.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
+			if [  ! -e ${f%.*.*.*.*.*.*.*.*}.${f%.*}.step4.aTRAM.log  ];
 			then 
 			# if you want to change atram.py options, change here:
 			atram.py -b $directory -q $f -a trinity -o trinity -i 5;
@@ -58,7 +58,7 @@ then
 		cd 	$BASEDIR/$directory/;
 		rm /scratch/*
 		cd ../;
-		echo aTRAM assembly completed $directory >> $directory.aTRAM.txt;
+		echo aTRAM assembly completed $directory >> $directory.step4.aTRAM.txt;
 	fi;	
 fi;
 done	
