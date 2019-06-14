@@ -37,5 +37,6 @@ filtered = []
 
 for record in oriented:
 	filteredSeq = SeqRecord(record.seq, id=args.taxon, description='')
+	filtered.append(filteredSeq)
 
 SeqIO.write(filtered, args.output, "fasta")
