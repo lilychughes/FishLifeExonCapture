@@ -13,6 +13,7 @@ do
 		then
 		contigs=$( grep -c ">" $directory/trinity*.$exon.*filtered.fa )
 		if [  $contigs -eq 1  ]
+		then
 		cat $directory/$exon.final_contigs.fasta >> Alignments/$exon.unaligned.fasta;
 		fi;
 		fi;
@@ -28,6 +29,7 @@ do
 		then
 		contigs=$( grep -c ">" $directory/trinity*.$exon.*filtered.fa )
 		if [  $contigs -eq 1  ]
+		then
 		cat $directory/$exon.final_contigs.fasta >> Alignments/$exon.unaligned.fasta;
 		fi;
 		fi;
