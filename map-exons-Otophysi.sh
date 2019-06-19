@@ -8,9 +8,9 @@ for directory in *;
 do
 if  [ -d $directory  ];
 then
-	if [  ! -e ${directory%/}.readmapping.txt  ];
+	if [  ! -e ${directory%/}.step2.readmapping.txt  ];
 	then
-	echo mapping started $directory > ${directory%/}.readmapping.txt;
+	echo mapping started $directory > ${directory%/}.step2.readmapping.txt;
 		gunzip $directory/${directory%/}_R1.trimmed.fastq.gz;
 		gunzip $directory/${directory%/}_R2.trimmed.fastq.gz;
 		bwa mem ../FishLifeExonCapture/ALL_Master_Otophysi.fasta $directory/${directory%/}_R1.trimmed.fastq $directory/${directory%/}_R2.trimmed.fastq | samtools view -bS -o $directory/${directory%/}.mapped.bam -;
@@ -1073,6 +1073,6 @@ then
 		gzip $directory/${directory%/}_R2.trimmed.fastq;
 	
 	fi;
-echo mapping completed $directory >> ${directory%/}.readmapping.txt;
+echo mapping completed $directory >> ${directory%/}.step2.readmapping.txt;
 fi;
 done

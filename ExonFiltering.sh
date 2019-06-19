@@ -9,15 +9,15 @@ do
 	
 	if  [  -d $directory  ];
 	then
-		if [  ! -e $directory.exonfiltering.txt  ];
+		if [  ! -e $directory.step5.exonfiltering.txt  ];
 		then
-		echo Filtering exons started $directory > $directory.exonfiltering.txt;
+		echo Filtering exons started $directory > $directory.step5.exonfiltering.txt;
 		cd $directory;
 			
 			for f in *filtered_contigs.fasta;
 			do
 			# change the similarity threshold here at -c if you want
-			cd-hit-est -i $f -o $f.cdhit -c 0.98;
+			cd-hit-est -i $f -o $f.cdhit -c 0.99;
 			done;
 			
 			# Filter nuclear exons with exonerate
@@ -48,7 +48,7 @@ do
 
 			
 		cd ../;
-		echo Filtering exons completed $directory > $directory.exonfiltering.txt;	
+		echo Filtering exons completed $directory > $directory.step5.exonfiltering.txt;	
 		fi;
 	fi;	
 done	
