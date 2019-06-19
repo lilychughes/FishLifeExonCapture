@@ -11,10 +11,10 @@ do
 	do
 		if [  -d $directory  ];
 		then
-		contigs=$( grep -c ">" $directory/trinity*.$exon.*filtered.fa )
+		contigs=$(grep -o ">" $directory/trinity*.$exon.*final_contigs.fa | wc -l); 
 		if [  $contigs -eq 1  ]
 		then
-		cat $directory/$exon.final_contigs.fasta >> Alignments/$exon.unaligned.fasta;
+		cat $directory/trinity*.$exon.*final_contigs.fa >> Alignments/$exon.unaligned.fasta;
 		fi;
 		fi;
 	done;
@@ -27,7 +27,7 @@ do
 	do
 		if [  -d $directory  ];
 		then
-		contigs=$( grep -c ">" $directory/trinity*.$exon.*filtered.fa )
+		contigs=$( grep -c ">" $directory/trinity*.$exon.*final_contigs.fa )
 		if [  $contigs -eq 1  ]
 		then
 		cat $directory/$exon.final_contigs.fasta >> Alignments/$exon.unaligned.fasta;
@@ -35,3 +35,4 @@ do
 		fi;
 	done;
 done < ../FishLifeExonCapture/MitochondrialExonList.txt
+
