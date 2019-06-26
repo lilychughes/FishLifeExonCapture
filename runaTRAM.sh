@@ -9,7 +9,7 @@ if [  -d $directory  ];
 then
 	if [  ! -e $directory.aTRAM.txt  ];
 	then
-		echo $directory aTRAM assembly started > $directory.aTRAM.txt
+		echo $directory aTRAM assembly started > $directory.step4.aTRAM.txt
 		cd $directory;
 		atram_preprocessor.py -b ${directory%/} --mixed-ends *.fastq;
 		for f in *.initial.combined.fa;
@@ -21,7 +21,7 @@ then
 			done;
 		gzip *fastq;	
 		cd ../;
-		echo aTRAM assembly completed $directory >> $directory.aTRAM.txt;
+		echo aTRAM assembly completed $directory >> $directory.step4.aTRAM.txt
 	fi;	
 fi;
 done	
