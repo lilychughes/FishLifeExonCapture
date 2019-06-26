@@ -101,7 +101,8 @@ Colonial One (C1) has a special python environment that was set up for running a
 
 If you're not working in a /lustre/ system, and don't need the special python environment for C1, you can run:
 
-***Requires blast in your path.***
+***Requires blast+, python3, trinity, and sqlite in your path.***
+
 ```
 ../FishLifeExonCapture/runaTRAM.sh
 ```
