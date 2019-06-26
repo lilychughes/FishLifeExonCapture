@@ -16,6 +16,8 @@ bwa
 
 Velvet
 
+Trinity
+
 Biopython
 
 Exonerate
@@ -98,13 +100,15 @@ This script uses the default parameters for aTRAM, using Trinity as the assemble
 
 Colonial One (C1) has a special python environment that was set up for running aTRAM, and these modules are loaded as part of the runaTRAM_c1.sh script. This version also assumes that you are working in the /lustre/ file system, which is not compatible with the sqlite files that aTRAM uses. To get around this, this version copies files to the /scratch/ space on the compute node, then back to the working directory. So if you are using C1, run:
 
+***Requires blast+, aTRAM 2.0, trinity, sqlite in your path.***
+
 ```
 ../FishLifeExonCapture/runaTRAM_c1.sh
 ```
 
 If you're not working in a /lustre/ system, and don't need the special python environment for C1, you can run:
 
-***Requires blast+, python3, trinity, and sqlite in your path.***
+***Requires blast+, aTRAM 2.0, trinity, sqlite in your path.***
 
 ```
 ../FishLifeExonCapture/runaTRAM.sh
