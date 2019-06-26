@@ -36,8 +36,25 @@ do
 			# Get contigs in the correct orientation
         	for f in trinity*.exonerate*fasta;
 	    	do
-	        	python2.7 ../../FishLifeExonCapture/filterExons.py -f $f -o $f.exonerate_filtered.final_contigs.fa -t $directory;
+	        	python2.7 ../../FishLifeExonCapture/filterExons.py -f $f -o $f.exonerate_filtered.fa -t $directory;
 		    done
+
+			# Filter again with CD-HIT
+			for f in *exonerate_filtered.fa;
+			do
+				cd-hit-est -i $f -o ${f%.*}.final_contigs.fa -c 0.99;
+			done	
+
+
+			# Count the number of loci that passed filters
+			ls *final_contigs.fa > passed.txt;
+			ls *exonerate_filtered.fa > assembled.txt;
+			passed=$(grep -o "trinity" passed.txt | wc -l);
+			assembled=$(grep -o "trinity" assembled.txt | wc -l);
+			failed=$(expr $assembled - $passed );
+			echo $passed loci passed all filters;
+			echo $failed loci failed filters;			
+
 			
 			
 		cd ../;
