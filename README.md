@@ -91,7 +91,10 @@ The previous step should have generated a .fq file for each locus (providing tha
 
 # Step 4: Run aTRAM
 
-This script uses the default parameters for aTRAM, using Velvet again as the assembler. It uses ten iterations, which seems to be sufficient for most loci. If you're trying to assemble something longer, like a full mitogenome, you'll want to run aTRAM directly and change this.
+This script uses the default parameters for aTRAM, using Trinity as the assembler. It uses five iterations, which seems to be sufficient for most loci. If you're trying to assemble something longer, like a full mitogenome, you may want to try MitoBIM or similar.
+
+***Both scripts below use 6 CPUs with Trinity. You should be able to request this directly from your scheduling software***
+
 
 Colonial One (C1) has a special python environment that was set up for running aTRAM, and these modules are loaded as part of the runaTRAM_c1.sh script. This version also assumes that you are working in the /lustre/ file system, which is not compatible with the sqlite files that aTRAM uses. To get around this, this version copies files to the /scratch/ space on the compute node, then back to the working directory. So if you are using C1, run:
 
@@ -112,12 +115,15 @@ If you're not working in a /lustre/ system, and don't need the special python en
 
 To efficiently filter the reading frames for the exons, we need to collapse highly similar contigs produced by aTRAM, and then get the reading frame from exonerate. This will produce a exonerate_filtered.fa file for each exon that passes the filters. 
 
-In this current version, the reading frames are percomorph-specific. More reading frame sets will be added, and this script will be modified to reflect that. 
+There are several versions of reading frames to use with Exonerate. More can be added upon request.
 
 
 ***You will need cd-hit and exonerate in your path. You will also need biopython and python2.7.***
+
+
+For percomorph fishes:
 ```
-../FishLifeExonCapture/ExonFiltering.sh
+../FishLifeExonCapture/ExonFilteringPerco.sh
 ```
 
 There is a second version to deal with the Otophysi set of markers available. The names of these loci start with 'G' instead of 'E'. It works the same way, it just calls a different set of markers and reading frames.
@@ -128,6 +134,9 @@ There is a second version to deal with the Otophysi set of markers available. Th
 ```
 ../FishLifeExonCapture/filterOtophysiExons.sh
 ```
+
+Note: Additional filtering references will be added for more divergent groups shortly! Stay tuned!
+
 
 # Step 6: Reading-Frame Aware Alignment
 
