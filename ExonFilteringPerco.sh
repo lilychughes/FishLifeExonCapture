@@ -55,12 +55,11 @@ do
 			passed=$(grep -o "trinity" passed.txt | wc -l);
 			assembled=$(grep -o "trinity" assembled.txt | wc -l);
 			failed=$(expr $assembled - $passed );
-			echo $passed loci passed all filters;
-			echo $failed loci failed filters;			
-			
-			
-		cd ../;
-			echo Filtering exons completed $directory > $directory.step5.exonfiltering.txt;	
+						
+		cd ../;			
+			echo $passed loci passed all filters >> $directory.step5.exonfiltering.txt;
+			echo $failed loci failed filters >> $directory.step5.exonfiltering.txt;			
+			echo Filtering exons completed $directory >> $directory.step5.exonfiltering.txt;	
 		fi;
 	fi;	
 done	
