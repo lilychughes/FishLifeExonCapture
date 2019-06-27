@@ -117,9 +117,10 @@ If you're not working in a /lustre/ system, and don't need the special python en
 
 # Step 5: Find reading frames and filter exons
 
-To efficiently filter the reading frames for the exons, we need to collapse highly similar contigs produced by aTRAM, and then get the reading frame from exonerate. This will produce a exonerate_filtered.fa file for each exon that passes the filters. 
+To efficiently filter the reading frames for the exons, we need to collapse identical contigs produced by aTRAM with CD-HIT, and then get the reading frame from exonerate. This will produce a exonerate_filtered.final_contigs.fa file for each exon that passes the filters. For a contig to pass to this final_contigs.fa file, it must have the correct reading frame as determined by exonerate. If only one contig assembled with the reading frame, the exon sequence passes directly to the final_contigs.fa file. If more than one contig assembled with the reading frame, the reading frames are compared with CD-HIT, and if they are 99% similar, the longer one will be passed onto the final_contigs.fa file. If the sequences are more divergent, they do not pass this filter.
 
-There are several versions of reading frames to use with Exonerate. More can be added upon request.
+
+There are several versions of reference reading frames to use with Exonerate. More can be added upon request.
 
 
 ***You will need cd-hit and exonerate in your path. You will also need biopython and python2.7.***
@@ -140,6 +141,15 @@ There is a second version to deal with the Otophysi set of markers available. Th
 ```
 
 Note: Additional filtering references will be added for more divergent groups shortly! Stay tuned!
+
+
+# Step 5b: Filter Exons and Flanking Introns (Optional)
+
+This is a recent feature. Instead of only including the portion of the assembled sequence that matches to the reference reading, it includes the entire contig. You should run Step 5 first, since this still requires the output of Exonerate to get the correct orientation of the contig. The final output files will end in .final_flanks.fa
+
+```
+../FishLifeExonCapture/filterFlanks.sh
+```
 
 
 # Step 6: Reading-Frame Aware Alignment
