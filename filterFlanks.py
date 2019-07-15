@@ -15,8 +15,7 @@ parser = argparse.ArgumentParser(description="Requires python 2.7 and Biopython.
 parser.add_argument('-f', '--fasta' , dest = 'fasta' , type = str , default= None , required= True, help = 'Fasta alignment to prune')
 parser.add_argument('-o', '--output', dest = 'output', type = str, default = None, required = True, help = 'Name of output file')
 parser.add_argument('-t', '--taxon', dest = 'taxon', type = str, default = None, required = True, help = 'Name of taxon')
-parser.add_argument('-l', '--flanks' dest = 'flanks', type = str, default = None, required = False, help = 'Complete assembled sequences')
-
+parser.add_argument('-l', '--flanks', dest = 'flanks', type = str, default = None, required = False, help = 'Complete assembled sequences')
 args, unknown = parser.parse_known_args()
 
 
