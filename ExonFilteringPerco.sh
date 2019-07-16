@@ -40,7 +40,7 @@ do
 			# Get contigs in the correct orientation
         	for f in trinity*.exonerate*fasta;
 	    	do
-	        	python2.7 ../../FishLifeExonCapture/filterExons.py -f $f -o $f.exonerate_filtered.fa -t $directory;
+	        	python ../../FishLifeExonCapture/filterExons.py -f $f -o $f.exonerate_filtered.fa -t $directory;
 		    done
 			
 			# Filter again with CD-HIT
@@ -49,14 +49,29 @@ do
 				cd-hit-est -i $f -o ${f%.*}.final_contigs.fa -c 0.99;
 			done	
 			
+			# Check which files have less than one, or more than one contig
+			# Files with no contigs are removed
+			# Files with more than one contig are labeled as 'failed'
+			for f in *final_contigs.fa;
+			do
+				count=$(grep -c ">" $f)
+				if [  $count -gt 1  ];
+				then
+				mv $f $f.failed;
+				elif [  $count -eq 0  ];
+				then
+				rm $f;
+				fi;
+			done
+
 			# Count the number of loci that passed filters
 			ls *final_contigs.fa > passed.txt;
-			ls *exonerate_filtered.fa > assembled.txt;
-			passed=$(grep -o "trinity" passed.txt | wc -l);
-			assembled=$(grep -o "trinity" assembled.txt | wc -l);
-			failed=$(expr $assembled - $passed );
-						
-		cd ../;			
+			ls *failed > failed.txt;
+			passed=$(grep -c "trinity" passed.txt);
+			failed=$(grep -c "trinity" failed.txt);
+			
+			
+		cd ../;
 			echo $passed loci passed all filters >> $directory.step5.exonfiltering.txt;
 			echo $failed loci failed filters >> $directory.step5.exonfiltering.txt;			
 			echo Filtering exons completed $directory >> $directory.step5.exonfiltering.txt;	

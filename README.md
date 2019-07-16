@@ -137,7 +137,7 @@ There is a second version to deal with the Otophysi set of markers available. Th
 
 ***You will need cd-hit and exonerate in your path. You will also need biopython and python2.7.***
 ```
-../FishLifeExonCapture/filterOtophysiExons.sh
+../FishLifeExonCapture/ExonFilteringOtophysi.sh
 ```
 
 Note: Additional filtering references will be added for more divergent groups shortly! Stay tuned!
@@ -145,10 +145,10 @@ Note: Additional filtering references will be added for more divergent groups sh
 
 # Step 5b: Filter Exons and Flanking Introns (Optional)
 
-This is a recent feature. Instead of only including the portion of the assembled sequence that matches to the reference reading, it includes the entire contig. You should run Step 5 first, since this still requires the output of Exonerate to get the correct orientation of the contig. The final output files will end in .final_flanks.fa
+This is a recent feature. Instead of only including the portion of the assembled sequence that matches to the reference reading, it includes the entire contig. You should run Step 5 first, since this still requires the output of Exonerate to get the correct orientation of the contig. The final output files will end in .filtered_flanks.fa
 
 ```
-../FishLifeExonCapture/filterFlanks.sh
+../FishLifeExonCapture/FlankFlitering.sh
 ```
 
 
@@ -196,6 +196,17 @@ do
 perl tx.pl -i $f -o $f.tx -p F;
 done
 ```
+
+# Step 6b: Alignment for contigs with flanking regions
+
+At this time, I don't use a reading-frame-aware aligner to deal with these sequences. The script below will gather the contigs with flanking regions that passed all filters into files that can be aligned for phylogenetic analysis.
+
+```
+../FishLifeExonCapture/preAlignment_Flanks.sh
+```
+
+This will create a folder called Alignments_Flanks
+
 
 # Step 7: Alignment Filtering (Optional)
 

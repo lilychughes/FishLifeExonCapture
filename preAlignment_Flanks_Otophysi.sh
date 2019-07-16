@@ -9,7 +9,7 @@ for directory in *;
 do
 if [  -d $directory  ];
 then
-cat $directory/exon*G0001*final_contigs.fa >> Alignments/G0001.unaligned.fasta;
+cat $directory/exon*G0001*filtered_flanks.fa >> Alignments_Flanks/G0001.unaligned.fasta;
 fi;
 done
 
@@ -20,7 +20,7 @@ do
 	do
 		if [  -d $directory  ];
 		then
-		cat $directory/trinity*.$exon.*final_contigs.fa >> Alignments/$exon.unaligned.fasta;
+		cat $directory/trinity*.$exon.*filtered_flanks.fa >> Alignments_Flanks/$exon.unaligned.fasta;
 		fi;
 	done;
 done < ../FishLifeExonCapture/OtophysiExons.txt
