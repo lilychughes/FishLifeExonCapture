@@ -20,10 +20,7 @@ args, unknown = parser.parse_known_args()
 
 
 # read in sequences
-input = open(args.fasta)
-records = list(SeqIO.parse(input, "fasta"))
-input.close()
-
+records = list(SeqIO.parse(args.fasta, "fasta"))
 
 # filter just the sequences in the correct orientation (known from the reference sequence used with exonerate)
 oriented = []
@@ -35,33 +32,21 @@ for record in records:
 	if end > start:
 		oriented.append(record)	
 
-if 'flanks' not in sys.argv:
-	
-	filtered = []
+WSdict = Bio.SeqIO.to_dict(SeqIO.parse(args.flanks,"fasta"))
 
-	for record in oriented:
-		filteredSeq = SeqRecord(record.seq, id=args.taxon, description='')
-		filtered.append(filteredSeq)
-
-	SeqIO.write(filtered, args.output, "fasta")
+genomic = []
 	
-else:
-	
-	WSdict = Bio.SeqIO.to_dict(SeqIO.parse(args.flanks,"fasta"))
-	
-	genomic = []
-	
-	for sequence in oriented:
-		genomicSeq = WSdict[sequence.id]
-		if sequence.seq in genomicSeq.seq:
-			newRecord = SeqRecord(genomicSeq.seq, id=args.taxon, description='')
-			genomic.append(newRecord)
-		else:
-			genomicSeqRev = genomicSeq.seq.reverse_complement()	
-			newRecord = SeqRecord(genomicSeqRev, id=args.taxon, description='')
-			genomic.append(newRecord)
+for sequence in oriented:
+	genomicSeq = WSdict[sequence.id]
+	if sequence.seq in genomicSeq.seq:
+		newRecord = SeqRecord(genomicSeq.seq, id=args.taxon, description='')
+		genomic.append(newRecord)
+	else:
+		genomicSeqRev = genomicSeq.seq.reverse_complement()	
+		newRecord = SeqRecord(genomicSeqRev, id=args.taxon, description='')
+		genomic.append(newRecord)
 			
-		
+SeqIO.write(genomic, args.output, "fasta")		
 
 
 
