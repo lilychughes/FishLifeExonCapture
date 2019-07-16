@@ -4,6 +4,15 @@
 mkdir Alignments/
 
 
+# cat COI (G0001)
+for directory in *;
+do
+if [  -d $directory  ];
+then
+cat $directory/exon*G0001*final_contigs.fa >> Alignments/G0001.unaligned.fasta;
+fi;
+done
+
 # cat individual exons into files for alignment
 while read -r exon;
 do
@@ -11,18 +20,10 @@ do
 	do
 		if [  -d $directory  ];
 		then
-		cat $directory/exon*.$exon.*filtered.fa >> Alignments/$exon.unaligned.fasta;
+		cat $directory/trinity*.$exon.*final_contigs.fa >> Alignments/$exon.unaligned.fasta;
 		fi;
 	done;
 done < ../FishLifeExonCapture/OtophysiExons.txt
 
 
 
-# cat COI (G0001)
-for directory in *;
-do
-if [  -d $directory  ];
-then
-cat $directory/exon*G0001*filtered.fa >> Alignments/G0001.unaligned.fasta;
-fi;
-done
