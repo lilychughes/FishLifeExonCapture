@@ -128,8 +128,19 @@ There are several versions of reference reading frames to use with Exonerate. Mo
 
 For percomorph fishes:
 ```
-../FishLifeExonCapture/ExonFilteringPerco.sh
+../FishLifeExonCapture/ExonFilteringPercomorph.sh
 ```
+
+For elopomorph fishes:
+```
+../FishLifeExonCapture/ExonFilteringOsteoglossomorph.sh
+```
+
+For osteoglossomorph fishes:
+```
+../FishLifeExonCapture/ExonFilteringOsteoglossomorph.sh
+```
+
 
 There is a second version to deal with the Otophysi set of markers available. The names of these loci start with 'G' instead of 'E'. It works the same way, it just calls a different set of markers and reading frames.
 
@@ -145,7 +156,7 @@ Note: Additional filtering references will be added for more divergent groups sh
 
 # Step 5b: Filter Exons and Flanking Introns (Optional)
 
-This is a recent feature. Instead of only including the portion of the assembled sequence that matches to the reference reading, it includes the entire contig. You should run Step 5 first, since this still requires the output of Exonerate to get the correct orientation of the contig. The final output files will end in .filtered_flanks.fa
+This is a recent feature. Instead of only including the portion of the assembled sequence that matches to the reference reading, it includes the entire contig. You should run Step 5 first, since this still requires the output of Exonerate to get the correct orientation of the contig. If more than one contig assembled with the reading frame, the contigs are compared with CD-HIT, and if they are 98% similar, the longer one will be passed to a file ending in .filtered_flanks.fa.
 
 ```
 ../FishLifeExonCapture/FlankFlitering.sh
