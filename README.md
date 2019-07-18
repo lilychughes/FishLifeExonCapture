@@ -29,7 +29,11 @@ CD-Hit
 
 # Step 0: Organize your fastq files into separate directories for each species
 
-You should establish a main working directory for all of your samples. Starting with a list of demultiplexed fastq files from the sequencer, we need to make separate directories to process our samples through the pipeline. These files are commonly gzip compressed (so you might see .fastq.gz or .fq.gz). 
+You should establish a main working directory for all of your samples. I'll call this 'Project_Directory' here, but go ahead and name it something meaningful to you. The 'Project_Directory' and the 'FishLifeExonCapture' folder should be next to each other.
+
+Move your raw fastq files into the Project_Directory, then cd into the Project_Directory.
+
+Starting with a list of paired-end demultiplexed fastq files from the sequencer, we need to make separate directories to process our samples through the pipeline. These files are commonly gzip compressed (so you might see .fastq.gz or .fq.gz). 
 
 Make directories for each of the fastq files, and move them to those directories:
 
@@ -43,18 +47,14 @@ done
 
 # Step 1: Run Trimmomatic to quality trim the sequences
 
-Run the trimmomatic-loop-PE.sh script in the main working directory. This calls the trimmomatic.jar file in the location where it is stored on Makaira. 
+Run the trimmomatic-loop-PE.sh script in the main working directory. You will need to edit the path to the Trimmomatic jar file for your particular system.
 
-***If you are running this on another system, you may want to make a copy of this file and change the path.***
-
-***You will need the path to the trimmomatic jar file*** 
+***If you are running this on another system, you may want to make a copy of this file and change the path to the trimmomatic jar file*** 
 ```
 ../FishLifeExonCapture/trimmomatic-loop-PE.sh
 ```
 
-Note: This script will look for a file called 'adapters.fa' in the main working directory, to trim out adapter contamination. Different sets of adapters are used for different library preparations, so you should check which are appropriate. Trimmomatic has all of these sequences packaged with it, so you can just move this to the 'adapters.fa' file. The adapters are proprietary Illumina sequences, so I have not included them here.
-
-There is a version for single-end files, trimmomatic-loop-SE.sh
+Note: This script will look for a file called 'adapters.fa' in the Project_Directory, to trim out adapter contamination. Different sets of adapters are used for different library preparations, so you should check which are appropriate. Trimmomatic has all of these sequences packaged with it, so you can just move this to the 'adapters.fa' file. The adapters are proprietary Illumina sequences, so I have not included them here.
 
 When the script is finished, each .fastq.gz file will have an associated .trimmed.fastq.gz file, and two 'rem' files. These are the leftover reads that no longer have mate-pairs.
 
@@ -69,8 +69,6 @@ This script maps the raw reads with bwa against the reference sequences that all
 ```
 ../FishLifeExonCapture/map-exons.sh
 ```
-
-Another version of the script is available to work with older versions (<2) of samtools.
 
 For the older set of Otophysi markers (see Arcila et al 2017), use:
 
@@ -98,21 +96,24 @@ This script uses the default parameters for aTRAM, using Trinity as the assemble
 ***Both scripts below use 6 CPUs with Trinity. You should be able to request this directly from your scheduling software***
 
 
-Colonial One (C1) has a special python environment that was set up for running aTRAM, and these modules are loaded as part of the runaTRAM_c1.sh script. This version also assumes that you are working in the /lustre/ file system, which is not compatible with the sqlite files that aTRAM uses. To get around this, this version copies files to the /scratch/ space on the compute node, then back to the working directory. So if you are using C1, run:
+***Requires blast+, aTRAM 2.0 and its dependencies, trinity, sqlite in your path.***
 
-***Requires blast+, aTRAM 2.0, trinity, sqlite in your path.***
+```
+../FishLifeExonCapture/runaTRAM.sh
+```
+
+
+
+
+Colonial One (the GW cluster) prefers that we run our jobs out of the /lustre/ partition, which is incompatible with the sqlite files that aTRAM uses. So for now, there's a separate script for running aTRAM in this environment that moves the files to the /scratch/ directory of the compute nodes.
+
+***Requires blast+, aTRAM 2.0 and its dependencies, trinity, sqlite in your path.***
 
 ```
 ../FishLifeExonCapture/runaTRAM_c1.sh
 ```
 
-If you're not working in a /lustre/ system, and don't need the special python environment for C1, you can run:
 
-***Requires blast+, aTRAM 2.0, trinity, sqlite in your path.***
-
-```
-../FishLifeExonCapture/runaTRAM.sh
-```
 
 
 # Step 5: Find reading frames and filter exons
@@ -142,7 +143,7 @@ For osteoglossomorph fishes:
 ```
 
 
-There is a second version to deal with the Otophysi set of markers available. The names of these loci start with 'G' instead of 'E'. It works the same way, it just calls a different set of markers and reading frames.
+There is a second version to deal with the Otophysi set of markers available (see Arcila et al. 2017). The names of these loci start with 'G' instead of 'E'. It works the same way, it just calls a different set of markers and reading frames.
 
 
 
@@ -156,7 +157,9 @@ Note: Additional filtering references will be added for more divergent groups sh
 
 # Step 5b: Filter Exons and Flanking Introns (Optional)
 
-This is a recent feature. Instead of only including the portion of the assembled sequence that matches to the reference reading, it includes the entire contig. You should run Step 5 first, since this still requires the output of Exonerate to get the correct orientation of the contig. If more than one contig assembled with the reading frame, the contigs are compared with CD-HIT, and if they are 98% similar, the longer one will be passed to a file ending in .filtered_flanks.fa.
+This is a new feature. You must run this AFTER running Step 5. 
+
+Instead of only including the portion of the assembled sequence that matches to the reference reading, it includes the entire contig. If more than one contig assembled with the reading frame, the contigs are compared with CD-HIT, and if they are 98% similar, the longer one will be passed to a file ending in .filtered_flanks.fa.
 
 ```
 ../FishLifeExonCapture/FlankFlitering.sh
@@ -261,8 +264,6 @@ If you want to flag divergent sequences, you can use the AlignmentChecker.py scr
 
 
 Other notes:
-
-I always look at the exons that are numbered higher than E1730 by eye. These exons have known paralogs, but were included in the dataset to connect with older PCR-based datasets. They are usually fine, but you can never be to careful.
 
 My python scripts always use fasta-formatted files because they are easier for me to work with. If you need other formats for phylogenetic analysis, the AlignmentConverter.py script is quite flexible. Just note that to specify a relaxed phylip format, you'll need to type phylip-relaxed (otherwise, it's strict phylip).
 
