@@ -30,7 +30,7 @@ do
 		contigs=$( grep -c ">" $directory/trinity*.$exon.*filtered_flanks.fa )
 		if [  $contigs -eq 1  ]
 		then
-		cat $directory/$exon.filtered_flanks.fasta >> Alignments_Flanks/$exon.unaligned.fasta;
+		cat $directory/trinity*$exon*.filtered_flanks.fa >> Alignments_Flanks/$exon.unaligned.fasta;
 		fi;
 		fi;
 	done;

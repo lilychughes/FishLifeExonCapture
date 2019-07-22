@@ -9,7 +9,7 @@ for directory in *;
 do
 if [  -d $directory  ];
 then
-cat $directory/exon*G0001*filtered_flanks.fa >> Alignments_Flanks/G0001.unaligned.fasta;
+cat $directory/trinity*G0001*filtered_flanks.fa >> Alignments_Flanks/G0001.unaligned.fasta;
 fi;
 done
 
