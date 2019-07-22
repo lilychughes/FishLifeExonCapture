@@ -35,6 +35,11 @@ Move your raw fastq files into the Project_Directory, then cd into the Project_D
 
 Starting with a list of paired-end demultiplexed fastq files from the sequencer, we need to make separate directories to process our samples through the pipeline. These files are commonly gzip compressed (so you might see .fastq.gz or .fq.gz). 
 
+Rename these fastq files as you want your samples to be named in your alignments, before the "\_R1.fastq.gz" endings. __Don't use special characters or spaces__, but letters, numbers, and underscores are ok. I typically name my files like this:
+
+Family_Genus_species_S1234_R1.fastq.gz
+Family_Genus_species_S1234_R2.fastq.gz
+
 Make directories for each of the fastq files, and move them to those directories:
 
 ```
