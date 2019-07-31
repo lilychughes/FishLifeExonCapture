@@ -36,7 +36,7 @@ goodColumnsAlignment = rawAlignment[:,0:0]
 for column in goodColumns:
     goodColumnsAlignment = goodColumnsAlignment+column
 
-# Remove gappy edges using a sliding window of 15 basepairs, removing codons where the average is more than 60% gaps
+# Remove gappy edges using a user-specified gap threshold. This trimmer is codon-aware. Use the AlignmentCleanerSimple.py script if you are not trying to maintain reading frames.
 
 def TrimEdges(alignment):
     """Trims gappy edges of alignments with more than the default 60% gaps given an alignment object"""
