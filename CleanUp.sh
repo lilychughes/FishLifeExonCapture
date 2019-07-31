@@ -15,7 +15,6 @@ rm $directory/*cdhit;
 rm $directory/*all_contigs*;
 rm $directory/*exonerate.fasta;
 rm $directory/*.fq;
-rm $directory/*initial.combined.fa
 fi;
 done
 
