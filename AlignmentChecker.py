@@ -27,7 +27,7 @@ alignment = AlignIO.read(args.fasta, "fasta")
 NewSeqs = []
 
 for record in alignment:
-	original = str(record.seq.upper()).replace("N","-")
+	original = str(record.seq.upper()).replace("N","-").replace("R","-").replace("Y","-").replace("W","-").replace("S","-").replace("K","-").replace("M","-")
 	new = Seq(original)
 	NewRecord = SeqRecord(new, id = record.id, description = '')
 	NewSeqs.append(NewRecord)
