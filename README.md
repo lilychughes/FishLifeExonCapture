@@ -139,7 +139,7 @@ For percomorph fishes:
 
 For elopomorph fishes:
 ```
-../FishLifeExonCapture/ExonFilteringOsteoglossomorph.sh
+../FishLifeExonCapture/ExonFilteringElopomorph.sh
 ```
 
 For osteoglossomorph fishes:
