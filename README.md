@@ -70,14 +70,14 @@ aTRAM gets better assemblies than other software, but for its first iteration, i
 
 This script maps the raw reads with bwa against the reference sequences that all exon baits were designed on, as well as coding mitochondrial genes. These sequences are included in the all_Master.fasta file. It then makes individual fastq files for each locus, with PCR duplicates removed.
 
-***You will need bwa,samtools 1.7 or higher in your path. You will also need biopython and python2.7.***
+***You will need bwa,samtools 1.7 or higher in your path. You will also need biopython and python2.7 or python3.***
 ```
 ../FishLifeExonCapture/map-exons.sh
 ```
 
 For the older set of Otophysi markers (see Arcila et al 2017), use:
 
-***You will need bwa,samtools 1.7 or higher in your path. You will also need biopython and python2.7.***
+***You will need bwa,samtools 1.7 or higher in your path. You will also need biopython and python2.7 or python3.***
 ```
 ../FishLifeExonCapture/map-exons-Otophysi.sh
 ```
@@ -87,7 +87,7 @@ For the older set of Otophysi markers (see Arcila et al 2017), use:
 The previous step should have generated a .fq file for each locus (providing that some reads mapped to the reference sequences ). Now we can generate an initial assembly for each locus with Velvet. This script runs the assemblies for .fq files that contain reads and removes empty files. It then pulls out the longest assembled contig to feed to aTRAM.
 
 
-***You will need velvet in your path. You will also need biopython and python2.7.***
+***You will need velvet in your path. You will also need biopython and python2.7 or python3.***
 ```
 ../FishLifeExonCapture/initialVelvet.sh
 ```
@@ -129,7 +129,7 @@ To efficiently filter the reading frames for the exons, we need to collapse iden
 There are several versions of reference reading frames to use with Exonerate. More can be added upon request.
 
 
-***You will need cd-hit and exonerate in your path. You will also need biopython and python2.7.***
+***You will need cd-hit and exonerate in your path. You will also need biopython and python2.7 or python3.***
 
 
 For percomorph fishes:
@@ -152,7 +152,7 @@ There is a second version to deal with the Otophysi set of markers available (se
 
 
 
-***You will need cd-hit and exonerate in your path. You will also need biopython and python2.7.***
+***You will need cd-hit and exonerate in your path. You will also need biopython and python2.7 or python3.***
 ```
 ../FishLifeExonCapture/ExonFilteringOtophysi.sh
 ```
@@ -231,7 +231,7 @@ This will create a folder called Alignments_Flanks
 
 There are several alignment filtering scripts included in this repository. 
 
-***All require biopython and are written for python2.7.***
+***All require biopython and are written for python2.7, but will also run with python3.***
 
 ***AlignmentCleaner.py***
 
