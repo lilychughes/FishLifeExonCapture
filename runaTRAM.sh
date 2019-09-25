@@ -7,7 +7,7 @@ for directory in *;
 do
 if [  -d $directory  ];
 then
-	if [  ! -e $directory.aTRAM.txt  ];
+	if [  ! -e $directory.step4.aTRAM.txt  ];
 	then
 		echo $directory aTRAM assembly started > $directory.step4.aTRAM.txt
 		cd $directory;
