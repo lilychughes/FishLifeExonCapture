@@ -233,7 +233,7 @@ There are several alignment filtering scripts included in this repository.
 
 ***All require biopython and are written for python2.7, but will also run with python3.***
 
-***AlignmentCleaner.py***
+***AlignmentCleanerCodons.py***
 
 This is a multi-purpose script that cleans:
 
@@ -249,7 +249,7 @@ If you want to clean out edges composed of more than 60% gaps, single-taxon inse
 # Nuclear Exons aligned with MACSE2
 for f in E*NT_aligned.fasta;
 do
-python ../../FishLifeExonCapture/AlignmentCleaner.py -f $f -o $f.cleaned.fasta -c 0.5 -t 0.6;
+python ../../FishLifeExonCapture/AlignmentCleanerCodons.py -f $f -o $f.cleaned.fasta -c 0.5 -t 0.6;
 done
 ```
 
