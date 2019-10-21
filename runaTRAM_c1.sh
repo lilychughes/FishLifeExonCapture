@@ -37,27 +37,39 @@ then
 	then
 		echo $directory aTRAM assembly started > $directory.step4.aTRAM.txt
 		cd $directory;
+		gunzip *rmdup.fastq.gz;
 		cp $directory.rmdup.fastq /scratch/;
 		cp *fa /scratch/;
 		cd /scratch/;
 		mkdir temp;
-		# if you want to change atram_preprocessor.py options, change here:
-		atram_preprocessor.py -b $directory --mixed-ends *fastq -t /scratch/temp/ --fastq;
-		for f in *.initial.combined.fa;
-		do
-			if [  ! -e ${f%.*.*.*.*.*.*.*.*}.${f%.*}.step4.aTRAM.log  ];
-			then 
-			# if you want to change atram.py options, change here:
-			atram.py -b $directory -q $f -a trinity -o trinity -i 5;
-			mv *fasta $BASEDIR/$directory/;
+		atram_preprocessor.py -b ${directory%/} --mixed-ends *.fastq -t /scratch/temp/;
+		ls *blast* > preprocess_files.txt;
+			if [  ! -s preprocess_files.txt  ];
+			then
+				echo atram_preprocessor.py is not running correctly. Check aTRAM_preprocessor log files in $directory. >> $BASEDIR/$directory.step4.aTRAM.txt
+			else
+				for f in *.initial.combined.fa;
+				do
+					if [  ! -e ${f%.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
+					then 
+						atram.py -b ${directory%/} -q $f -a trinity -o trinity -i 5 --cpus 6;
+						mv *fasta $BASEDIR/$directory/;
+						mv *log $BASEDIR/$directory/;
+						rm /scratch/*;
+						rm -r /scratch/temp/;
+					fi;
+				done;
+			fi;	
+		cd $BASEDIR/$directory;	
+		gzip *fastq;
+		ls *filtered_contigs.fasta > atram_list.txt
+			if [  ! -s atram_list.txt  ];
+			then
+				echo aTRAM did not assemble any contigs. Check aTRAM log files in $directory and check all dependencies are loaded (blast, Trinity, samtools) >> $BASEDIR/$directory.step4.aTRAM.txt;
+			else 			
+				echo aTRAM assembly completed $directory >> $BASEDIR/$directory.step4.aTRAM.txt;
 			fi;
-		done;
-		mv *log $BASEDIR/$directory/;
-		cd 	$BASEDIR/$directory/;
-		rm /scratch/*;
-		rm -r /scratch/temp/
-		cd ../;
-		echo aTRAM assembly completed $directory >> $directory.step4.aTRAM.txt;
+		cd $BASEDIR;
 	fi;	
 fi;
 done	
