@@ -30,7 +30,7 @@ then
 		ls *filtered_contigs.fasta > atram_list.txt
 			if [  ! -s atram_list.txt  ];
 			then
-				echo aTRAM did not assemble any contigs. Check aTRAM log files in $directory and check all dependencies are loaded (blast, Trinity, samtools) >> ../$directory.step4.aTRAM.txt;
+				echo aTRAM did not assemble any contigs. Check aTRAM log files in $directory and check all dependencies are loaded >> ../$directory.step4.aTRAM.txt;
 			else 			
 				echo aTRAM assembly completed $directory >> ../$directory.step4.aTRAM.txt
 			fi;
