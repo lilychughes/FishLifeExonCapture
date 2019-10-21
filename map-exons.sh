@@ -1161,7 +1161,7 @@ if [  -s $directory/${directory%/}.rmdup.fastq  ];
 then
 echo Mapping completed $directory >> ${directory%/}.step2.readmapping.txt;
 else
-echo Mapping was not completed. Check that all dependencies (BWA, Samtools 1.7 or higher) are installed >> ${directory%/}.step2.readmapping.txt;
+echo Mapping was not completed. Check that all dependencies i.e, BWA, Samtools 1.7 or higher, are installed >> ${directory%/}.step2.readmapping.txt;
 fi;
 fi;
 done
