@@ -25,6 +25,7 @@ source $aTRAM
 BASEDIR=$( pwd )
 ###
 
+
 ### requested by C1 staff
 lfs setstripe $BASEDIR -c 1
 
@@ -41,8 +42,7 @@ then
 		cp $directory.rmdup.fastq /scratch/;
 		cp *fa /scratch/;
 		cd /scratch/;
-		mkdir temp;
-		atram_preprocessor.py -b ${directory%/} --mixed-ends *.fastq -t /scratch/temp/;
+		atram_preprocessor.py -b ${directory%/} --mixed-ends *.fastq;
 		ls *blast* > preprocess_files.txt;
 			if [  ! -s preprocess_files.txt  ];
 			then
@@ -50,16 +50,12 @@ then
 			else
 				for f in *.initial.combined.fa;
 				do
-					if [  ! -e ${f%.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
-					then 
 						atram.py -b ${directory%/} -q $f -a trinity -o trinity -i 5 --cpus 6;
 						mv *fasta $BASEDIR/$directory/;
 						mv *log $BASEDIR/$directory/;
-						rm /scratch/*;
-						rm -r /scratch/temp/;
-					fi;
 				done;
 			fi;	
+		rm /scratch/*;
 		cd $BASEDIR/$directory;	
 		gzip *fastq;
 		ls *filtered_contigs.fasta > atram_list.txt
