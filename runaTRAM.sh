@@ -11,21 +11,30 @@ then
 	then
 		echo $directory aTRAM assembly started > $directory.step4.aTRAM.txt
 		cd $directory;
+		gunzip *rmdup.fastq.gz;
 		atram_preprocessor.py -b ${directory%/} --mixed-ends *.fastq;
-		for f in *.initial.combined.fa;
-			do
-				if [  ! -e ${f%.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
+		ls *blast* > preprocess_files.txt;
+			if [  ! -s preprocess_files.txt  ];
+			then
+				echo atram_preprocessor.py is not running correctly. Check aTRAM_preprocessor log files in $directory. >> ../$directory.step4.aTRAM.txt
+			else
+				for f in *.initial.combined.fa;
+				do
+					if [  ! -e ${f%.*.*.*.*.*.*.*}.${f%.*}.atram.log  ];
 					then 
-					atram.py -b ${directory%/} -q $f -a trinity -o trinity -i 5 --cpus 6;
-				fi;
-			done;
-		gzip *fastq;	
+						atram.py -b ${directory%/} -q $f -a trinity -o trinity -i 5 --cpus 6;
+					fi;
+				done;
+			fi;	
+		gzip *fastq;
+		ls *filtered_contigs.fasta > atram_list.txt
+			if [  ! -s atram_list.txt  ];
+			then
+				echo aTRAM did not assemble any contigs. Check aTRAM log files in $directory and check all dependencies are loaded >> ../$directory.step4.aTRAM.txt;
+			else 			
+				echo aTRAM assembly completed $directory >> ../$directory.step4.aTRAM.txt
+			fi;
 		cd ../;
-		echo aTRAM assembly completed $directory >> $directory.step4.aTRAM.txt
 	fi;	
 fi;
 done	
-	 	
-
-	
-# may add a clean-up step to remove extra aTRAM files

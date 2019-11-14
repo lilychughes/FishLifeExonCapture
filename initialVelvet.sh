@@ -25,8 +25,18 @@ do
 				rm $f;
 				fi;
 			done;
+			ls -d *initial > velvet_directories.txt;
+			ls *.initial.combined.fa > velvet_output.txt;
+				if [  ! -s velvet_directories.txt  ];
+				then
+				echo Initial assemblies failing. Check that Step 2 completed successfully & velevet installation >> ../$directory.step3.initialVelvet.txt;
+				elif [  ! -s velvet_output.txt  ];
+				then
+				echo Initial assemblies failing. Check your Biopython installation. >> ../$directory.step3.initialVelvet.txt;
+				else
+				echo Completed initial assemblies >> ../$directory.step3.initialVelvet.txt;	
+				fi;
 		cd ../;
-		echo Completed initial assemblies >> $directory.step3.initialVelvet.txt;	
 		fi;		
 	fi;
 done

@@ -71,10 +71,12 @@ do
 			failed=$(grep -c "trinity" failed.txt);
 			
 			
+			# Clean up empty files
+			rm *.\*.*;
+			
+			echo $passed loci passed all filters >> ../$directory.step5.exonfiltering.txt;
+			echo $failed loci failed filters >> ../$directory.step5.exonfiltering.txt;			
 		cd ../;
-			echo $passed loci passed all filters >> $directory.step5.exonfiltering.txt;
-			echo $failed loci failed filters >> $directory.step5.exonfiltering.txt;			
-			echo Filtering exons completed $directory >> $directory.step5.exonfiltering.txt;	
 		fi;
 	fi;	
 done	
