@@ -8,7 +8,7 @@ module load samtools
 module load blast+
 
 # aTRAM needs to be locally installed on Pegasus, and added to your path
-# I have a miniconda3 installation, and it seems to work fine for installing dependencies of aTRAM
+# I have a miniconda3 installation, and it seems to work fine for installing dependencies of aTRAMup
 
 
 # Altered slightly for Pegasus, because the sqlite databases won't work on the /lustre/ file system
@@ -37,9 +37,9 @@ then
 		echo $directory aTRAM assembly started > $directory.step4.aTRAM.txt
 		cd $directory;
 		gunzip *rmdup.fastq.gz;
-		cp $directory.rmdup.fastq /scratch/;
-		cp *fa /scratch/;
-		cd /scratch/;
+		cp $directory.rmdup.fastq /local/;
+		cp *fa /local/;
+		cd /local/;
 		atram_preprocessor.py -b ${directory%/} --mixed-ends *.fastq;
 		ls *blast* > preprocess_files.txt;
 			if [  ! -s preprocess_files.txt  ];
@@ -53,7 +53,7 @@ then
 						mv *log $BASEDIR/$directory/;
 				done;
 			fi;	
-		rm /scratch/*;
+		rm /local/*;
 		cd $BASEDIR/$directory;	
 		gzip *fastq;
 		ls *filtered_contigs.fasta > atram_list.txt
