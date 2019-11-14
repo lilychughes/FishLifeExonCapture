@@ -1168,4 +1168,5 @@ else
 	echo Mapping was not completed. Check that BWA and Samtools 1.7 or higher are installed >> ${directory%/}.step2.readmapping.txt;
 	fi;
 fi;
+fi;
 done
