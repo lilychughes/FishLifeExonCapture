@@ -15,6 +15,10 @@ rm $directory/*cdhit;
 rm $directory/*all_contigs*;
 rm $directory/*exonerate.fasta;
 rm $directory/*.fq;
+rm $directory/*blast*;
+rm $directory/*bam;
+rm $directory/*bai;
+rm $directory/*sqlite*;
 fi;
 done
 
