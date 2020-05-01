@@ -53,6 +53,18 @@ def TrimEdges(alignment):
 
 trimmedAlignment = TrimEdges(goodColumnsAlignment)
 
+# delete sequences with too much missing data
+
+goodTaxa = []
+
+for record in trimmedAlignment:
+    seq = record.seq
+    gaps = seq.count("-")
+    if gaps < (trimmedAlignment.get_alignment_length()*args.coverage):
+        goodTaxa.append(record)
+
+TaxAlignment =  MultipleSeqAlignment(goodTaxa)
+
 # write the cleaned alignment to a new file
 
-AlignIO.write(trimmedAlignment, args.output, "fasta")
+AlignIO.write(TaxAlignment, args.output, "fasta")
