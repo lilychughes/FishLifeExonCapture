@@ -8,7 +8,7 @@ Trimmomatic
 
 aTRAM (requires Python 3)
 
-samtools 1.8 or above
+samtools 1.7 - 1.9 (but not 1.10 for now)
 
 BLAST+ (command line)
 
@@ -70,14 +70,14 @@ aTRAM gets better assemblies than other software, but for its first iteration, i
 
 This script maps the raw reads with bwa against the reference sequences that all exon baits were designed on, as well as coding mitochondrial genes. These sequences are included in the all_Master.fasta file. It then makes individual fastq files for each locus, with PCR duplicates removed.
 
-***You will need bwa,samtools 1.7 or higher in your path. You will also need biopython and python2.7 or python3.***
+***You will need bwa,samtools 1.7-1.9 in your path. You will also need biopython and python2.7 or python3.***
 ```
 ../FishLifeExonCapture/map-exons.sh
 ```
 
 For the older set of Otophysi markers (see Arcila et al 2017), use:
 
-***You will need bwa,samtools 1.7 or higher in your path. You will also need biopython and python2.7 or python3.***
+***You will need bwa,samtools 1.7-1.9 in your path. You will also need biopython and python2.7 or python3.***
 ```
 ../FishLifeExonCapture/map-exons-Otophysi.sh
 ```
