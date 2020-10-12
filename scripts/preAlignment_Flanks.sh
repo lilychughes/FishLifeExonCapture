@@ -18,7 +18,7 @@ do
 		fi;
 		fi;
 	done;
-done < ../FishLifeExonCapture/ExonList.txt
+done < ../FishLifeExonCapture/scripts/ExonList.txt
 
 # cat individual mitochondrial exons into files for alignment
 while read -r exon;
@@ -34,5 +34,5 @@ do
 		fi;
 		fi;
 	done;
-done < ../FishLifeExonCapture/MitochondrialExonList.txt
+done < ../FishLifeExonCapture/scripts/MitochondrialExonList.txt
 

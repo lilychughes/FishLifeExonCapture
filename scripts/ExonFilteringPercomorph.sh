@@ -24,23 +24,23 @@ do
 			while read -r exon;
 			do
 				filterfile=$( echo trinity*$exon.*.cdhit );
-				exonerate --model coding2genome -t $filterfile -q ../../FishLifeExonCapture/ReadingFramesPercomorph/$exon.fasta --ryo ">%ti\t%qab-%qae\n%tas" --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 2 > $filterfile.exonerate.fasta;
+				exonerate --model coding2genome -t $filterfile -q ../../FishLifeExonCapture/scripts/ReadingFramesPercomorph/$exon.fasta --ryo ">%ti\t%qab-%qae\n%tas" --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 2 > $filterfile.exonerate.fasta;
 				sed -i 's/-- completed exonerate analysis//g' $filterfile.exonerate.fasta;
-			done < ../../FishLifeExonCapture/ExonList.txt
+			done < ../../FishLifeExonCapture/scripts/ExonList.txt
 			
 
 			# Filter mitochondrial exons with exonerate
 			while read -r exon;
 			do
 				filterfile=$( echo trinity*$exon.*.cdhit );
-				exonerate --model coding2genome -t $filterfile -q ../../FishLifeExonCapture/ReadingFramesPercomorph/$exon.fasta --ryo ">%ti\t%qab-%qae\n%tas" --geneticcode 2 --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 2 > $filterfile.exonerateMito.fasta;
+				exonerate --model coding2genome -t $filterfile -q ../../FishLifeExonCapture/scripts/ReadingFramesPercomorph/$exon.fasta --ryo ">%ti\t%qab-%qae\n%tas" --geneticcode 2 --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 2 > $filterfile.exonerateMito.fasta;
 			sed -i 's/-- completed exonerate analysis//g' $filterfile.exonerateMito.fasta;
-			done < ../../FishLifeExonCapture/MitochondrialExonList.txt
+			done < ../../FishLifeExonCapture/scripts/MitochondrialExonList.txt
 			
 			# Get contigs in the correct orientation
         	for f in trinity*.exonerate*fasta;
 	    	do
-	        	python ../../FishLifeExonCapture/filterExons.py -f $f -o $f.exonerate_filtered.fa -t $directory;
+	        	python ../../FishLifeExonCapture/scripts/filterExons.py -f $f -o $f.exonerate_filtered.fa -t $directory;
 		    done
 			
 			# Filter again with CD-HIT

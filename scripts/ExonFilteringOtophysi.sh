@@ -1,7 +1,7 @@
 #!/bin/sh
 
-
 #Filtering with CD-HIT & Exonerate
+#For Otophysi markers - these start with G
 
 
 for directory in *;
@@ -24,31 +24,28 @@ do
 			while read -r exon;
 			do
 				filterfile=$( echo trinity*$exon.*.cdhit );
-				exonerate --model coding2genome -t $filterfile -q ../../FishLifeExonCapture/ReadingFramesElopomorph/$exon.fasta --ryo ">%ti\t%qab-%qae\n%tas" --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 2 > $filterfile.exonerate.fasta;
+				exonerate --model coding2genome -t $filterfile -q ../../FishLifeExonCapture/scripts/ReadingFramesOtophysi/$exon.fasta --ryo ">%ti\t%qab-%qae\n%tas" --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 2 > $filterfile.exonerate.fasta;
 				sed -i 's/-- completed exonerate analysis//g' $filterfile.exonerate.fasta;
-			done < ../../FishLifeExonCapture/ExonList.txt
+			done < ../../FishLifeExonCapture/scripts/OtophysiExons.txt
 			
 
 			# Filter mitochondrial exons with exonerate
-			while read -r exon;
-			do
-				filterfile=$( echo trinity*$exon.*.cdhit );
-				exonerate --model coding2genome -t $filterfile -q ../../FishLifeExonCapture/ReadingFramesElopomorph/$exon.fasta --ryo ">%ti\t%qab-%qae\n%tas" --geneticcode 2 --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 2 > $filterfile.exonerateMito.fasta;
-			sed -i 's/-- completed exonerate analysis//g' $filterfile.exonerateMito.fasta;
-			done < ../../FishLifeExonCapture/MitochondrialExonList.txt
+			filterfile=$( echo trinity*$exon.*G0001*.cdhit );
+			exonerate --model coding2genome -t $filterfile -q ../../FishLifeExonCapture/scripts/ReadingFramesOtophysi/G0001.fasta --ryo ">%ti\t%qab-%qae\n%tas" --geneticcode 2 --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 2 > $filterfile.exonerateMito.fasta;
 			
 			# Get contigs in the correct orientation
         	for f in trinity*.exonerate*fasta;
 	    	do
-	        	python ../../FishLifeExonCapture/filterExons.py -f $f -o $f.exonerate_filtered.fa -t $directory;
+	        	python ../../FishLifeExonCapture/scripts/filterExons.py -f $f -o $f.exonerate_filtered.fa -t $directory;
 		    done
-			
+
 			# Filter again with CD-HIT
 			for f in *exonerate_filtered.fa;
 			do
 				cd-hit-est -i $f -o ${f%.*}.final_contigs.fa -c 0.99;
 			done	
-			
+
+
 			# Check which files have less than one, or more than one contig
 			# Files with no contigs are removed
 			# Files with more than one contig are labeled as 'failed'

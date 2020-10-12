@@ -19,7 +19,7 @@ do
 			# Get contigs with reading frames & flanking regions in the correct orientation
 			for f in *cdhit;
 			do
-				python ../../FishLifeExonCapture/filterFlanks.py -f $f.exonerate.fasta -l $f -o $f.flanks -t $directory;
+				python ../../FishLifeExonCapture/scripts/filterFlanks.py -f $f.exonerate.fasta -l $f -o $f.flanks -t $directory;
 			done	
 
 			

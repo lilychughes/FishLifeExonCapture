@@ -23,7 +23,7 @@ do
 		cat $directory/trinity*.$exon.*filtered_flanks.fa >> Alignments_Flanks/$exon.unaligned.fasta;
 		fi;
 	done;
-done < ../FishLifeExonCapture/OtophysiExons.txt
+done < ../FishLifeExonCapture/scripts/OtophysiExons.txt
 
 
 

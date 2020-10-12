@@ -13,7 +13,7 @@ then
 	echo mapping started $directory > ${directory%/}.step2.readmapping.txt;
 		gunzip $directory/${directory%/}_R1.trimmed.fastq.gz;
 		gunzip $directory/${directory%/}_R2.trimmed.fastq.gz;
-		bwa mem ../FishLifeExonCapture/ALL_Master_Otophysi.fasta $directory/${directory%/}_R1.trimmed.fastq $directory/${directory%/}_R2.trimmed.fastq | samtools view -bS -o $directory/${directory%/}.mapped.bam -;
+		bwa mem ../FishLifeExonCapture/scripts/ALL_Master_Otophysi.fasta $directory/${directory%/}_R1.trimmed.fastq $directory/${directory%/}_R2.trimmed.fastq | samtools view -bS -o $directory/${directory%/}.mapped.bam -;
 		samtools sort $directory/${directory%/}.mapped.bam > $directory/${directory%/}.mapped.sorted.bam;
 		samtools rmdup -S $directory/${directory%/}.mapped.sorted.bam $directory/${directory%/}.mapped.sorted.rmdup.bam;
 	    samtools index $directory/${directory%/}.mapped.sorted.rmdup.bam;
