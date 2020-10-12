@@ -56,7 +56,7 @@ Run the trimmomatic-loop-PE.sh script in the main working directory. You will ne
 
 ***If you are running this on another system, you may want to make a copy of this file and change the path to the trimmomatic jar file*** 
 ```
-../FishLifeExonCapture/trimmomatic-loop-PE.sh
+../FishLifeExonCapture/scripts/trimmomatic-loop-PE.sh
 ```
 
 Note: This script will look for a file called 'adapters.fa' in the Project_Directory, to trim out adapter contamination. Different sets of adapters are used for different library preparations, so you should check which are appropriate. Trimmomatic has all of these sequences packaged with it, so you can just move this to the 'adapters.fa' file. The adapters are proprietary Illumina sequences, so I have not included them here.
@@ -72,14 +72,14 @@ This script maps the raw reads with bwa against the reference sequences that all
 
 ***You will need bwa,samtools 1.7-1.9 in your path. You will also need biopython and python2.7 or python3.***
 ```
-../FishLifeExonCapture/map-exons.sh
+../FishLifeExonCapture/scripts/map-exons.sh
 ```
 
 For the older set of Otophysi markers (see Arcila et al 2017), use:
 
 ***You will need bwa,samtools 1.7-1.9 in your path. You will also need biopython and python2.7 or python3.***
 ```
-../FishLifeExonCapture/map-exons-Otophysi.sh
+../FishLifeExonCapture/scripts/map-exons-Otophysi.sh
 ```
 
 # Step 3: Build initial assemblies in Velvet
@@ -89,7 +89,7 @@ The previous step should have generated a .fq file for each locus (providing tha
 
 ***You will need velvet in your path. You will also need biopython and python2.7 or python3.***
 ```
-../FishLifeExonCapture/initialVelvet.sh
+../FishLifeExonCapture/scripts/initialVelvet.sh
 ```
 
 
@@ -104,7 +104,7 @@ This script uses the default parameters for aTRAM, using Trinity as the assemble
 ***Requires blast+, aTRAM 2.0 and its dependencies, trinity, sqlite in your path.***
 
 ```
-../FishLifeExonCapture/runaTRAM.sh
+../FishLifeExonCapture/scripts/runaTRAM.sh
 ```
 
 
@@ -115,7 +115,7 @@ Colonial One (the GW cluster) prefers that we run our jobs out of the /lustre/ p
 ***Requires blast+, aTRAM 2.0 and its dependencies, trinity, sqlite in your path.***
 
 ```
-../FishLifeExonCapture/runaTRAM_c1.sh
+../FishLifeExonCapture/scripts/runaTRAM_c1.sh
 ```
 
 
@@ -134,17 +134,17 @@ There are several versions of reference reading frames to use with Exonerate. Mo
 
 For percomorph fishes:
 ```
-../FishLifeExonCapture/ExonFilteringPercomorph.sh
+../FishLifeExonCapture/scripts/ExonFilteringPercomorph.sh
 ```
 
 For elopomorph fishes:
 ```
-../FishLifeExonCapture/ExonFilteringElopomorph.sh
+../FishLifeExonCapture/scripts/ExonFilteringElopomorph.sh
 ```
 
 For osteoglossomorph fishes:
 ```
-../FishLifeExonCapture/ExonFilteringOsteoglossomorph.sh
+../FishLifeExonCapture/scripts/ExonFilteringOsteoglossomorph.sh
 ```
 
 
@@ -154,7 +154,7 @@ There is a second version to deal with the Otophysi set of markers available (se
 
 ***You will need cd-hit and exonerate in your path. You will also need biopython and python2.7 or python3.***
 ```
-../FishLifeExonCapture/ExonFilteringOtophysi.sh
+../FishLifeExonCapture/scripts/ExonFilteringOtophysi.sh
 ```
 
 Note: Additional filtering references will be added for more divergent groups shortly! Stay tuned!
@@ -167,7 +167,7 @@ This is a new feature. You must run this AFTER running Step 5.
 Instead of only including the portion of the assembled sequence that matches to the reference reading, it includes the entire contig. If more than one contig assembled with the reading frame, the contigs are compared with CD-HIT, and if they are 98% similar, the longer one will be passed to a file ending in .filtered_flanks.fa.
 
 ```
-../FishLifeExonCapture/FlankFlitering.sh
+../FishLifeExonCapture/scripts/FlankFlitering.sh
 ```
 
 
@@ -176,13 +176,13 @@ Instead of only including the portion of the assembled sequence that matches to 
 First we need to gather all the separate exon files into a single file that we can use for alignment. The following script will make a new directory called Alignments/, and .unaligned.fasta files for each exon. It's just a bash script, so it doesn't require extra software.
 
 ```
-../FishLifeExonCapture/preAlignment.sh
+../FishLifeExonCapture/scripts/preAlignment.sh
 ```
 
 An alternative version exists for the older set of Otophysan markers:
 
 ```
-../FishLifeExonCapture/preAlignment_Otophysi.sh
+../FishLifeExonCapture/scripts/preAlignment_Otophysi.sh
 ```
 
 Now we need to align all of the files in the new Alignments/ directory. Move into the Alignments directory. You will now run scripts out of this directory.
@@ -195,14 +195,14 @@ To run MACSE2:
 
 ```
 cd Alignments/
-../../FishLifeExonCapture/run_macse.sh
+../../FishLifeExonCapture/scripts/run_macse.sh
 ```
 
 As with the last step, there is an alternative script for the otophysan markers:
 
 ```
 cd Alignments/
-../../FishLifeExonCapture/run_macse_Otophysi.sh
+../../FishLifeExonCapture/scripts/run_macse_Otophysi.sh
 ```
 
 
@@ -221,7 +221,7 @@ done
 At this time, I don't use a reading-frame-aware aligner to deal with these sequences. The script below will gather the contigs with flanking regions that passed all filters into files that can be aligned for phylogenetic analysis.
 
 ```
-../FishLifeExonCapture/preAlignment_Flanks.sh
+../FishLifeExonCapture/scripts/preAlignment_Flanks.sh
 ```
 
 This will create a folder called Alignments_Flanks
@@ -249,7 +249,7 @@ If you want to clean out edges composed of more than 60% gaps, single-taxon inse
 # Nuclear Exons aligned with MACSE2
 for f in E*NT_aligned.fasta;
 do
-python ../../FishLifeExonCapture/AlignmentCleanerCodons.py -f $f -o $f.cleaned.fasta -c 0.5 -t 0.6;
+python ../../FishLifeExonCapture/scripts/AlignmentCleanerCodons.py -f $f -o $f.cleaned.fasta -c 0.5 -t 0.6;
 done
 ```
 
@@ -259,7 +259,7 @@ Other Utilities:
 If I want to drop the  taxa from an alignment for any reason, I use the dropTaxa.py script. It just takes a text file of names to remove from a fasta file (one name per line), the fasta file to prune, and the name of an output file. 
 
 ```
-python ../../FishLifeExonCapture/dropTaxa.py -f E0001.NT_aligned.fasta -o E0001.NT_aligned.dropped.fasta -t badTaxaList.txt;
+python ../../FishLifeExonCapture/scripts/dropTaxa.py -f E0001.NT_aligned.fasta -o E0001.NT_aligned.dropped.fasta -t badTaxaList.txt;
 ```
 
 You can run the AlignmentCleaner.py script on the output of dropTaxa.py, to remove any gaps left in the alignment.
@@ -278,7 +278,7 @@ My python scripts always use fasta-formatted files because they are easier for m
 All of this data processing leaves a lot of intermediate files for each sample. I tend to keep them for debugging purposes, but at some point they no longer are necessary. You can run a script to remove these intermediate files, but still keep the output of trimmomatic, aTRAM, and the exon filtering.
 
 ```
-../FishLifeExonCapture/CleanUp.sh
+../FishLifeExonCapture/scripts/CleanUp.sh
 ```
 
 
