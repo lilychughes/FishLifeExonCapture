@@ -23,9 +23,12 @@ do
 			# Filter nuclear exons with exonerate
 			while read -r exon;
 			do
+                                if [  -e $filterfile  ];
+				then
 				filterfile=$( echo trinity*$exon.*.cdhit );
 				exonerate --model coding2genome -t $filterfile -q ../../FishLifeExonCapture/scripts/ReadingFramesOsteoglossomorph/$exon.fasta --ryo ">%ti\t%qab-%qae\n%tas" --showcigar F --showvulgar F --showalignment F --showsugar F --showquerygff F --showtargetgff F --bestn 2 > $filterfile.exonerate.fasta;
 				sed -i 's/-- completed exonerate analysis//g' $filterfile.exonerate.fasta;
+                                fi;
 			done < ../../FishLifeExonCapture/scripts/ExonList.txt
 			
 
